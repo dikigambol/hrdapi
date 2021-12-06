@@ -22,14 +22,8 @@ return [
         'host' => 'localhost',
         'user' => 'root',
         'pass' => '',
-        'dbname' => 'db_astornew',
+        'dbname' => 'db_astor',
         'driver' => 'mysql',
-
-        //'host' => 'localhost',
-        //'user' => 'stmikasi_APITEST',
-        //'pass' => 'Lumajang01',
-        //'dbname' => 'stmikasi_APITEST',
-        //'driver' => 'mysql',
         ],//database
     ],//seting
 ];//return
