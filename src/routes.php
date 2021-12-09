@@ -776,7 +776,6 @@ return function (App $app) {
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
-		// $nn = 1;
 
 		while ($result = $stmt->fetch()) {
 
@@ -785,23 +784,6 @@ return function (App $app) {
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
 
-			$vhari = $result2['hari'];
-			if ($vhari == 1) {
-				$hari = 'Senin';
-			} elseif ($vhari == 2) {
-				$hari = 'Selasa';
-			} elseif ($vhari == 3) {
-				$hari = 'Rabu';
-			} elseif ($vhari == 4) {
-				$hari = 'Kamis';
-			} elseif ($vhari == 5) {
-				$hari = 'Jumat';
-			} elseif ($vhari == 6) {
-				$hari = 'Sabtu';
-			} else {
-				$hari = 'Minggu';
-			}
-
 			$h['merah'] = $result['user_name'];
 			$h['jingga'] = $result['posisi1'];
 			$h['hitam'] = $result['posisi2'];
@@ -809,7 +791,6 @@ return function (App $app) {
 			$h['ungu'] = $result['jurusan_dosen'];
 			$h['putih'] = $result['nidn'];
 			$h['hijau'] = $result2['id_jadwal'];
-			$h['pink'] = $hari;
 			$h['biru'] = $result2['jam'];
 			$h['nila'] = $result2['absen_tempat'];
 			$h['st'] = $result2['status_jadwal'];
