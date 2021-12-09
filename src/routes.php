@@ -779,7 +779,7 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 
-			$sql2 = "SELECT * FROM `jadwal_hrd` WHERE `id_user` = '$id' ";
+			$sql2 = "SELECT * FROM `jadwal_hrd` WHERE `id_user` = '$id' ORDER BY `id_jadwal` DESC";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
@@ -790,8 +790,8 @@ return function (App $app) {
 			$h['kuning'] = $result['status_dosen'];
 			$h['ungu'] = $result['jurusan_dosen'];
 			$h['putih'] = $result['nidn'];
-			// $h['st'] = $result2['status_jadwal'];
-
+			$h['st'] = $result2['status_jadwal'] ?? null;
+			
 			array_push($res, $h);
 		}
 
@@ -1200,7 +1200,6 @@ return function (App $app) {
 			$ids = $ciphertext_base64;
 			$h['ids'] = $ids;
 			$h['nm'] = $result2['user_name'];
-			$h['sapi'] = $result['hari'];
 			$h['st'] = $result['status_jadwal'];
 			$a = array_push($res, $h);
 		}
@@ -1242,7 +1241,6 @@ return function (App $app) {
 			$ids = $ciphertext_base64;
 			$h['ids'] = $ids;
 			$h['nm'] = $result2['user_name'];
-			$h['sapi'] = $result['hari'];
 			$h['st'] = $result['status_jadwal'];
 
 			$a = array_push($res, $h);

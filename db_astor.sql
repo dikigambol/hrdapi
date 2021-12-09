@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5ubuntu0.5
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 30, 2021 at 02:13 AM
--- Server version: 5.7.35-0ubuntu0.18.04.2
--- PHP Version: 7.2.24-0ubuntu0.18.04.9
+-- Host: 127.0.0.1
+-- Generation Time: Dec 09, 2021 at 09:20 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -150,8 +152,8 @@ CREATE TABLE `jadwal_hrd` (
 --
 
 INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) VALUES
-(209, 122, 1, '09.00 - 17.00', 'Kampus 1', 0, 13),
-(210, 247, 1, '08:00 - 16:00', 'Kampus 1', 3, 147);
+(211, 247, 1, '08:00 - 16:00', 'Kampus 2', 1, 137),
+(212, 247, 2, '08:00 - 16:00', 'Kampus 1', 1, 137);
 
 -- --------------------------------------------------------
 
@@ -502,7 +504,33 @@ INSERT INTO `loglogin_fo` (`id_loglogin`, `ket_loglogin`, `tgl_loglogin`, `id_ad
 (194, 'Login APP FO pada hari Monday jam 02:14:29 ', '2021-11-29', 2),
 (195, 'Login APP FO pada hari Monday jam 02:14:55 ', '2021-11-29', 2),
 (196, 'Login APP FO pada hari Monday jam 02:21:51 ', '2021-11-29', 116),
-(197, 'Login APP FO pada hari Tuesday jam 07:51:40 ', '2021-11-30', 89);
+(197, 'Login APP FO pada hari Tuesday jam 07:51:40 ', '2021-11-30', 89),
+(198, 'Login APP FO pada hari Thursday jam 10:15:43 ', '2021-12-02', 2),
+(199, 'Login APP FO pada hari Thursday jam 10:16:01 ', '2021-12-02', 2),
+(200, 'Login APP FO pada hari Thursday jam 10:42:28 ', '2021-12-02', 2),
+(201, 'Login APP FO pada hari Friday jam 09:03:03 ', '2021-12-03', 2),
+(202, 'Login APP FO pada hari Friday jam 09:08:57 ', '2021-12-03', 2),
+(203, 'Login APP FO pada hari Friday jam 09:18:06 ', '2021-12-03', 2),
+(204, 'Login APP FO pada hari Friday jam 09:22:43 ', '2021-12-03', 2),
+(205, 'Login APP FO pada hari Friday jam 09:47:47 ', '2021-12-03', 2),
+(206, 'Login APP FO pada hari Saturday jam 10:04:07 ', '2021-12-04', 2),
+(207, 'Login APP FO pada hari Saturday jam 10:15:27 ', '2021-12-04', 2),
+(208, 'Login APP FO pada hari Saturday jam 12:39:30 ', '2021-12-04', 89),
+(209, 'Login APP FO pada hari Saturday jam 01:45:17 ', '2021-12-04', 2),
+(210, 'Login APP FO pada hari Saturday jam 02:00:09 ', '2021-12-04', 2),
+(211, 'Login APP FO pada hari Monday jam 07:01:06 ', '2021-12-06', 100),
+(212, 'Login APP FO pada hari Monday jam 09:51:58 ', '2021-12-06', 116),
+(213, 'Login APP FO pada hari Monday jam 10:07:08 ', '2021-12-06', 51),
+(214, 'Login APP FO pada hari Monday jam 11:17:24 ', '2021-12-06', 2),
+(215, 'Login APP FO pada hari Tuesday jam 10:04:11 ', '2021-12-07', 2),
+(216, 'Login APP FO pada hari Wednesday jam 09:56:42 ', '2021-12-08', 2),
+(217, 'Login APP FO pada hari Wednesday jam 10:05:31 ', '2021-12-08', 2),
+(218, 'Login APP FO pada hari Wednesday jam 10:29:21 ', '2021-12-08', 2),
+(219, 'Login APP FO pada hari Wednesday jam 10:32:18 ', '2021-12-08', 2),
+(220, 'Login APP FO pada hari Thursday jam 09:44:54 ', '2021-12-09', 2),
+(221, 'Login APP FO pada hari Thursday jam 09:48:36 ', '2021-12-09', 2),
+(222, 'Login APP FO pada hari Thursday jam 10:04:21 ', '2021-12-09', 2),
+(223, 'Login APP FO pada hari Thursday jam 11:29:38 ', '2021-12-09', 2);
 
 -- --------------------------------------------------------
 
@@ -541,6 +569,7 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `link`, `sub_menu_id`, `aplikasi_id`
 ('SG014', 'Pengajuan Dekan', '#', '', 4, 'grup', 1),
 ('SG015', 'Transaksi', '#', '', 11, 'grup', 1),
 ('SG016', 'Mahasiswa', '#', '', 11, 'grup', 1),
+('SG017', 'Pembayaran', '#', '', 11, 'grup', 1),
 ('SSG001', 'Terima Surat', 'terimasurat', 'SG001', 1, 'sub', 1),
 ('SSG002', 'Distrribusi Surat', 'distribusisurat', 'SG001', 1, 'sub', 1),
 ('SSG003', 'Buat Surat', 'suratk', 'SG002', 1, 'sub', 1),
@@ -574,7 +603,8 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `link`, `sub_menu_id`, `aplikasi_id`
 ('SSG031', 'Daftar Ulang', 'daftarulang', 'SG004', 11, 'sub', 1),
 ('SSG032', 'Transaksi Mahasiswa', 'transaksi', 'SG015', 11, 'sub', 1),
 ('SSG033', 'List Mahasiswa', 'mahasiswa', 'SG016', 11, 'sub', 1),
-('SSG034', 'Grup Setting Biaya', 'pengaturanplot', 'SG005', 11, 'sub', 1);
+('SSG034', 'Grup Setting Biaya', 'pengaturanplot', 'SG005', 11, 'sub', 1),
+('SSG035', 'Pembayaran Mahasiswa', 'pembayaranMhs', 'SG017', 11, 'sub', 1);
 
 -- --------------------------------------------------------
 
@@ -849,7 +879,9 @@ INSERT INTO `rule2` (`id_rule2`, `menu_id`, `grub_id`) VALUES
 (586, 'SSG033', 29),
 (593, 'SG008', 18),
 (594, 'SSG023', 18),
-(595, 'SSG024', 18);
+(595, 'SSG024', 18),
+(596, 'SG017', 29),
+(597, 'SSG035', 29);
 
 -- --------------------------------------------------------
 
@@ -938,7 +970,7 @@ CREATE TABLE `user_entity` (
   `user_password` longtext NOT NULL,
   `tgl_masuk` date DEFAULT NULL,
   `tgl_keluar` date DEFAULT NULL,
-  `user_pass_def` longtext,
+  `user_pass_def` longtext DEFAULT NULL,
   `alamat` varchar(225) DEFAULT NULL,
   `alamat_sekarang` varchar(255) DEFAULT NULL,
   `no_hp` varchar(14) DEFAULT NULL,
@@ -959,7 +991,7 @@ CREATE TABLE `user_entity` (
   `bpjs_ketenagakerjaan` int(1) DEFAULT NULL,
   `masa_aktif_ketenagakerjaan` date DEFAULT NULL,
   `jenjang` varchar(255) DEFAULT NULL,
-  `foto` longtext,
+  `foto` longtext DEFAULT NULL,
   `id_hidden` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1366,56 +1398,67 @@ ALTER TABLE `versi`
 --
 ALTER TABLE `absensi_hrd`
   MODIFY `id_absensihrd` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `jadwal_hrd`
 --
 ALTER TABLE `jadwal_hrd`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
+
 --
 -- AUTO_INCREMENT for table `jenjang`
 --
 ALTER TABLE `jenjang`
   MODIFY `id_jenjang` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `level_detail`
 --
 ALTER TABLE `level_detail`
   MODIFY `id_urt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+
 --
 -- AUTO_INCREMENT for table `loglogin_fo`
 --
 ALTER TABLE `loglogin_fo`
-  MODIFY `id_loglogin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `id_loglogin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+
 --
 -- AUTO_INCREMENT for table `req_api`
 --
 ALTER TABLE `req_api`
   MODIFY `ReqApi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `rule`
 --
 ALTER TABLE `rule`
   MODIFY `id_rule` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
 --
 -- AUTO_INCREMENT for table `rule2`
 --
 ALTER TABLE `rule2`
-  MODIFY `id_rule2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=596;
+  MODIFY `id_rule2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=598;
+
 --
 -- AUTO_INCREMENT for table `struktural`
 --
 ALTER TABLE `struktural`
   MODIFY `id_rektor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+
 --
 -- AUTO_INCREMENT for table `user_entity`
 --
 ALTER TABLE `user_entity`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+
 --
 -- AUTO_INCREMENT for table `versi`
 --
 ALTER TABLE `versi`
   MODIFY `id_versi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
 --
 -- Constraints for dumped tables
 --
@@ -1511,6 +1554,7 @@ ALTER TABLE `user_grub`
 --
 ALTER TABLE `versi`
   ADD CONSTRAINT `versi_ibfk_2` FOREIGN KEY (`aplikasi_id`) REFERENCES `aplikasi` (`aplikasi_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
