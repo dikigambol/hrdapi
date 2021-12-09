@@ -790,12 +790,9 @@ return function (App $app) {
 			$h['kuning'] = $result['status_dosen'];
 			$h['ungu'] = $result['jurusan_dosen'];
 			$h['putih'] = $result['nidn'];
-			$h['hijau'] = $result2['id_jadwal'];
-			$h['biru'] = $result2['jam'];
-			$h['nila'] = $result2['absen_tempat'];
-			$h['st'] = $result2['status_jadwal'];
+			// $h['st'] = $result2['status_jadwal'];
 
-			$a = array_push($res, $h);
+			array_push($res, $h);
 		}
 
 		return $response->withJson($res, 200);
