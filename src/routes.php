@@ -791,7 +791,7 @@ return function (App $app) {
 			$h['ungu'] = $result['jurusan_dosen'];
 			$h['putih'] = $result['nidn'];
 			$h['st'] = $result2['status_jadwal'] ?? null;
-			
+
 			array_push($res, $h);
 		}
 
@@ -943,20 +943,7 @@ return function (App $app) {
 	$app->delete("/hps/jadwal/hrd/{add}", function (Request $request, Response $response, $args) {
 		$id = $_GET['id_jadwal'];
 
-		//ambil id_user dari jadwal yang dihapus
-		$sqlTampil = "SELECT * FROM `jadwal_hrd` WHERE id_jadwal = '$id'";
-		$sqlTampilExec = $this->db->prepare($sqlTampil);
-		$sqlTampilExec->execute();
-		$id_user_jadwal = $sqlTampilExec->fetch();
-		//end ambil
-
-		//rubah semua status_jadwal sesuai id_user yang dihapus jadwalnya
-		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '".$id_user_jadwal['id_user']."'";
-		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
-		$sqlUpdateExec->execute();
-		
 		$sql = "DELETE FROM `jadwal_hrd` WHERE `id_jadwal` = '$id' ";
-		
 		$imsgs = $this->db->prepare($sql);
 		$imsgs->execute();
 
@@ -1075,15 +1062,25 @@ return function (App $app) {
 	// end tambah jadwal dosen 
 
 	// hapus jadwal dosen 
-	$app->delete("/hps/jdw/dosen/{add}", function (Request $request, Response $response, $args) {
+	$app->delete("/hps/jadwal/dosen/{add}", function (Request $request, Response $response, $args) {
 		$id = $_GET['id_jadwal'];
 
+		//ambil id_user dari jadwal yang dihapus
+		$sqlTampil = "SELECT * FROM `jadwal_hrd` WHERE id_jadwal = '$id'";
+		$sqlTampilExec = $this->db->prepare($sqlTampil);
+		$sqlTampilExec->execute();
+		$id_user_jadwal = $sqlTampilExec->fetch();
+		//end ambil
+
+		//rubah semua status_jadwal sesuai id_user yang dihapus jadwalnya
+		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '" . $id_user_jadwal['id_user'] . "'";
+		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
+		$sqlUpdateExec->execute();
+
 		$sql = "DELETE FROM `jadwal_hrd` WHERE `id_jadwal` = '$id' ";
+
 		$imsgs = $this->db->prepare($sql);
 		$imsgs->execute();
-
-		
-
 
 		if ($imsgs) {
 			$cek = 1;
@@ -1094,7 +1091,7 @@ return function (App $app) {
 		$validasi = array([
 			"validasi" => $cek
 		]);
-		return $response->withJson($id_user_jadwal, 200);
+		return $response->withJson($validasi, 200);
 	});
 	// end hapus jadwal dosen 
 
