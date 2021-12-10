@@ -939,6 +939,45 @@ return function (App $app) {
 	});
 	// end edit jadwal pegawai 
 
+	// edit jadwal dosen
+	$app->post("/edit/jadwal/dosen/{add}", function (Request $request, Response $response, $args) {
+		$_POST = json_decode(file_get_contents("php://input"), true);
+
+		$idj = $_GET['id_jadwal'];
+		$hari = $_POST["hari"];
+		$jam = $_POST["jam"];
+		$absn = $_POST["absen_tempat"];
+
+		//ambil id_user dari jadwal yang diedit
+		$sqlTampil = "SELECT * FROM `jadwal_hrd` WHERE id_jadwal = '$idj'";
+		$sqlTampilExec = $this->db->prepare($sqlTampil);
+		$sqlTampilExec->execute();
+		$id_user_jadwal = $sqlTampilExec->fetch();
+		//end ambil
+
+		//rubah semua status_jadwal sesuai id_user yang diedit jadwalnya
+		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '" . $id_user_jadwal['id_user'] . "'";
+		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
+		$sqlUpdateExec->execute();
+
+		$sql = "UPDATE `jadwal_hrd` SET `hari` = '$hari', `jam` = '$jam', `absen_tempat` = '$absn' WHERE `id_jadwal` = '$idj' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		if ($stmt) {
+			$cek = 1;
+		} else {
+			$cek = 0;
+		}
+
+		$vcode = array([
+			"filedatas" => $cek
+		]);
+
+		return $response->withJson($vcode, 200);
+	});
+	// end edit jadwal dosen
+
 	// hapus jadwal pegawai  
 	$app->delete("/hps/jadwal/hrd/{add}", function (Request $request, Response $response, $args) {
 		$id = $_GET['id_jadwal'];
@@ -1046,6 +1085,11 @@ return function (App $app) {
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		}
+
+		//rubah semua status_jadwal sesuai id_user yang diedit jadwalnya
+		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '$id'";
+		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
+		$sqlUpdateExec->execute();
 
 		if ($stmt) {
 			$cek = 1;
