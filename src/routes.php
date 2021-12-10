@@ -832,6 +832,7 @@ return function (App $app) {
 
 			$h['koceng'] = $nn++;
 			$h['kerbau'] = $result['id_jadwal'];
+			$h['dino'] = $result['id_user'];
 			$h['sapi'] = $hari;
 			$h['kambing'] = $result['jam'];
 			$h['ayam'] = $result['absen_tempat'];
@@ -942,7 +943,20 @@ return function (App $app) {
 	$app->delete("/hps/jadwal/hrd/{add}", function (Request $request, Response $response, $args) {
 		$id = $_GET['id_jadwal'];
 
+		//ambil id_user dari jadwal yang dihapus
+		$sqlTampil = "SELECT * FROM `jadwal_hrd` WHERE id_jadwal = '$id'";
+		$sqlTampilExec = $this->db->prepare($sqlTampil);
+		$sqlTampilExec->execute();
+		$id_user_jadwal = $sqlTampilExec->fetch();
+		//end ambil
+
+		//rubah semua status_jadwal sesuai id_user yang dihapus jadwalnya
+		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '".$id_user_jadwal['id_user']."'";
+		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
+		$sqlUpdateExec->execute();
+		
 		$sql = "DELETE FROM `jadwal_hrd` WHERE `id_jadwal` = '$id' ";
+		
 		$imsgs = $this->db->prepare($sql);
 		$imsgs->execute();
 
@@ -1068,6 +1082,9 @@ return function (App $app) {
 		$imsgs = $this->db->prepare($sql);
 		$imsgs->execute();
 
+		
+
+
 		if ($imsgs) {
 			$cek = 1;
 		} else {
@@ -1077,7 +1094,7 @@ return function (App $app) {
 		$validasi = array([
 			"validasi" => $cek
 		]);
-		return $response->withJson($validasi, 200);
+		return $response->withJson($id_user_jadwal, 200);
 	});
 	// end hapus jadwal dosen 
 
