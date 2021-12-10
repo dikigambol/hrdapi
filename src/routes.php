@@ -224,7 +224,7 @@ return function (App $app) {
 
 	// view pegawai 
 	$app->get("/tampil/hrd/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity`  ORDER BY `id` DESC ";
+		$sql = "SELECT * FROM `user_entity` EXCEPT SELECT * FROM `user_entity` WHERE posisi1 = 'Dosen LB' ORDER BY `id` DESC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
