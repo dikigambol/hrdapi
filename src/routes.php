@@ -1525,7 +1525,7 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id'";
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_dibuat DESC";
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -1542,6 +1542,233 @@ return function (App $app) {
 		return $response->withJson($res, 200);
 	});
 	// end detail izin dosen
+	
+	//tambah izin dosen
+	$app->post("/tambah/izin/{dosen}", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		while ($result = $stmt->fetch()) {
+			$_POST = json_decode(file_get_contents("php://input"), true);
+			$id_user = $id;
+			$tgl_mulai = $_POST["tgl_mulai"];
+			$tgl_akhir = $_POST['tgl_akhir'];
+			$alasan = $_POST['alasan'];
+			$lama_izin = $_POST['lama_izin'];
+			$acc1 = "";
+			$acc2 = "";
+			$ambilJurusan = $result['jurusan_dosen'];
+			if($ambilJurusan == "Teknik Informatika"){
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-INF'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}else if($ambilJurusan == "Sistem Komputer"){
+			    $queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-SK'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}else if($ambilJurusan == "DKV"){
+			    $queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-DKV'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}else if($ambilJurusan == "Manajemen"){
+			    $queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-PMB'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}else if($ambilJurusan == "Akuntansi"){
+			    $queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-AK'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}else{
+			    $queryDosen = "SELECT * FROM struktural WHERE ketkode_rektor = 'Kaprodi Pascasarjana'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Direktur Pascasarjana'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}
+			$tambahIzin = "INSERT INTO izin_hrd VALUES(0,'$id_user','$tgl_mulai','$tgl_akhir','$lama_izin','$alasan','$acc1','$acc2',1)";
+			$stmtTambah = $this->db->prepare($tambahIzin);
+			$stmtTambah->execute();
+			if($stmtTambah){
+				return $response->withStatus(200);
+			}
+		}
+		
+	});
+	//end tambah dosen
+
+	//edit izin dosen
+	$app->post("/edit/izin/{dosen}", function (Request $request, Response $response, $args) {
+
+			$_POST = json_decode(file_get_contents("php://input"), true);
+			$id_izin = $_POST['id_izin'];
+			$tgl_mulai = $_POST["tgl_mulai"];
+			$tgl_akhir = $_POST['tgl_akhir'];
+			$alasan = $_POST['alasan'];
+			$lama_izin = $_POST['lama_izin'];
+			$editIzin = "UPDATE izin_hrd SET tgl_mulai = '$tgl_mulai', tgl_akhir = '$tgl_akhir', alasan = '$alasan', lama_izin = '$lama_izin' WHERE id_izin = '$id_izin'";
+			$stmtEdit = $this->db->prepare($editIzin);
+			$stmtEdit->execute();
+			if($stmtEdit){
+				return $response->withStatus(200);
+			}
+	});
+	//end edit izin dosen
+
+	//hapus izin dosen
+	$app->delete("/hapus/izin/{dosen}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		$stmtHapus = "DELETE FROM izin_hrd WHERE id_izin = '$id_izin'";
+		$stmt = $this->db->prepare($stmtHapus);
+		$stmt->execute();
+
+		return $response->withStatus(200);
+	});
+	//end hapus izin dosen
+
+	//view acc1 dosen
+	$app->get("/detail/izin/{kaprodi}", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+		$id_rektor = "SELECT id_rektor FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$stmtIdRektor = $this->db->prepare($id_rektor);
+		$stmtIdRektor->execute();
+		$dataIdRektor = $stmtIdRektor->fetch();
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc1` = '".$dataIdRektor['id_rektor']."' AND `status_izin` = '1' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$res = array();
+ 
+		while ($result = $stmt->fetch()) {
+
+			$h['id_izin'] = $result['id_izin'];
+			$h['id_user'] = $result['id_user'];
+			$h['tgl_mulai'] = $result['tgl_mulai'];
+			$h['tgl_akhir'] = $result['tgl_akhir'];
+			$h['lama_izin'] = $result['lama_izin'];
+			$h['alasan'] = $result['alasan'];
+			$h['status_izin'] = $result['status_izin'];
+
+			array_push($res, $h);
+		}
+
+		return $response->withJson($res, 200);
+	});
+	//end view acc1 dosen
+
+	//view acc2 dosen
+	$app->get("/detail/izin/dosen/{dekan}", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+		$id_rektor = "SELECT id_rektor FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$stmtIdRektor = $this->db->prepare($id_rektor);
+		$stmtIdRektor->execute();
+		$dataIdRektor = $stmtIdRektor->fetch();
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc2` = '".$dataIdRektor['id_rektor']."' AND `status_izin` = '2' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$res = array();
+ 
+		while ($result = $stmt->fetch()) {
+
+			$h['id_izin'] = $result['id_izin'];
+			$h['id_user'] = $result['id_user'];
+			$h['tgl_mulai'] = $result['tgl_mulai'];
+			$h['tgl_akhir'] = $result['tgl_akhir'];
+			$h['lama_izin'] = $result['lama_izin'];
+			$h['alasan'] = $result['alasan'];
+			$h['status_izin'] = $result['status_izin'];
+
+			array_push($res, $h);
+		}
+
+		return $response->withJson($res, 200);
+	});
+	//end view acc2 dosen
+
+	//setujui izin dosen di kaprodi
+	$app->put("/setujui/izin/dosen/{kaprodi}", function (Request $request, Response $response, $args) {
+	$id_izin = $_GET['id_izin'];
+	$sql = "UPDATE izin_hrd SET status_izin = 2 WHERE id_izin = '$id_izin'";
+	$stmt = $this->db->prepare($sql);
+	$stmt->execute();
+	return $response->withStatus(200);
+	});
+	//end setujui izin kaprodi
+
+	//tolak izin dosen
+	$app->put("/tolak/izin/{dosen}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		$sql = "UPDATE izin_hrd SET status_izin = 0 WHERE id_izin = '$id_izin'";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		return $response->withStatus(200);
+	});
+	//end tolak izin
+
+	//setujui izin dosen di dekan
+	$app->put("/setujui/dosen/{dekan}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		$sql = "UPDATE izin_hrd SET status_izin = 3 WHERE id_izin = '$id_izin'";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		return $response->withStatus(200);
+	});
+	//end setujui izin dekan
 
 	// login astor hrd 
 	$app->get("/hrd/sign/id/{cari}", function (Request $request, Response $response) {
