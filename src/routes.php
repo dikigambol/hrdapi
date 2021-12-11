@@ -1015,81 +1015,24 @@ return function (App $app) {
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
-		$jur = $result2['jurusan_dosen'];
+		$isdekan = $result2['posisi2'];
 
-		if ($jur == "Manajemen") {
-
-			$sqlm = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'KP-PMB' AND `id_hidden`='1' ";
-			$stmtm = $this->db->prepare($sqlm);
-			$stmtm->execute();
-			$resultm = $stmtm->fetch();
-			$strukm = $resultm['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$strukm')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
-		} elseif ($jur == "Akuntansi") {
-			$sqla = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'KP-AK' AND `id_hidden`='1' ";
-			$stmta = $this->db->prepare($sqla);
-			$stmta->execute();
-			$resulta = $stmta->fetch();
-			$struka = $resulta['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$struka')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
-		} elseif ($jur == "Teknik Informatika") {
-			$sqli = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'KP-INF' AND `id_hidden`='1' ";
-			$stmti = $this->db->prepare($sqli);
-			$stmti->execute();
-			$resulti = $stmti->fetch();
-			$struki = $resulti['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$struki')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
-		} elseif ($jur == "DKV") {
-			$sqld = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'KP-DKV' AND `id_hidden`='1' ";
-			$stmtd = $this->db->prepare($sqld);
-			$stmtd->execute();
-			$resultd = $stmtd->fetch();
-			$strukd = $resultd['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$strukd')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
-		} elseif ($jur == "Magister Management") {
-			$sqls2 = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'S2-MM' AND `ketkode_rektor` = 'Kaprodi Pascasarjana' AND `id_hidden`='1' ";
-			$stmts2 = $this->db->prepare($sqls2);
-			$stmts2->execute();
-			$results2 = $stmts2->fetch();
-			$struks2 = $results2['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$struks2')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
+		if ($isdekan == "Dekan") {
+			$stjadwal = 3;
 		} else {
-			$sqls = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'KP-SK' AND `id_hidden`='1' ";
-			$stmts = $this->db->prepare($sqls);
-			$stmts->execute();
-			$results = $stmts->fetch();
-			$struks = $results['id_rektor'];
-
-			$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
-			VALUES (NULL, '$id', '$hari', '$jam', '$absn', '0', '$struks')";
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
+			$stjadwal = 0;
 		}
 
-		//rubah semua status_jadwal sesuai id_user yang diedit jadwalnya
-		$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0 WHERE id_user = '$id'";
-		$sqlUpdateExec = $this->db->prepare($sqlUpdate);
-		$sqlUpdateExec->execute();
+		$sql = "INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) 
+		VALUES (NULL, '$id', '$hari', '$jam', '$absn', '$stjadwal', '0')";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		if ($isdekan != "Dekan") {
+			$sqlUpdate = "UPDATE `jadwal_hrd` SET status_jadwal = 0, id_struktural = 0 WHERE id_user = '$id'";
+			$sqlUpdateExec = $this->db->prepare($sqlUpdate);
+			$sqlUpdateExec->execute();
+		}
 
 		if ($stmt) {
 			$cek = 1;
@@ -1146,7 +1089,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' ";
+		$sql2 = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1158,8 +1101,20 @@ return function (App $app) {
 			$stmtm->execute();
 			$resultm = $stmtm->fetch();
 			$strukm = $resultm['id_rektor'];
+			$kodeKPMJ = $resultm['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$strukm' WHERE `id_user` = '$id' ";
+			if ($kodeKPMJ == $id) {
+				$getDekanFEB = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FEB' AND `id_hidden`='1' ";
+				$prepsDekanFEB = $this->db->prepare($getDekanFEB);
+				$prepsDekanFEB->execute();
+				$dekanFEB = $prepsDekanFEB->fetch();
+				$strukm = $dekanFEB['id_rektor'];
+				$stMJ = 2;
+			} else {
+				$stMJ = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$stMJ', `id_struktural`= '$strukm' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		} elseif ($jur == "Akuntansi") {
@@ -1168,8 +1123,20 @@ return function (App $app) {
 			$stmta->execute();
 			$resulta = $stmta->fetch();
 			$struka = $resulta['id_rektor'];
+			$kodeKPAK = $resulta['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$struka' WHERE `id_user` = '$id' ";
+			if ($kodeKPAK == $id) {
+				$getDekanFEB = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FEB' AND `id_hidden`='1' ";
+				$prepsDekanFEB = $this->db->prepare($getDekanFEB);
+				$prepsDekanFEB->execute();
+				$dekanFEB = $prepsDekanFEB->fetch();
+				$struka = $dekanFEB['id_rektor'];
+				$stAK = 2;
+			} else {
+				$stAK = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$stAK', `id_struktural`= '$struka' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		} elseif ($jur == "Teknik Informatika") {
@@ -1178,8 +1145,20 @@ return function (App $app) {
 			$stmti->execute();
 			$resulti = $stmti->fetch();
 			$struki = $resulti['id_rektor'];
+			$kodeKPTI = $resulti['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$struki' WHERE `id_user` = '$id' ";
+			if ($kodeKPTI == $id) {
+				$getDekanFTD = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FTD' AND `id_hidden`='1' ";
+				$prepsDekanFTD = $this->db->prepare($getDekanFTD);
+				$prepsDekanFTD->execute();
+				$dekanFTD = $prepsDekanFTD->fetch();
+				$struki = $dekanFTD['id_rektor'];
+				$stTI = 2;
+			} else {
+				$stTI = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$stTI', `id_struktural`= '$struki' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		} elseif ($jur == "DKV") {
@@ -1188,8 +1167,20 @@ return function (App $app) {
 			$stmtd->execute();
 			$resultd = $stmtd->fetch();
 			$strukd = $resultd['id_rektor'];
+			$kodeKPDKV = $resultd['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$strukd' WHERE `id_user` = '$id' ";
+			if ($kodeKPDKV == $id) {
+				$getDekanFTD = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FTD' AND `id_hidden`='1' ";
+				$prepsDekanFTD = $this->db->prepare($getDekanFTD);
+				$prepsDekanFTD->execute();
+				$dekanFTD = $prepsDekanFTD->fetch();
+				$strukd = $dekanFTD['id_rektor'];
+				$stDKV = 2;
+			} else {
+				$stDKV = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$stDKV', `id_struktural`= '$strukd' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		} elseif ($jur == "Magister Management") {
@@ -1198,8 +1189,20 @@ return function (App $app) {
 			$stmts2->execute();
 			$results2 = $stmts2->fetch();
 			$struks2 = $results2['id_rektor'];
+			$kodes2 = $results2['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$struks2' WHERE `id_user` = '$id' ";
+			if ($kodes2 == $id) {
+				$getDekanFEB = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FEB' AND `id_hidden`='1' ";
+				$prepsDekanFEB = $this->db->prepare($getDekanFEB);
+				$prepsDekanFEB->execute();
+				$dekanFEB = $prepsDekanFEB->fetch();
+				$struks = $dekanFEB['id_rektor'];
+				$sts2 = 2;
+			} else {
+				$sts2 = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$sts2', `id_struktural`= '$struks2' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		} else {
@@ -1208,8 +1211,20 @@ return function (App $app) {
 			$stmts->execute();
 			$results = $stmts->fetch();
 			$struks = $results['id_rektor'];
+			$kodeKPSK = $results['id'];
 
-			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '1', `id_struktural`= '$struks' WHERE `id_user` = '$id' ";
+			if ($kodeKPSK == $id) {
+				$getDekanFTD = "SELECT * FROM `struktural`  WHERE `rektor_id` = 'FTD' AND `id_hidden`='1' ";
+				$prepsDekanFTD = $this->db->prepare($getDekanFTD);
+				$prepsDekanFTD->execute();
+				$dekanFTD = $prepsDekanFTD->fetch();
+				$struks = $dekanFTD['id_rektor'];
+				$stSK = 2;
+			} else {
+				$stSK = 1;
+			};
+
+			$sql = "UPDATE `jadwal_hrd` SET `status_jadwal` = '$stSK', `id_struktural`= '$struks' WHERE `id_user` = '$id' ";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 		}
@@ -1466,6 +1481,66 @@ return function (App $app) {
 		return $response->withJson($vcode, 200);
 	});
 	// tolak jadwal kaprodi dan dekan end
+
+	// view izin dosen
+	$app->get("/tabel/dosen/izin", function (Request $request, Response $response, $args) {
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB'  ORDER BY `id` DESC ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$res = array();
+
+		while ($result = $stmt->fetch()) {
+			$dataready = $result['id'];
+			$idDecrypt = $result['id'];
+			require 'fuction/encript.php';
+			$id = $ciphertext_base64;
+
+			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
+			$prepsCountIzin = $this->db->prepare($getCountIzin);
+			$prepsCountIzin->execute();
+			$numIzin = $prepsCountIzin->fetch();
+
+			$h['id'] = $id;
+			$h['nopeg'] = $result['user_id'];
+			$h['nama'] = $result['user_name'];
+			$h['jumlah_izin'] = $numIzin;
+
+			array_push($res, $h);
+		}
+
+		return $response->withJson($res, 200);
+	});
+	// end view izin dosen
+
+	// detail izin dosen 
+	$app->get("/detail/izin/dosen", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$res = array();
+
+		while ($result = $stmt->fetch()) {
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id'";
+			$prepsListIzin = $this->db->prepare($getIzin);
+			$prepsListIzin->execute();
+			$listIzin = $prepsListIzin->fetchAll();
+
+			$h['nama'] = $result['user_name'];
+			$h['fakultas'] = $result['posisi1'];
+			$h['prodi'] = $result['jurusan_dosen'];
+			$h['status_dosen'] = $result['status_dosen'];
+			$h['list_izin'] = $listIzin;
+
+			array_push($res, $h);
+		}
+
+		return $response->withJson($res, 200);
+	});
+	// end detail izin dosen
 
 	// login astor hrd 
 	$app->get("/hrd/sign/id/{cari}", function (Request $request, Response $response) {
