@@ -1543,6 +1543,113 @@ return function (App $app) {
 	});
 	// end detail izin dosen
 
+	//tambah izin dosen
+
+	$app->post("/tambah/izin/{dosen}/", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+
+		while ($result = $stmt->fetch()) {
+			$_POST = json_decode(file_get_contents("php://input"), true);
+			$id_user = $id;
+			$tgl_mulai = $_POST["tgl_mulai"];
+			$tgl_akhir = $_POST['tgl_akhir'];
+			$alasan = $_POST['alasan'];
+			$lama_izin = $_POST['lama_izin'];
+			$acc1 = "";
+			$acc2 = "";
+			$ambilJurusan = $result['jurusan_dosen'];
+			if ($ambilJurusan == "Teknik Informatika") {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-INF'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			} else if ($ambilJurusan == "Sistem Komputer") {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-SK'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			} else if ($ambilJurusan == "DKV") {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-DKV'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FTD'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			} else if ($ambilJurusan == "Manajemen") {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-PMB'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FEB'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			} else if ($ambilJurusan == "Akuntansi") {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-AK'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FEB'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			} else {
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'S2-MM'";
+				$stmtDosen = $this->db->prepare($queryDosen);
+				$stmtDosen->execute();
+				$resultDosen = $stmtDosen->fetch();
+				$acc1 = $resultDosen['id_rektor'];
+
+				$queryDekan = "SELECT * FROM struktural WHERE rektor_id = 'FEB'";
+				$stmtDekan = $this->db->prepare($queryDekan);
+				$stmtDekan->execute();
+				$resultDekan = $stmtDekan->fetch();
+				$acc2 = $resultDekan['id_rektor'];
+			}
+			$tambahIzin = "INSERT INTO izin_hrd VALUES(0,'$id_user','$tgl_mulai','$tgl_akhir','$lama_izin','$alasan','$acc1','$acc2',0)";
+			$stmtTambah = $this->db->prepare($tambahIzin);
+			$stmtTambah->execute();
+			if ($stmtTambah) {
+				return $response->withStatus(200);
+			} else {
+				return $response->withStatus(666);
+			}
+		}
+	});
+
+	//end tambah dosen
+
 	// login astor hrd 
 	$app->get("/hrd/sign/id/{cari}", function (Request $request, Response $response) {
 		include 'link/surat/link_surat.php';
