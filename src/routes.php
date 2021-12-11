@@ -1503,6 +1503,7 @@ return function (App $app) {
 			$h['id'] = $id;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
+			$h['divisi'] = $result['posisi1'];
 			$h['jumlah_izin'] = $numIzin;
 
 			array_push($res, $h);
