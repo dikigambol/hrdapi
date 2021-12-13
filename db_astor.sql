@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2021 at 09:20 AM
+-- Generation Time: Dec 13, 2021 at 08:51 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -134,6 +134,33 @@ INSERT INTO `hidden` (`id_hidden`, `ket_hidden`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `izin_hrd`
+--
+
+CREATE TABLE `izin_hrd` (
+  `id_izin` int(10) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `tgl_mulai` date NOT NULL,
+  `tgl_akhir` date NOT NULL,
+  `lama_izin` varchar(100) NOT NULL,
+  `alasan` text NOT NULL,
+  `acc1` int(10) NOT NULL,
+  `acc2` int(10) NOT NULL,
+  `status_izin` int(2) NOT NULL,
+  `tgl_dibuat` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `izin_hrd`
+--
+
+INSERT INTO `izin_hrd` (`id_izin`, `id_user`, `tgl_mulai`, `tgl_akhir`, `lama_izin`, `alasan`, `acc1`, `acc2`, `status_izin`, `tgl_dibuat`) VALUES
+(31, 246, '2021-12-13', '2021-12-15', '1', 'alasan tok', 1, 1, 1, '2021-12-13 01:40:29'),
+(32, 246, '2021-12-14', '2021-12-17', '2', 'alasan tok', 1, 1, 1, '2021-12-13 01:41:03');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `jadwal_hrd`
 --
 
@@ -152,8 +179,8 @@ CREATE TABLE `jadwal_hrd` (
 --
 
 INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) VALUES
-(211, 247, 1, '08:00 - 16:00', 'Kampus 2', 1, 137),
-(212, 247, 2, '08:00 - 16:00', 'Kampus 1', 1, 137);
+(257, 102, 1, '08:00 - 16:00', 'Kampus 2', 3, 0),
+(260, 68, 1, '08:00 - 16:00', 'Kampus 1', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -262,7 +289,6 @@ INSERT INTO `level_detail` (`id`, `level_id`, `id_urt`, `grub_id`, `id_hidden`) 
 (68, 19, 134, 24, 1),
 (102, 19, 135, 25, 1),
 (120, 19, 137, 26, 1),
-(122, 19, 138, 23, 1),
 (92, 25, 139, 27, 1),
 (2, 25, 140, 27, 1),
 (2, 19, 142, 18, 1),
@@ -288,7 +314,13 @@ INSERT INTO `level_detail` (`id`, `level_id`, `id_urt`, `grub_id`, `id_hidden`) 
 (244, 28, 172, 30, 1),
 (245, 28, 173, 30, 1),
 (246, 19, 175, 26, 1),
-(247, 19, 176, 23, 1);
+(247, 19, 176, 23, 1),
+(105, 19, 178, 24, 1),
+(80, 19, 179, 31, 1),
+(122, 19, 180, 32, 1),
+(8, 19, 181, 33, 1),
+(7, 19, 182, 33, 1),
+(6, 19, 183, 34, 1);
 
 -- --------------------------------------------------------
 
@@ -530,7 +562,10 @@ INSERT INTO `loglogin_fo` (`id_loglogin`, `ket_loglogin`, `tgl_loglogin`, `id_ad
 (220, 'Login APP FO pada hari Thursday jam 09:44:54 ', '2021-12-09', 2),
 (221, 'Login APP FO pada hari Thursday jam 09:48:36 ', '2021-12-09', 2),
 (222, 'Login APP FO pada hari Thursday jam 10:04:21 ', '2021-12-09', 2),
-(223, 'Login APP FO pada hari Thursday jam 11:29:38 ', '2021-12-09', 2);
+(223, 'Login APP FO pada hari Thursday jam 11:29:38 ', '2021-12-09', 2),
+(224, 'Login APP FO pada hari Thursday jam 03:09:25 ', '2021-12-09', 2),
+(225, 'Login APP FO pada hari Thursday jam 03:37:13 ', '2021-12-09', 89),
+(226, 'Login APP FO pada hari Thursday jam 04:09:44 ', '2021-12-09', 89);
 
 -- --------------------------------------------------------
 
@@ -565,11 +600,13 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `link`, `sub_menu_id`, `aplikasi_id`
 ('SG010', 'Jadwal Kerja', '#', '', 4, 'grup', 1),
 ('SG011', 'Dosen', '#', '', 4, 'grup', 1),
 ('SG012', 'Karyawan', '#', '', 4, 'grup', 1),
-('SG013', 'Pengajuan Kaprodi', '#', '', 4, 'grup', 1),
-('SG014', 'Pengajuan Dekan', '#', '', 4, 'grup', 1),
+('SG013', 'Kaprodi', '#', '', 4, 'grup', 1),
+('SG014', 'Dekan', '#', '', 4, 'grup', 1),
 ('SG015', 'Transaksi', '#', '', 11, 'grup', 1),
 ('SG016', 'Mahasiswa', '#', '', 11, 'grup', 1),
 ('SG017', 'Pembayaran', '#', '', 11, 'grup', 1),
+('SG018', 'Koordinator Divisi', '#', '', 4, 'grup', 1),
+('SG019', 'Izin Pegawai', '#', '', 4, 'grup', 1),
 ('SSG001', 'Terima Surat', 'terimasurat', 'SG001', 1, 'sub', 1),
 ('SSG002', 'Distrribusi Surat', 'distribusisurat', 'SG001', 1, 'sub', 1),
 ('SSG003', 'Buat Surat', 'suratk', 'SG002', 1, 'sub', 1),
@@ -583,28 +620,34 @@ INSERT INTO `menu` (`menu_id`, `menu_name`, `link`, `sub_menu_id`, `aplikasi_id`
 ('SSG011', 'Pengaturan PMB', 'settingbiayapmb', 'SG005', 11, 'sub', 1),
 ('SSG012', 'Pengaturan DPP', 'settingdpp', 'SG005', 11, 'sub', 1),
 ('SSG013', 'Pengaturan Potongan', 'settingpotongan', 'SG005', 11, 'sub', 1),
-('SSG014', 'Jadwal Karyawan', 'jadwal', 'SG010', 4, 'sub', 1),
-('SSG015', 'Jadwal Dosen ', 'dosJadwal', 'SG010', 4, 'sub', 1),
-('SSG016', 'Jadwal', 'detTampil', 'SG011', 4, 'sub', 1),
-('SSG017', 'Ijin', 'dosIjin', 'SG011', 4, 'sub', 0),
+('SSG014', 'Data jadwal karyawan', 'jadwal', 'SG010', 4, 'sub', 1),
+('SSG015', 'Data jadwal dosen ', 'dosJadwal', 'SG010', 4, 'sub', 1),
+('SSG016', 'Buat & lihat jadwal', 'detTampil', 'SG011', 4, 'sub', 1),
+('SSG017', 'Buat & lihat izin', 'buatizinDosen', 'SG011', 4, 'sub', 1),
 ('SSG018', 'Lembur', 'dsLembur', 'SG011', 4, 'sub', 0),
-('SSG019', 'Jadwal', 'jadKaryawan', 'SG012', 4, 'sub', 1),
+('SSG019', 'Lihat jadwal', 'jadKaryawan', 'SG012', 4, 'sub', 1),
 ('SSG020', 'Karyawan dan dosen', 'datPeg', 'SG006', 4, 'sub', 1),
 ('SSG021', 'Data Dosen', 'datDos', 'SG006', 4, 'sub', 0),
-('SSG022', 'Data Absensi', 'absensi', 'SG007', 4, 'sub', 1),
-('SSG023', 'Izin Pegawai', 'izin', 'SG008', 4, 'sub', 1),
-('SSG024', 'Ijin Dosen', 'ijinDos', 'SG008', 4, 'sub', 0),
+('SSG022', 'Data absensi', 'absensi', 'SG007', 4, 'sub', 1),
+('SSG023', 'Data izin karyawan', 'izinKaryawan', 'SG008', 4, 'sub', 1),
+('SSG024', 'Data izin dosen', 'izinDosen', 'SG008', 4, 'sub', 1),
 ('SSG025', 'Lembur Karyawan', 'lemburKary', 'SG009', 4, 'sub', 1),
 ('SSG026', 'Lembur Dosen', 'lemburDos', 'SG009', 4, 'sub', 1),
-('SSG027', 'Jadwal', 'pengajuanKaprodi', 'SG013', 4, 'sub', 1),
-('SSG028', 'Ijin', 'pengajuanKaprodiIjin', 'SG013', 4, 'sub', 0),
-('SSG029', 'Jadwal', 'pengajuanDekan', 'SG014', 4, 'sub', 1),
+('SSG027', 'Permohonan jadwal dosen', 'pengajuanKaprodi', 'SG013', 4, 'sub', 1),
+('SSG028', 'Permohonan izin dosen', 'permohonanKaprodizin', 'SG013', 4, 'sub', 1),
+('SSG029', 'Permohonan jadwal dosen', 'pengajuanDekan', 'SG014', 4, 'sub', 1),
 ('SSG030', 'Pengaturan Biaya', 'pengaturanbiaya', 'SG005', 11, 'sub', 1),
 ('SSG031', 'Daftar Ulang', 'daftarulang', 'SG004', 11, 'sub', 1),
 ('SSG032', 'Transaksi Mahasiswa', 'transaksi', 'SG015', 11, 'sub', 1),
 ('SSG033', 'List Mahasiswa', 'mahasiswa', 'SG016', 11, 'sub', 1),
 ('SSG034', 'Grup Setting Biaya', 'pengaturanplot', 'SG005', 11, 'sub', 1),
-('SSG035', 'Pembayaran Mahasiswa', 'pembayaranMhs', 'SG017', 11, 'sub', 1);
+('SSG035', 'Pembayaran Mahasiswa', 'pembayaranMhs', 'SG017', 11, 'sub', 1),
+('SSG036', 'Buat & lihat izin', 'buatIzin', 'SG008', 4, 'sub', 1),
+('SSG037', 'Permohonan izin', 'pengajuanIzin', 'SG008', 4, 'sub', 1),
+('SSG038', 'Permohonan izin anggota', 'izinAnggota', 'SG018', 4, 'sub', 1),
+('SSG039', 'Permohonan izin dosen', 'permohonanDekanizin', 'SG014', 4, 'sub', 1),
+('SSG040', 'Buat & lihat izin', 'buatizinKaryawan', 'SG012', 4, 'sub', 1),
+('SSG041', 'Permohonan izin pegawai', 'permohonanIzinPegawai', 'SG019', 4, 'sub', 1);
 
 -- --------------------------------------------------------
 
@@ -881,7 +924,24 @@ INSERT INTO `rule2` (`id_rule2`, `menu_id`, `grub_id`) VALUES
 (594, 'SSG023', 18),
 (595, 'SSG024', 18),
 (596, 'SG017', 29),
-(597, 'SSG035', 29);
+(597, 'SSG035', 29),
+(598, 'SG018', 25),
+(599, 'SSG038', 25),
+(600, 'SG012', 31),
+(601, 'SSG019', 31),
+(602, 'SSG040', 31),
+(603, 'SG018', 31),
+(604, 'SSG038', 31),
+(605, 'SG011', 32),
+(606, 'SSG016', 32),
+(607, 'SSG017', 32),
+(608, 'SSG018', 32),
+(609, 'SG018', 32),
+(610, 'SSG038', 32),
+(611, 'SG019', 33),
+(612, 'SSG041', 33),
+(613, 'SG019', 34),
+(614, 'SSG041', 34);
 
 -- --------------------------------------------------------
 
@@ -983,6 +1043,7 @@ CREATE TABLE `user_entity` (
   `posisi1` varchar(50) DEFAULT NULL,
   `posisi2` varchar(50) DEFAULT NULL,
   `jabatan` varchar(225) DEFAULT NULL,
+  `koordinator` int(2) NOT NULL,
   `jurusan_dosen` varchar(225) DEFAULT NULL,
   `status_dosen` varchar(225) DEFAULT NULL,
   `kode_dosen` varchar(225) NOT NULL,
@@ -999,159 +1060,158 @@ CREATE TABLE `user_entity` (
 -- Dumping data for table `user_entity`
 --
 
-INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_masuk`, `tgl_keluar`, `user_pass_def`, `alamat`, `alamat_sekarang`, `no_hp`, `tempat`, `tanggal_lahir`, `jenis_kelamin`, `nidn`, `no_ktp`, `status_nikah`, `posisi1`, `posisi2`, `jabatan`, `jurusan_dosen`, `status_dosen`, `kode_dosen`, `bpjs_kesehatan`, `masa_aktif_kesehatan`, `bpjs_ketenagakerjaan`, `masa_aktif_ketenagakerjaan`, `jenjang`, `foto`, `id_hidden`) VALUES
-(1, 'admin', 'UPTSI', 'U0ZCTU1tUjVORkI1VTNsME16bGFWbUpMT0U1RVdrTktNRmt4V0dZNWJtWmhieTg1U0ZwbmJWbEVNRDA9', '2021-01-27', NULL, '4514expert', '', '', '12345678901', '', NULL, 0, '00112313', '0', 0, 'Karyawan', 'UPT-SI', 'Programmer', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(2, 'usertester', 'user haiyo', 'TTNselExZ3hZbGxaY0VSTE1rZGpNU3MyY1ZWT1NFRXpUWGxxY0VSd2NrMWFNak5qT1RNemVUTnVRVDA9', '2021-02-15', NULL, '4514expert', 'kota Malang', 'malang', '1234', 'Malang 4', NULL, 1, '012', '1234', 0, 'Dosen LB', 'UPT-SI s', 'staff ', 'p', 'p', 'KDUser01p', 0, '2021-01-15', 1, '2021-04-14', 'S1', '1618551389.jpg', 1),
-(5, 'adminrektoratasia', 'adminrektoratasia', 'WmxNdmFTdFdOelUyWld4NE5XTlNMelpaVjNsSllWZG1TM0Z0UVUxS2MwaEVjbkptUW5Vd1QydGthejA9', '2021-01-27', NULL, 'rektorat4514', '', '', '0', '', NULL, 0, '0032312312', '0', 0, 'Karyawan', 'Admin Rektorat', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(6, '1000', 'Risa Santoso, B.A, M. Ed', 'UlVzemRGWTBla2xaVTBaeFRpODBjM2RUZGpKRGRHMVBRVGd6YzNGUmRVNHZMMlprTlcxSFpGWTVPRDA9', '2021-02-03', NULL, 'pvSur9hK', '', '', '0', '', NULL, 0, '0727109203', '0', 0, 'Dosen FEB', 'Rektorat', 'Rektor', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(7, '1002', 'Dr. Fathorrahman, S.E., M.M.', 'TUc5MGJHeDBhbXBzVVc0clJuTTFjMHAxTUdwRWVUWnBUMGMzU1ZKRlJIaGhUM2xJZFd4alFXeFhjejA9', '2021-03-05', NULL, 'WDre2j4f', '', '', '0', '', NULL, 0, '0720097401', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor I', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(8, '1007', 'Dr. Tin Agustina Karnawati, S.E., M.M.', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'WDsEZP6z', '', '', '0', '', NULL, 0, '0617086601', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor II', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(9, '1010', 'Muhammad Rofiq, S.T., M.T.', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '8NngJedg', '', '', '0', '', NULL, 0, '0719217902', '0', 0, 'Dosen FTD', 'Rektorat', 'Wakil Rektor III', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(10, '1003', 'Ir. Teguh Widodo,M.M.', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CEBfmq3t', '', '', '0', '', NULL, 0, '0701046504', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor IV', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(17, '1027', 'Aditya Hermawan, SE Ak, MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '0s1jxWC2', '', '', '0', '', NULL, 0, '0710108203', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(18, '3222', 'Adriani Kala\'lembang, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-03-13', NULL, 'yCGChjy9', '', '', '0', '', NULL, 0, '0720039001', '0', 0, 'Dosen FTD', 'USP', 'Kepala USP', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(19, '3202', 'Agung Basuki', 'YVRaV2NYZHBjMEpJTUM4eWVYRkNRbWhxUlZFMmVEUnlZa2RDYzFKeE9GcDJTbVZNT1RONlZ6bERNRDA9', '2015-05-01', NULL, 'kcRef8FX', 'Jl. Sawojajar XVII B/59 RT 1 RW 4 Kel. Sawojajar Kec. Kedungkandang Malang', 'Jl. Sawojajar XVII B/59 RT 1 RW 4 Kel. Sawojajar Kec. Kedungkandang Malang', '081615620035', 'Malang', '1977-03-06', 0, '', '3573030603770010', 0, 'Karyawan', 'Security', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(20, '3219', 'Agus Purnomo Sidi, S.Sos, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CxhrK5Fz', '-', '-', '0', '-', '2021-09-30', 0, '0710087902', '0', 0, 'Dosen FEB', 'LP2M', 'Sekprodi Profesional Bisnis Manajemen', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(21, '3216', 'Ahmad Nizar Yogatama, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '6Hg5HprC', '', '', '0', '', NULL, 0, '0716019002', '0', 0, 'Dosen FEB', 'LPMI', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(22, 'wildan', 'Ahmad Wildam Yanuar Ishaq, S.Kom', 'VTJaaVozbGtiRmhMU0VGeWQxaHBPRWhKZVU5U01IZFRaa3BrUVc0clUxaExkMXBJU1RkRE0yZ3daejA9', '2021-02-11', NULL, 'wildanmanis', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'UPT-SI', 'Programmer', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(23, '3228', 'Ahmadi, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9Jnf9AqQ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(24, '3095', 'Aris Prasteyo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'HTYrxqD4', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(25, '3213', 'Azwar Riza Habibi, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'jdXnSf77', '', '', '0', '', NULL, 0, '0702088902', '0', 0, 'Dosen FTD', 'USP', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(26, '1011', 'Bambang Tri Wahjo Utomo, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9xKH3rW3', '', '', '0', '', NULL, 0, '0724067203', '0', 0, 'Dosen FTD', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(27, '1012', 'Broto Poernomo Tri Prasetyo, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CW1pceQp', '', '', '0', '', NULL, 0, '0713068102', '0', 0, 'Dosen FTD', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(28, '1029', 'Budi Santoso, B.Eng', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'uu6VFA7G', '', '', '0', '', NULL, 0, '0708117301', '0', 0, 'Dosen FTD', 'HAKI', 'Kepala HAKI', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(29, '3094', 'Candra Prasetyo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'tW6eeK9B', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(30, '3227', 'Danang Arbian Sulistyo, S.ST', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'NzCc4B7W', '', '', '0', '', NULL, 0, '0708058501', '0', 0, 'Dosen FTD', 'LPMI', 'Kepala LPMI', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(31, '9803', 'Dendik Wahyu Prasongko, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'w1WXAbxY', 'DS KUNJANG KEC KUNJANG KAB KEDIRI', 'JL BENDUNGAN SUTAMI 334/1A LOWOKWARU ', '089609425027', 'KEDIRI', '1995-05-25', 0, '', '3506212405950001', 0, 'Karyawan', 'UPT-SI', 'Sistem Informasi', 'null', 'null', '', 2, '2021-03-07', 1, '2021-07-15', 'Strata 1', '', 1),
-(32, '3710', 'Devy Lelyana Ratnasari', 'U1RSTE4xVkJLMVozVjNWc1NUTnZNRVpqU1ZkMk5HWkpPRE5JYzJaUVRYSkVSVEZvTVRkMGEzaHZZejA9', '2021-01-27', NULL, 'jwTRVE2M', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Kemahasiswaan', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(33, '1053', 'Dewi Wahyuni, A.Md', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Yf3h3yT1', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(34, '3056', 'Didik Purwanto', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'xmvzC1uE', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(35, '3121', 'Dinasti Mahachakri Laksono Suryo Putri, SH', 'TVU1T2RqQlBSVWcxVTFaNWNHWnpaMHRxVFZsYVVqUnZXWE5oVGxkRFNHdFdWa2czY1VKTFoyUmxVVDA9', '2021-01-27', NULL, 'tbCEH2a7', '', '', '0', 'Kediri', '1984-10-04', 1, '', '0', 2, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(36, '3721', 'Dinda Rachman Permatasari, S.Psi', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'W6jACpX1', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Admin Rektorat', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(37, '3718', 'Doni Ssetiawan', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '19NRhNTN', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan ', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(38, '1071', 'Donny Poeryan Setyawan', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'M1nss3nj', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(39, '1006', 'Dr. Agus Rahman Alamsyah, S.Pd, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '6u6JucfM', '', '', '0', '', NULL, 0, '0708087803', '0', 0, 'Dosen FEB', 'Pasca Sarjana', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(41, '1023', 'Dr. H.M. Bukhori, SE,S.Ag, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CbuBeVw3', '', '', '0', '', NULL, 0, '0701027102', '0', 0, 'Dosen FEB', 'Pasca Sarjana', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(42, '1038', 'Dr. Ike Kusdyah R., SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'GxaxJ623', '', '', '0', '', NULL, 0, '0703117101', '0', 0, 'Dosen FEB', 'LP2M', 'Kepala LP2M', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(43, '3097', 'Dr. Theresia Pradini, SE, MM', 'Y214dGJXVkJlRlZZVlZkUmNIVjFWa05XYWxwcVVsaEtPVkYxVW5ST1dHUXdWbHB1TW1WSk1FUnliejA9', '2021-01-27', NULL, '7Ym93uUS', '', '', '0', '', NULL, 0, '0519097202', '0', 0, 'Dosen FEB', 'Pasca Sarjana', 'Kaprodi S2 MM', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(45, '1036', 'Dr. Widi Dewi Ruspitasari, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Hs1Uz2e3', '', '', '0', '', NULL, 0, '0703088103', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(46, '1001', 'Dr. Yunus Handoko, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'r40ZkMkq', '', '', '0', '', NULL, 0, '0728126904', '0', 0, 'Dosen FEB', 'Pasca Sarjana', 'Direktur Pascasarjana', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(47, '1056', 'Dwi Anggih Yosepta, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'pfmZsSY7', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(48, '1093', 'Dwi Rudijanto', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '0YY6tsQ2', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(49, '3711', 'El Salwa Sabila', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'U5XPaEcK', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'MDS', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(50, '3031', 'Endri Wibowo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KHRwK3PY', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(51, '3113', 'RISTI', 'YVdoMk1razNOMlJUV25WdWVtWjZaak5FYjNSYU1tVkJZMWwyWVdacGJWcEpkSEpNYzJoRGNHaFNiejA9', '2021-01-27', NULL, '3528DfZf', '', '', '85755111905', 'Malang', '1991-12-25', 1, '', '0', 0, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(52, '1068', 'Ervina Yuli Estutik, SE', 'TnpoMWFHdHBaRVpFTUdoWFRqTnVUVkZ6TldFeGJUSjFjVFZMVkVRMVlVdGtlV1JrUzBsbU9FZFZNRDA9', '2021-01-27', NULL, 'u0b8MNWR', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Kemahasiswaan', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(53, '3099', 'Fabianus Vesalius Lawalu, S.Pt', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'B37fKKvX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(54, '3080', 'Fadhli Almu Iini Ahda, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '0ej3M0ZZ', '', '', '0', '', NULL, 0, '0716088603', '0', 0, 'Dosen FTD', 'LPMI', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(55, '4012', 'Fadilla Cahnyaningtyas, SE, MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'PKvj48QA', '', '', '0', '', NULL, 0, '0723108801', '0', 0, 'Dosen FEB', 'Prodi', 'Sekprodi Akuntansi', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(56, '3209', 'Faldi Hendrawam, S.Pd, MA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '7qz6sNxX', '', '', '0', '', NULL, 0, '0726038704', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Desain Komunikasi Visual', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(57, '3072', 'Feri Slamet Budiyono', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Z84EH3By', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(58, '4005', 'Fransiska Sisilia Mukti, ST, MT', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vcpR4ZDY', '', '', '0', '', NULL, 0, '0728099004', '0', 0, 'Dosen FTD', 'UPT-NET', 'Kabag. UPT-Net', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(59, '1046', 'H. Zainul Muchlas, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '86Rx2ahc', '', '', '0', '', NULL, 0, '0729095501', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(60, '1094', 'Handoko', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Wu4subWB', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', 'Karyawan Umum', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(61, '3224', 'Handry Rochmad Dwi Happy, S.Sn, M.Sn', 'VTNRMFYwdEVhRFJ5VVVJNWJXMWFNMUZTYTBGcU0wbFdVVU5oUmpsMGJGcFJLelZLV2tselRWVnlORDA9', '2021-01-27', NULL, 'kd4ACtyk', '', '', '0', '', NULL, 0, '0725088706', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Desain Komunikasi Visual', '', '', 'HAN01', NULL, NULL, NULL, NULL, '', '', 1),
-(62, '1078', 'Hariyono M Irsyad', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'hJgf43Bq', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(63, '1114', 'Helmy Sundoro', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'XH2pmpRR', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(64, '3096', 'I Gusti Ngurah Ketut Atmajaya', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9hRjRUxt', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Teknisi', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(65, '3034', 'Imam Khambali', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KvPYpK53', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(66, '3720', 'Indra Gunawan', 'Y0dGemMzZHZjbVE9', '2021-03-12', NULL, 'mDd4ZacM', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'MDS', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(67, '3203', 'Iqbal Khodami', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '4mezs54P', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(68, '1013', 'Jaenal Arifin, S.Kom, MM, M.Kom .', 'VEdwRFNuWXhObmhHVGt4WFdtOWtURU5UUVdGeE5rTXJTRUpXVFhWaFNtbGhUalU0T1RaaFRXWnJNRDA9', '2021-01-27', NULL, '4Jp5EEUp', 'keperluan test', 'keperluan test', '0', 'keperluan test', '2021-07-23', 0, '0709117502', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Teknik Informatika', 'Teknik Informatika', 'Full', 'JAE01', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(69, '3722', 'Jhonathan Afrizal', 'YWpkNk9HWkdLMDVKVTJsd2NuWktURlJHY0VwWU5XMW1NRlJHYXpSWk5VZG5hamg0UzNaek1FcEpSVDA9', '2020-08-01', NULL, '6ecFaxM6', 'Bali', 'Malang', '83111038848', 'Probolinggo', '2001-06-16', 0, '', '3573041606010011', 1, 'Karyawan', 'UPT-SI', 'Programmer', '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(70, '3719', 'Joko Purnomo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Wuf49QXk', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(71, '3214', 'Justita Dura, SE, M.Ak', 'WmpSa01tVlZXalF3T1hVd2VFWnRUVXRPWkZObWEwRlFRMHBzV205eU9ITk9lRlJ3VGtseVlUZzNiejA9', '2021-01-27', NULL, '4B2pc9ps', '', '', '0', '', NULL, 0, '0703038701', '0', 0, 'Dosen FEB', 'Prodi', 'Kaprodi Akuntansi', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(72, '1091', 'Kuncoro', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'wCZrN3gB', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(73, '3715', 'Lailla Dwi Riski', 'VkVjck9FZHNVbGwyYTBvemR6SjFjVTV2ZFVkR1QzSXZVbmRvYm5kcU5YUktjbXhYUkcxYVIyd3JORDA9', '2021-01-27', NULL, 'CDrWraT8', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(74, '3223', 'Lia Farokhah, S.Kom, M.Eng', 'UlU5dVZWTkVja040YldwbGRVNU1aeko1YzFsalprZzBlVmc0WkhGMFluZFpaamg1SzBWMlNXcG9PRDA9', '2021-02-18', NULL, '2nzQ8w2M', '', '', '0', '', NULL, 0, '0710089002', '0', 0, 'Dosen FTD', 'LPKD', 'Kepala LPKD', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(75, '3221', 'Lilis Widyanti, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, ' jPm87dwP', '', '', '0', '', NULL, 0, '0712068904', '0', 0, 'Dosen FTD', 'LP2M', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(76, '3205', 'Lukman Hakim, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'bacduH8T', '', '', '0', '', NULL, 0, '0712068904', '0', 0, 'Dosen FTD', 'Kemahasiswaan', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(77, '3067', 'Lussia Mariesti Andryani, SE, MM', 'VWpJeFVrODJZMmgzWkUxYVkyVnZjREp2YVRWRmQyTklSVE51UlVJeGNXRkhjVlU0TDJoR2NVaHlPRDA9', '2021-01-27', NULL, 'HDTz0cJb', '-', '-', '0', '-', '2021-09-30', 0, '0711038801', '0', 0, 'Dosen FEB', 'Prodi', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(78, '4018', 'M. Zamroni', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vR0qPCSy', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(79, '3069', 'Machrus Arifianto, SS', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(80, '1049', 'Magdalena Retno Saraswati, S.TP', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(81, '3407', 'Mahendra Eko Priyantono', 'UlhOU2NXWmpObFZXZUdObmVtdEdVaTgyS3psWFYyVkRURkZGT1dNeGJGa3paRWwyV0ZOSVFXbzBiejA9', '2021-01-27', NULL, '0vC2TyUX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(82, '3409', 'Mahindra Mandala Putra, SH', 'T1UwMVkyWkdiVGxtUjA1Q05IQTNNMU5FY1VOdFVYWjBUM05VT1dWRGRWSldWWFJrTVVSME9FUTBPRDA9', '2015-06-01', NULL, '52YvGtSH', 'Jl pringgodani I Klodran, Colomadu, Kab. Karanganyar, Jawa Tengah', 'Jl. Ikan Tombro Timur, Perum Istana cakalang Kav.42, Polowijwn, Blimbing , Kota Malang, Jawa Timur', '081326668815', 'Trenggalek', '1993-03-03', 0, '', '3313120303930001', 0, 'Karyawan', 'Sarpras', 'Kepala Sarpras/Kepala HRD', NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'Strata 1', '', 1),
-(83, '9015', 'Mariana Puspa Dewi, SE, M.I.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vsHA6arZ', '', '', '0', '', NULL, 0, '0709107502', '0', 0, 'Dosen FEB', 'LP2M', 'Jurnal', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(84, '3124', 'Mega Mirasaputri Cahyanti, SE., MM., M.Sc', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '4wZZwh4k', '', '', '0', '', NULL, 0, '0715069001', '0', 0, 'Dosen FEB', 'INBIS', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(85, '1070', 'Moh. Zainuddin, S.Si, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'u2eFzkw8', '', '', '0', '', NULL, 0, '0725077105', '0', 0, 'Dosen FTD', 'HAKI', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(86, '3226', 'Mufidatul Islamiyah, S.Si, M.T', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'tZk8HMsS', '', '', '0', '', NULL, 0, '0710108604', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Sistem Komputer', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(87, '4019', 'Mulyaningtyas, SE, M.Ak', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'X1mpEb83', '', '', '0', '', NULL, 0, '0727077405', '0', 0, 'Dosen FEB', 'LPKD', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(88, '1028', 'Murtianingsih, SE, MM', 'U20xU1ZGbEJSV3BrWTFwUVJIbHRUVTFSY0ZWck0xZ3ZNRkIwVlRGRVkydFBla2x4WkRSS1pqSkVVVDA9', '2021-01-27', NULL, '3w9kQxn4', '', '', '0', '', NULL, 0, '0712087803', '0', 0, 'Dosen FEB', 'Dekan', 'Dekan Fakultas Ekonomi Bisnis', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(89, '3402', 'Niken Saktya Wulandari, SH', 'TjJ0NFZraFVNamhuWVhjclZsZDJibk5WU25oT0t6UXpjVVYzVG1sWGFEVmhNbkF5TlVjdlpXVnBSVDA9', '2021-01-27', NULL, '0rpVXZk5', '', '', '08223383276', 'Malang', '1993-10-01', 1, '', '0', 0, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(90, '1058', 'Ninik Kustiari, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '3x87ZkbK', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAU', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(91, '4004', 'Novan Styawan, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'JVfrk53C', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(92, '4021', 'Novi Tiyasari, SE', 'WmpSbFYySXJVRFl2ZFdrck5XUTRhbEZGVTBwSGIwMUJjVlJsY1ZwcVZYSmhkMlJhTlZOMlRHRXdNRDA9', '2017-09-14', NULL, '8dBfjE4l', 'Jl. Sukun Gempol No 27 RT 03 RW 09 Malang', 'Jl. Candi Badut No 24 RT 02 RW 02 Malang', '081333990114', 'Malang', '1990-11-04', 1, '', '3573054411900004', 0, 'Karyawan', 'Admin Rektorat', '', NULL, '', '', 2, '1001-01-01', 0, '1001-01-01', 'Strata 1', '1618902112.jpg', 1),
-(93, '1113', 'Nur Elif, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'o2qQmCaw', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(94, '1045', 'Nur Lailatul Aqromi, SS, MA', 'ZDJkU1VrNXJWazQwV0Vaa2JIaEhNMDk1VUZOdWFWcENUR2dyWVM5R2FGRkpSMUJwT0ZoVlpXTldZejA9', '2021-02-18', NULL, '9tr2QBEN', '', '', '0', '', NULL, 0, '0716068801', '0', 0, 'Dosen FTD', 'KUI', 'Kepala KUI', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(95, '4016', 'Patricia Restanancy, SP', 'YWtabFdYaEZTMkpoWVhCUk5EUkhTVE5aVFVGTk1HVmlSRGhRY21KblEwNWpTVXBuU1VObGRrSjVORDA9', '2021-02-27', NULL, 'nIsy9Uw8', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Admin Rektorat', 'Admin Rektorat', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 0),
-(96, '3084', 'Pipit Rosita Andarsari, SE., MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'ukLl1Of3', '', '', '0', '', NULL, 0, '0718017802', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(97, '3112', 'Puji Subekti, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'NP8SJRYX', '', '', '0', '', NULL, 0, '0708028801', '0', 0, 'Dosen FTD', 'INBIS', 'Kepala Inkubator', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(98, '3403', 'Rakhmawati Indriani, S.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Xz4do8VJ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(99, '3714', 'Retno Cindy Rofiqoh, S.IP', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'rUn6WzBE', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan ', 'Pustakawan', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(100, '3105', 'Retno Handayani, A.Md', 'VWpSaVEzWlljRWR1YzFONGFEWkhZWFpvWlRWSFJEZHhNbUpzY3paa05WTjBiMVpxYWxaVmNqQlJRVDA9', '2021-01-27', NULL, 'OgE6cipY', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(101, '1039', 'Rifki Hanif, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KT5Ff7IG', '-', '-', '0', '-', '2021-09-30', 0, '0718108301', '0', 0, 'Dosen FEB', 'Prodi', 'Kaprodi Profesional Bisnis Manajemen', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(102, '1030', 'Rina Dewi Indahasari S.Kom, M.Kom', 'UmpONlUyeGlibE51UVU5RlpGSXlZMlJCVGs4NVFWVjRiMHhaWlRGd2QweEhOM0ZFV1doMU1qaHFhejA9', '2021-01-27', NULL, 'lMhvmTcz', '', '', '0', '', NULL, 0, '0730128201', '0', 0, 'Dosen FTD', 'Dekan', 'Dekan Fakultas Teknologi & Desain', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(103, '1100', 'Rudianto', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vIYmsCON', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(104, '4023', 'Sabrina Ayu Primasti, S.AP', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Qc1mCvlP', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Pustakawan', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(105, '1033', 'Samsul Arifin, S.ST, M.Kom', 'ZUV0bGVtSXhPVlUzY0ZNelRXVjBPRGhUUTNwRFdVZElXV0pIVmpncmJGZHZkakp3UlhaM1VWSmhZejA9', '2021-01-27', NULL, 'v9JTq00K', '', '', '0', '', NULL, 0, '0711108601', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Sistem Komputer', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(106, '1059', 'Satria Arik Cahyono, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '7RDT5gv4', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(107, '3090', 'Setyorini, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'j35GVDFS', '', '', '0', '', NULL, 0, '0723048704', '0', 0, 'Dosen FTD', 'Career Center', 'Kepala Pusat Karir', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(108, '3712', 'Shaldy Yuka N', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'pd0Ttxcy', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'MDS', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(109, '1042', 'Siti Nurul Afiyah, S.Si, M.Si', 'VW10R2RDOHdWbkJIUldwdVVWSkdhMFJzVm5OVWJYbGhUbVZQYTBjNWRXdERlV050WWtnMU9URnVSVDA9', '2021-02-03', '2021-01-27', 'acXYr01V', '', '', '0', '', NULL, 0, '0710118801', '0', 0, 'Dosen FTD', 'KUI', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(110, '9804', 'Slamet Efendi', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '8QkBzARQ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Driver', 'Driver', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(111, '3120', 'Sri Anggraini Kusuma Dewi, SH, M.Hum', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '80A4fhDw', '', '', '0', '', NULL, 0, '0723097504', '0', 0, 'Dosen FTD', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(112, '9801', 'Sri Puji Rahayu', 'YW5OSFpIUkRkVmhhZUdNMlduaElPSGRuVG1sV2VHODVXV0V3TlhOMFlpdFVPR0owVGxWSVFYcE5UVDA9', '2018-01-08', '2021-01-27', 'e9QUrFyg', 'Ds. Ngasem RT 4 RW 1 Kel. Ngasem Kec. Ngasem Kab. Kediri', 'Jl. Bendungan Jatiluhur No 24 B Kec. Lowokwaru Kota Malang', '085881894947', 'Kediri', '1998-11-01', 1, '', '3506255101980002', 1, 'Karyawan', 'Admin Lembaga', '', NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(113, '1111', 'Suasdi, ST', 'ZFhkc1pXZHhaMlpYTVV0MlZVMU5Xa040TjNSSldIRkpiRTVOWVROQ1NsWjJVM0ZNTkZVeVpFWkRZejA9', '2021-02-11', '2021-01-27', 'E4wDhY7g', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Teknisi', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(114, '3111', 'Suastika Yulia Riska, S.Pd, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'FwpF6ewM', '', '', '0', '', NULL, 0, '0712079001', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Teknik Informatika', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(115, '1099', 'Sucipto', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'Eqbye8dk', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Umum', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(116, '3061', 'Sumaningdyahs Woro Pembayun, SE', 'WXpJd1JURTRNV1YyTTJaTk9FRkJXSGRpYW0xbGREZERaM2RZTkU0eVRtbE9iemRsYVhFcmVFUlhVVDA9', '2021-01-27', '2021-01-27', 'RGxKgA7K', '', '', '81805128389', 'Malang', '1989-11-20', 1, '', '0', 0, 'Karyawan', 'Front Office', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(117, '1004', 'Sunu Jatmika, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'nA2jM3Qv', '', '', '0', '', NULL, 0, '0721127002', '0', 0, 'Dosen FTD', 'TIP', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(118, '3408', 'Sutrisno', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'j59zVy2Y', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Driver', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(119, '3110', 'Syaiful Bahri, SE., MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '2MwKt1WX', '', '', '0', '', NULL, 0, '0718027801', '0', 0, 'Dosen FEB', 'Dekan', 'Wakil Dekan FEB', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(120, '3723', 'Taricha Alifya Januarni', 'UlVSNVlrSnRSbkZ3U0ZCMVRtMVBhREZRVlM5cWFrZERTM1ZKZEhadmQxQktNekpKTHpSME1XSnhZejA9', '2020-08-01', '1001-01-01', '97XhKn8X', 'Jl.Irian no 46A Kota Blitar', '', '089603502912', 'Blitar', '2001-01-02', 1, '', '3572014201010005', 1, 'Karyawan', 'UPT-SI', 'Programmer', NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(121, '1124', 'Tissa Fajar Wienjaya, S.Kom', 'Wld0a1dVdHpUbXBuTkV4NVNDdEtOSGxCWmpkaWVIUmFXWFZuUzFaaE5HNURkVmdyYW5KeUwzTnJUVDA9', '2021-01-27', '2021-01-27', '2zeBDcV3', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Admin Fakultas', 'Admin FEB', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(122, '1009', 'Titania Dwi Andini, S.Kom, M.Kom', 'ZFZsR01tRnBiRXhNYzNJMmVFaENReXR5YTNSNkwwdHNhWGN3YjBwNlExSndjblJCZFM4MFppdHBjejA9', '2021-01-27', '1001-01-01', '2QEPXJhd', '-', '-', '0', '-', '2021-08-04', 1, '0718047701', '0', 0, 'Dosen FTD', 'UPT-SI', 'KaBag.Produksi', 'Teknik Informatika', 'null', 'TIT01', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(123, '3081', 'Tri Wahyuni, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'RbQd4HxK', '', '', '0', '', NULL, 0, '0726018303', '0', 0, 'Dosen FTD', 'Konselor', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(124, '4020', 'Tri Nanda Sagita Rachma, SP', 'T0ZabFpsbGhjMHhLWWs1WGIyTXZiMVJ3YTBkdVZrZDRPRXBZV1ZVck5VWk1UREJHTjBnMFpHdzBkejA9', '2017-09-14', '2021-01-27', 'x6ffP7XN', 'Dsn Urung-urung RT 17 RW 2 Kel. Jatijejer Kec. Trawas Kab. Mojokerto', 'Dsn Urung-urung RT 17 RW 2 Kel. Jatijejer Kec. Trawas Kab. Mojokerto', '085755101074', 'Malang', '1993-12-16', 1, '', '3507185612930001', 0, 'Karyawan', 'Pasca Sarjana', 'Admin', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(125, '1079', 'Umar Sony, S.Sos', 'Y0dGemMzZHZjbVE9', '2006-09-01', '2021-01-27', 'yQZbQX56', 'Jl. Simpang Setaman I/24 RT 6 RW 15 Kel. Lowokwaru Kec. Lowokwaru Malang', 'Jl. Simpang Setaman I/24 RT 6 RW 15 Kel. Lowokwaru Kec. Lowokwaru Malang', '081904682718', 'Malang', '1975-05-08', 0, '', '3573050805750003', 0, 'Karyawan', 'Security', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(126, '1057', 'Viryal Afaf Vairuz Baha, S.Kom', 'Y0dGemMzZHZjbVE9', '2010-11-16', NULL, 'Vi012859au', 'Jl. Raya RT 9 RW 2 Kel. Sempalwadak Kec. Bululawang Malang', 'Jl. Raya RT 9 RW 2 Kel. Sempalwadak Kec. Bululawang Malang', '081939893966', 'Mojokerto', '1989-04-24', 0, '', '3516092404890001', 0, 'Karyawan', 'BAA', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(127, '1043', 'Vivi Aida Fitria, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'xXEAN88g', '', '', '0', '', NULL, 0, '0712068602', '0', 0, 'Dosen FTD', 'Dekan', 'Wakil Dekan FTD', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(128, '3215', 'Vivia Maya Rafica, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'WcX5K8GK', '', '', '0', '', NULL, 0, '0730078701', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(130, '3401', 'Wahyudi Nurul Aziz', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'nFUPh1FS', 'Jl. Dusun Karangduren RT 4 RW 2 Kel. Karangduren Kec. Pakisaji Malang', 'Jl. Dusun Karangduren RT 4 RW 2 Kel. Karangduren Kec. Pakisaji Malang', '082233699192', 'Malang', '1982-07-19', 0, '', '3573021907820004', 0, 'Karyawan', 'MDS', 'Staf Design', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(131, '3126', 'Wahyudi Tri Susilo', 'Y0dGemMzZHZjbVE9', '2015-04-01', NULL, '3MrAcWaG', 'Jl. Sumberayu 42 RT 27 RW 4 Kel. Karangkates Kec. Sumberpucung Malang', 'Jl. Sumberayu 42 RT 27 RW 4 Kel. Karangkates Kec. Sumberpucung Malang', '089631666961', 'Malang', '1984-08-22', 0, '', '3573012208840003', 0, 'Karyawan', 'Security', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(132, '1015', 'Warna Agung Cahyono, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '8VFA5JjU', '', '', '0', '', NULL, 0, '0726108006', '0', 0, 'Dosen FTD', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(133, '3211', 'Widya Dewi Anjaningrum, S.Si, MM', 'Y0dGemMzZHZjbVE9', '2021-03-12', NULL, 'FRhtmQ5R', 'Tempat', '', '0', '', NULL, 0, '0710068206', '0', 0, 'Dosen FTD', 'ARC', 'Ketua ARC', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(134, '3114', 'Widya Adhariyanti Rahayu, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Q5u8VHBS', '', '', '0', '', NULL, 0, '0724078801', '0', 0, 'Dosen FTD', 'LP2M', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(135, '3713', 'Winda Nur Maida, SE', 'Y0dGemMzZHZjbVE9', '2019-08-01', NULL, 'jgEWf8S1', 'Pondok Trosobo Indah B-15 RT 1 RW 8 Kel. Trosobo Kec. Taman Kab. Sidoarjo', 'Pondok Trosobo Indah B-15 RT 1 RW 8 Kel. Trosobo Kec. Taman Kab. Sidoarjo', '081235870670', 'Malang', '1990-04-09', 1, '', '3515134904900003', 1, 'Karyawan', 'Admin Fakultas', 'Staf BAA', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(136, '3411', 'Yohanes Nugraha, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'AXhxF9HX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(137, '1062', 'Yosepthin Tri Puriyanti, A.Md', 'YlV0MlZrRnVXa1ZHVlM5a05scEJTVVV6YjBOUU5tMUpaVlZCTDFGRlZuRklkRkI2UVV0UmJFVjVZejA9', '2011-10-01', NULL, 'CQz9V1va', 'Jl. Ikan Nus II/17 Kav 12 RT 8 RW 2 Kel. Tunjungsekar Kec. Lowokwaru Malang', 'Perum Bumi Mondoroko Raya Blok AK 11', '087859898852', 'Malang', '1988-02-15', 1, '', '3573015502880001', 0, 'Karyawan', 'Admin FTD', '', NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'Diploma 3', '', 1),
-(138, '1096', 'Yudianto', 'Y0dGemMzZHZjbVE9', '2008-08-01', NULL, 'nP3fwZra', 'Karangrejo Selatan RT 13 RW 9 Kel. Purworejo Kec. Donomulyo Malang', 'Jl. Borobudur No. 21 Malang', '081553475411', 'Blitar', '1987-02-07', 0, '', '3505180702870001', 0, 'Karyawan', 'Marketing', '', NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
-(139, '3207', 'Yudistira Arya Sapoetra, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'TE1nvuYj', '', '', '0', '', NULL, 0, '0704088601', '0', 0, 'Dosen FTD', 'LPMI', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(140, '4013', 'Abdul Aziz Muslim, S.Psi, M.Psi', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'DA0SJ4ct', '', '', '0', '', NULL, 0, '0709108904', '0', 0, 'Dosen FEB', 'Konselor', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(141, '9807', 'Abd Hadi, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-03-10', NULL, '2u4PwTsg', '', '', '0', '', NULL, 0, '0727078810', '0', 0, 'Dosen FTD', 'LP2M', 'Pengelola JITIKA', '', '', '', NULL, NULL, NULL, NULL, '', '', 1),
-(142, '9806', 'Abdulloh Eizzi Irsyada, S.Kom, M.Ds', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '2qrXvgWH', '', '', '0', '', NULL, 0, '0703069102', '0', 0, 'Dosen FTD', 'INBIS', 'Pengelola JESKOV', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(143, '3098', 'Achmad Isman', 'Y0dGemMzZHZjbVE9', '2014-07-15', NULL, 'xcPvN2ZH', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', '082139889111', 'Malang', '1985-10-17', 0, '', '3507251710850003', 0, 'Karyawan', 'Security', '', NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
-(144, '1016', 'Achmad Noercholis, ST, MT', 'V1U1bWVTdGFSbVZyV1hkQmMxWlNNV2h5V0ZZeVdVdFJZV3N5TkhScGMyTjVMMUVyVjFaUlNERmpTVDA9', '2021-01-27', NULL, '83PK58bU', '', '', '0', '', NULL, 0, '0707058303', '0', 0, 'Dosen FTD', 'UPT-SI', 'KaBag.Research and Development', NULL, '', 'ACH01', NULL, NULL, NULL, NULL, NULL, '', 1),
-(145, '3728', 'Wa Ode Irma Sari, S.Ak., M.SA', '', '2021-01-27', NULL, '', '', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FEB', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(147, '3732', 'Dzikrullah Akbar', 'WnpseWFVRXZOMGwwVVVSTGVWVlRlV3hUUld4Q2VrcEZaMjAxU3psNE1uQllXVUZoTW5wR2NGRXJaejA9', '2020-08-01', NULL, '45Feb2145', 'Jl. Pangeran Diponegoro Gang 1 No 12 Tamanan', 'malang', '08974680033', 'Sidoarjo', '1999-11-27', 0, '', '0', 1, 'Karyawan', 'UPT-SI', 'web support', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '1633661873.jpg', 1),
-(149, '3712', 'Syaldhy Yuka Novaldy', 'TkRoTllYSXlNVFE0', '2019-08-01', '2021-01-27', '48Mar2148', 'Jl. Trunojoyo GG III C RT 4 RW 2 Kel. Kolor Kec. Sumenep Kab. Sumenep', 'Jl. Trunojoyo GG III C RT 4 RW 2 Kel. Kolor Kec. Sumenep Kab. Sumenep', '082338483561', 'Sumenep', '1995-11-01', 0, '', '3529010111950001', 1, 'Karyawan', 'MDS', '', NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(150, '3725', 'R.B Hendy Try Pranegara', 'TVRGTllYSXlNVEV4', '2020-10-01', NULL, '11Mar2111', 'Perum Puri Jepun Permai I no. 6 RT04 RW05, Kel. Jepun, Kec. Tulungagung', 'Perumahan Graha Falisha No.1 Jl. Terusan Setia Budi Kel. Sumbersuko Kec. Tajinan Kab. Malang', '085258724910', 'Tulungagung', '1993-09-19', 0, '', '3504011909930000', 1, 'Karyawan', 'Digital Learning', '', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(152, '3727', 'Ditya Wardana, S.ST, M.S.A', 'TWpsTllYSXlNVEk1', '2021-03-12', NULL, '29Mar2129', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FTD', 'Career Center', '', 'Sistem Komputer', '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(153, '3726', 'Layly Dwi Rohmatunnisa', 'TURWTllYSXlNVEEx', '2021-03-12', NULL, '05Mar2105', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FEB', 'Dosen Akuntansi', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(154, 'pkl', 'pkl', 'ZW10UkwzbHBaemRSVWpsSkwxSndjR2szYVdwSFNHaGxjWGsxVFZkalUxUkZkMUI2Um1wRU5WWXZWVDA9', '2021-03-16', NULL, '31Mar2131', 'Tempat', 'Tempat', '1234', 'Malang', '2021-04-15', 0, '', '1234', 1, 'Magang', '', '', NULL, '', '', 2, '2021-04-15', 2, '2021-04-15', 'Strata 1', '1618372397.jpg', 1),
-(218, 'humas@asia.ac.id', 'mds', 'ZWtkeVdHRklURkpKTUVoQk5rTndObGhwU0U1TVZEUkxjbGd4ZHpoT01WUjRUR1p2UzJwbkt6ZENNRDA9', '2021-04-21', NULL, '29Apr2129', 'lantai 2', 'lantai 2', '0', 'malang', '2021-04-21', 0, '', '0', 1, 'Karyawan', 'MDS', '', NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(219, '3729', 'Hironimus Hari Kurniawan, SE, MM', 'TkRKS2RXNHlNVFF5', '2021-03-01', NULL, '42Jun2142', 'Jl. Danau Matana I/F2 B-6 RT.009/RW.012 Kel. Sawojajar Kec. Kedungkandang Kota Malang', 'Jl. Danau Matana I/F2 B-6 RT.009/RW.012 Kel. Sawojajar Kec. Kedungkandang Kota Malang', '', 'Malang', '1987-09-30', 0, '0730098705', '3573013009870001', 0, 'Dosen FEB', '', '', NULL, NULL, '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(235, '3731', 'Nicholaus Wayong Kabelen, S.Sn., M.Sn', 'TkRoQmRXY3lNVFE0', '2021-08-01', NULL, '48Aug2148', '1', '1', '1', '1', '2021-08-24', 0, '', '1', 0, 'Dosen FTD', '', 'Dosen DKV', '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(236, '9809', 'Ratna Putri Nilasari,SE', 'WkRGNlMxSllUMlp0VDNoaFpYVjZWMUF6VFd0dFkyOXZPVVIwTW1FcmN6QldaUzh6UldOdVVHWXhiejA9', '2017-02-25', NULL, '27Aug2127', 'Jl. Kutisari Indah Utara II/86 RT 04 RW 06 Kel. Kutisari Kec. Tenggilis Mejoyo Surabaya', 'Jl. danau Bratan Timur VI C20', '081231557737', 'Madiun', '1988-04-05', 1, '', '3520114504880001', 0, 'Sam Design', '', 'Staff Rektorat', '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(237, '3733', 'Sindy Nur Fitriyah', 'YVRBNFVVUmlaWEpZSzJOUFJrRnBjRTl3VEN0UGVtNWplalF5WkdncmNHVlpMMkpLZWpSdWRrMUNSVDA9', '2021-08-01', NULL, '23Sep2123', 'Ds. Kapuran Kec. Wonosari Kab. Bondowoso', 'Malang', '085729749003', 'Bondowoso', '1999-01-30', 1, '', '3511147001990002', 1, 'Karyawan', '', 'Admin Pascasarjana', '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
-(238, '3734', 'Reza Ramadhania, S.Sos', 'V0RRMFNWbDNSV2t5ZEVWd1ZHOHZNRkpaVWxaR1RtTkNWa3BsWTJwQk9IUkxXbVZGYTJZNVdFWTNSVDA9', '2021-08-01', NULL, '32Sep2132', '--', 'Perumahan Taman Indah Soekarno Hatta No 85 Malang', '085655807520', 'Sidoarjo', '1998-01-16', 1, '', '0', 1, 'Karyawan', 'Rektorat', 'Staff Rektorat', 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(242, '3746', 'Ida Nuryana, S.E., M.M.', 'TURGUFkzUXlNVEF4', '2021-10-01', NULL, '01Oct2101', 'Jl. Urea No 4 Rt08 Rw 20 Kelurahan Purwantoro Kecamatan Blimbing Malang', 'Jl. Urea No 4 Rt08 Rw 20 Kelurahan Purwantoro Kecamatan Blimbing Malang', '0', 'Malang', '1963-05-30', 1, '0730056303', '0', 0, 'Dosen FEB', '', 'Dosen', 'Manajemen', 'Semi', '0', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(243, '3745', 'YOGI WIDYA SAKA WARSAA, S.Sn, M.Sn', 'TURoUFkzUXlNVEE0', '2021-10-01', NULL, '08Oct2108', 'Jl. Sawojajar GAng Vb No 46 Malang', 'Jl. Sawojajar GAng Vb No 46 Malang', '081222505059', 'Pasuruan', '1993-03-30', 0, '00', '0', 1, 'Dosen FTD', '', 'Dosen', 'DKV', 'Semi', '0', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
-(244, 'Tengky Bagoes', 'Tengky Bagoes', 'Y0ZoUU5XbENjWFJaYTJaVWQzZHNja3h3Y25sRkwxTXJRelZuVDJob01ERndWMGM0U0VvM1FtVTBaejA9', NULL, NULL, 'NTdOb3YyMTU3', 'j', 'j', '', 'Blitar', '2021-11-18', 0, '0', '0', 0, 'Dosen LB', '', '', '', '', 'TNK01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
-(245, 'elfa', 'elfa', 'TkU0MFMzRkdRbVpsY1hWeWRsaEhWMkoyZHpsMVpFMVZWbGcwYUVKWGJXWlJTVmxZWjJ0aU5DdFVPRDA9', NULL, NULL, 'MjZOb3YyMTI2', 'a', 'a', '', 'Blitar', '2021-11-18', 1, '0', '0', 0, 'Dosen LB', '', '', '', '', 'ELF01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
-(246, 'testStaff', 'tesStaff', 'Y2k5WVJsZzRPREZpVFdWQ2JFSnlPRTV0YXpOcWREVk5VbnBpYkZkVFEwSmxXbVV5YldkcGRXOXVTVDA9', '2021-11-25', NULL, '18Nov2118', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '', '123456789', 1, 'Karyawan', 'UPT-SI', 'test', '', '', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
-(247, 'tesDosen', 'tesDosen', 'YUc1eGMyaEdUbTlXUmtnMFJTczJVMmxMYWpka01HWmFUMGRTYjBOc1owTm9ibUptVGtWblJVNUxUVDA9', '2021-11-25', NULL, '06Nov2106', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '0727078810', '123456789', 1, 'Dosen FTD', '', '', 'Teknik Informatika', 'Full', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1);
+INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_masuk`, `tgl_keluar`, `user_pass_def`, `alamat`, `alamat_sekarang`, `no_hp`, `tempat`, `tanggal_lahir`, `jenis_kelamin`, `nidn`, `no_ktp`, `status_nikah`, `posisi1`, `posisi2`, `jabatan`, `koordinator`, `jurusan_dosen`, `status_dosen`, `kode_dosen`, `bpjs_kesehatan`, `masa_aktif_kesehatan`, `bpjs_ketenagakerjaan`, `masa_aktif_ketenagakerjaan`, `jenjang`, `foto`, `id_hidden`) VALUES
+(1, 'admin', 'UPTSI', 'U0ZCTU1tUjVORkI1VTNsME16bGFWbUpMT0U1RVdrTktNRmt4V0dZNWJtWmhieTg1U0ZwbmJWbEVNRDA9', '2021-01-27', NULL, '4514expert', '', '', '12345678901', '', NULL, 0, '00112313', '0', 0, 'Karyawan', NULL, 'Programmer', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(2, 'usertester', 'user haiyo', 'TTNselExZ3hZbGxaY0VSTE1rZGpNU3MyY1ZWT1NFRXpUWGxxY0VSd2NrMWFNak5qT1RNemVUTnVRVDA9', '2021-02-15', NULL, '4514expert', 'kota Malang', 'malang', '1234', 'Malang 4', NULL, 1, '012', '1234', 0, 'Dosen LB', 'UPT-SI s', 'staff ', 0, 'p', 'p', 'KDUser01p', 0, '2021-01-15', 1, '2021-04-14', 'S1', '1618551389.jpg', 1),
+(5, 'adminrektoratasia', 'adminrektoratasia', 'WmxNdmFTdFdOelUyWld4NE5XTlNMelpaVjNsSllWZG1TM0Z0UVUxS2MwaEVjbkptUW5Vd1QydGthejA9', '2021-01-27', NULL, 'rektorat4514', '', '', '0', '', NULL, 0, '0032312312', '0', 0, 'Karyawan', 'Admin Rektorat', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(6, '1000', 'Risa Santoso, B.A, M. Ed', 'Ym01cFFYQjRZMFI1ZEhCRVEyMXVLMFUwZGtkQ05rUmFaVmszUXk5amVXSlJjazFyZGtFNWJHVlBRVDA9', '2021-02-03', NULL, 'pvSur9hK', '', '', '0', '', NULL, 0, '0727109203', '0', 0, 'Dosen FEB', 'Rektorat', 'Rektor', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(7, '1002', 'Dr. Fathorrahman, S.E., M.M.', 'TUc5MGJHeDBhbXBzVVc0clJuTTFjMHAxTUdwRWVUWnBUMGMzU1ZKRlJIaGhUM2xJZFd4alFXeFhjejA9', '2021-03-05', NULL, 'WDre2j4f', '', '', '0', '', NULL, 0, '0720097401', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor I', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(8, '1007', 'Dr. Tin Agustina Karnawati, S.E., M.M.', 'VVhsalpUQTJWQzlPY0d4dU5reFpSSFpyZVRsUlkyRnFiRGRyYURCcWMwWnVZMUYxVlZSU0wxZEtiejA9', '2021-01-27', NULL, 'WDsEZP6z', '', '', '0', '', NULL, 0, '0617086601', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor II', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(9, '1010', 'Muhammad Rofiq, S.T., M.T.', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '8NngJedg', '', '', '0', '', NULL, 0, '0719217902', '0', 0, 'Dosen FTD', 'Rektorat', 'Wakil Rektor III', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(10, '1003', 'Ir. Teguh Widodo,M.M.', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CEBfmq3t', '', '', '0', '', NULL, 0, '0701046504', '0', 0, 'Dosen FEB', 'Rektorat', 'Wakil Rektor IV', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(17, '1027', 'Aditya Hermawan, SE Ak, MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', '0s1jxWC2', '-', '-', '0', '-', '2021-12-11', 0, '0710108203', '0', 0, 'Dosen FEB', '-', '', 0, 'Akuntansi', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(18, '3222', 'Adriani Kala\'lembang, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-03-13', NULL, 'yCGChjy9', '', '', '0', '', NULL, 0, '0720039001', '0', 0, 'Dosen FTD', 'USP', 'Kepala USP', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(19, '3202', 'Agung Basuki', 'YVRaV2NYZHBjMEpJTUM4eWVYRkNRbWhxUlZFMmVEUnlZa2RDYzFKeE9GcDJTbVZNT1RONlZ6bERNRDA9', '2015-05-01', NULL, 'kcRef8FX', 'Jl. Sawojajar XVII B/59 RT 1 RW 4 Kel. Sawojajar Kec. Kedungkandang Malang', 'Jl. Sawojajar XVII B/59 RT 1 RW 4 Kel. Sawojajar Kec. Kedungkandang Malang', '081615620035', 'Malang', '1977-03-06', 0, '', '3573030603770010', 0, 'Karyawan', 'Security', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(20, '3219', 'Agus Purnomo Sidi, S.Sos, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CxhrK5Fz', '-', '-', '0', '-', '2021-09-30', 0, '0710087902', '0', 0, 'Dosen FEB', 'LP2M', 'Sekprodi Profesional Bisnis Manajemen', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(21, '3216', 'Ahmad Nizar Yogatama, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '6Hg5HprC', '', '', '0', '', NULL, 0, '0716019002', '0', 0, 'Dosen FEB', 'LPMI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(22, 'wildan', 'Ahmad Wildam Yanuar Ishaq, S.Kom', 'VTJaaVozbGtiRmhMU0VGeWQxaHBPRWhKZVU5U01IZFRaa3BrUVc0clUxaExkMXBJU1RkRE0yZ3daejA9', '2021-02-11', NULL, 'wildanmanis', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'UPT-SI', 'Programmer', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(23, '3228', 'Ahmadi, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9Jnf9AqQ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(24, '3095', 'Aris Prasteyo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'HTYrxqD4', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(25, '3213', 'Azwar Riza Habibi, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'jdXnSf77', '', '', '0', '', NULL, 0, '0702088902', '0', 0, 'Dosen FTD', 'USP', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(26, '1011', 'Bambang Tri Wahjo Utomo, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9xKH3rW3', '', '', '0', '', NULL, 0, '0724067203', '0', 0, 'Dosen FTD', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(27, '1012', 'Broto Poernomo Tri Prasetyo, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'CW1pceQp', '', '', '0', '', NULL, 0, '0713068102', '0', 0, 'Dosen FTD', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(28, '1029', 'Budi Santoso, B.Eng', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'uu6VFA7G', '', '', '0', '', NULL, 0, '0708117301', '0', 0, 'Dosen FTD', 'HAKI', 'Kepala HAKI', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(29, '3094', 'Candra Prasetyo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'tW6eeK9B', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(30, '3227', 'Danang Arbian Sulistyo, S.ST', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'NzCc4B7W', '', '', '0', '', NULL, 0, '0708058501', '0', 0, 'Dosen FTD', 'LPMI', 'Kepala LPMI', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(31, '9803', 'Dendik Wahyu Prasongko, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', 'w1WXAbxY', 'DS KUNJANG KEC KUNJANG KAB KEDIRI', 'JL BENDUNGAN SUTAMI 334/1A LOWOKWARU ', '089609425027', 'KEDIRI', '1995-05-24', 0, '', '3506212405950001', 0, 'Karyawan', 'UPT-SI', 'Sistem Informasi', 0, 'null', 'null', '', 2, '2021-03-07', 1, '2021-07-15', 'Strata 1', '', 1),
+(32, '3710', 'Devy Lelyana Ratnasari', 'U1RSTE4xVkJLMVozVjNWc1NUTnZNRVpqU1ZkMk5HWkpPRE5JYzJaUVRYSkVSVEZvTVRkMGEzaHZZejA9', '2021-01-27', NULL, 'jwTRVE2M', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Kemahasiswaan', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(33, '1053', 'Dewi Wahyuni, A.Md', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Yf3h3yT1', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(34, '3056', 'Didik Purwanto', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'xmvzC1uE', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(35, '3121', 'Dinasti Mahachakri Laksono Suryo Putri, SH', 'TVU1T2RqQlBSVWcxVTFaNWNHWnpaMHRxVFZsYVVqUnZXWE5oVGxkRFNHdFdWa2czY1VKTFoyUmxVVDA9', '2021-01-27', NULL, 'tbCEH2a7', '', '', '0', 'Kediri', '1984-10-04', 1, '', '0', 2, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(36, '3721', 'Dinda Rachman Permatasari, S.Psi', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'W6jACpX1', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Admin Rektorat', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 0),
+(37, '3718', 'Doni Ssetiawan', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '19NRhNTN', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan ', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(38, '1071', 'Donny Poeryan Setyawan', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'M1nss3nj', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 1, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(39, '1006', 'Dr. Agus Rahman Alamsyah, S.Pd, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '6u6JucfM', '', '', '0', '', NULL, 0, '0708087803', '0', 0, 'Dosen FEB', 'Pasca Sarjana', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(41, '1023', 'Dr. H.M. Bukhori, SE,S.Ag, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', 'CbuBeVw3', '-', '-', '0', '-', '2021-12-11', 0, '0701027102', '0', 0, 'Dosen FEB', 'Pasca Sarjana', '', 0, 'Magister Management', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 3', '', 1),
+(42, '1038', 'Dr. Ike Kusdyah R., SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'GxaxJ623', '', '', '0', '', NULL, 0, '0703117101', '0', 0, 'Dosen FEB', 'LP2M', 'Kepala LP2M', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(43, '3097', 'Dr. Theresia Pradini, SE, MM', 'Y214dGJXVkJlRlZZVlZkUmNIVjFWa05XYWxwcVVsaEtPVkYxVW5ST1dHUXdWbHB1TW1WSk1FUnliejA9', '2021-01-27', NULL, '7Ym93uUS', '', '', '0', '', NULL, 0, '0519097202', '0', 0, 'Dosen FEB', 'Pasca Sarjana', 'Kaprodi S2 MM', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(45, '1036', 'Dr. Widi Dewi Ruspitasari, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Hs1Uz2e3', '', '', '0', '', NULL, 0, '0703088103', '0', 0, 'Dosen FEB', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(46, '1001', 'Dr. Yunus Handoko, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'r40ZkMkq', '', '', '0', '', NULL, 0, '0728126904', '0', 0, 'Dosen FEB', 'Pasca Sarjana', 'Direktur Pascasarjana', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(47, '1056', 'Dwi Anggih Yosepta, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'pfmZsSY7', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(48, '1093', 'Dwi Rudijanto', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', '0YY6tsQ2', '-', '-', '0', '-', '2021-12-12', 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(49, '3711', 'El Salwa Sabila', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'U5XPaEcK', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'MDS', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(50, '3031', 'Endri Wibowo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KHRwK3PY', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(51, '3113', 'RISTI', 'YVdoMk1razNOMlJUV25WdWVtWjZaak5FYjNSYU1tVkJZMWwyWVdacGJWcEpkSEpNYzJoRGNHaFNiejA9', '2021-01-27', NULL, '3528DfZf', '', '', '85755111905', 'Malang', '1991-12-25', 1, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(52, '1068', 'Ervina Yuli Estutik, SE', 'TnpoMWFHdHBaRVpFTUdoWFRqTnVUVkZ6TldFeGJUSjFjVFZMVkVRMVlVdGtlV1JrUzBsbU9FZFZNRDA9', '2021-01-27', '1001-01-01', 'u0b8MNWR', '-', '-', '0', '-', '2021-12-13', 0, '', '0', 0, 'Karyawan', 'MDS', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(53, '3099', 'Fabianus Vesalius Lawalu, S.Pt', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'B37fKKvX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(54, '3080', 'Fadhli Almu Iini Ahda, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '0ej3M0ZZ', '', '', '0', '', NULL, 0, '0716088603', '0', 0, 'Dosen FTD', 'LPMI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(55, '4012', 'Fadilla Cahnyaningtyas, SE, MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'PKvj48QA', '', '', '0', '', NULL, 0, '0723108801', '0', 0, 'Dosen FEB', 'Prodi', 'Sekprodi Akuntansi', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(56, '3209', 'Faldi Hendrawam, S.Pd, MA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '7qz6sNxX', '', '', '0', '', NULL, 0, '0726038704', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Desain Komunikasi Visual', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(57, '3072', 'Feri Slamet Budiyono', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Z84EH3By', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(58, '4005', 'Fransiska Sisilia Mukti, ST, MT', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vcpR4ZDY', '', '', '0', '', NULL, 0, '0728099004', '0', 0, 'Dosen FTD', 'UPT-NET', 'Kabag. UPT-Net', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(59, '1046', 'H. Zainul Muchlas, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '86Rx2ahc', '', '', '0', '', NULL, 0, '0729095501', '0', 0, 'Dosen FEB', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(60, '1094', 'Handoko', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', 'Wu4subWB', '-', '-', '0', '-', '2021-12-12', 0, '', '0', 0, 'Karyawan', 'Office Boy', 'Karyawan Umum', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(61, '3224', 'Handry Rochmad Dwi Happy, S.Sn, M.Sn', 'VTNRMFYwdEVhRFJ5VVVJNWJXMWFNMUZTYTBGcU0wbFdVVU5oUmpsMGJGcFJLelZLV2tselRWVnlORDA9', '2021-01-27', NULL, 'kd4ACtyk', '', '', '0', '', NULL, 0, '0725088706', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Desain Komunikasi Visual', 0, '', '', 'HAN01', NULL, NULL, NULL, NULL, '', '', 1),
+(62, '1078', 'Hariyono M Irsyad', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'hJgf43Bq', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(63, '1114', 'Helmy Sundoro', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'XH2pmpRR', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(64, '3096', 'I Gusti Ngurah Ketut Atmajaya', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '9hRjRUxt', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Teknisi', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(65, '3034', 'Imam Khambali', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KvPYpK53', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(66, '3720', 'Indra Gunawan', 'Y0dGemMzZHZjbVE9', '2021-03-12', NULL, 'mDd4ZacM', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'MDS', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(67, '3203', 'Iqbal Khodami', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '4mezs54P', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(68, '1013', 'Jaenal Arifin, S.Kom, MM, M.Kom .', 'VEdwRFNuWXhObmhHVGt4WFdtOWtURU5UUVdGeE5rTXJTRUpXVFhWaFNtbGhUalU0T1RaaFRXWnJNRDA9', '2021-01-27', NULL, '4Jp5EEUp', 'keperluan test', 'keperluan test', '0', 'keperluan test', '2021-07-23', 0, '0709117502', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Teknik Informatika', 0, 'Teknik Informatika', 'Full', 'JAE01', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(69, '3722', 'Jhonathan Afrizal', 'YWpkNk9HWkdLMDVKVTJsd2NuWktURlJHY0VwWU5XMW1NRlJHYXpSWk5VZG5hamg0UzNaek1FcEpSVDA9', '2020-08-01', NULL, '6ecFaxM6', 'Bali', 'Malang', '83111038848', 'Probolinggo', '2001-06-16', 0, '', '3573041606010011', 1, 'Karyawan', 'UPT-SI', 'Programmer', 0, '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(70, '3719', 'Joko Purnomo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Wuf49QXk', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(71, '3214', 'Justita Dura, SE, M.Ak', 'WmpSa01tVlZXalF3T1hVd2VFWnRUVXRPWkZObWEwRlFRMHBzV205eU9ITk9lRlJ3VGtseVlUZzNiejA9', '2021-01-27', NULL, '4B2pc9ps', '', '', '0', '', NULL, 0, '0703038701', '0', 0, 'Dosen FEB', 'Prodi', 'Kaprodi Akuntansi', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(72, '1091', 'Kuncoro', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'wCZrN3gB', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(73, '3715', 'Lailla Dwi Riski', 'VkVjck9FZHNVbGwyYTBvemR6SjFjVTV2ZFVkR1QzSXZVbmRvYm5kcU5YUktjbXhYUkcxYVIyd3JORDA9', '2021-01-27', NULL, 'CDrWraT8', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(74, '3223', 'Lia Farokhah, S.Kom, M.Eng', 'UlU5dVZWTkVja040YldwbGRVNU1aeko1YzFsalprZzBlVmc0WkhGMFluZFpaamg1SzBWMlNXcG9PRDA9', '2021-02-18', NULL, '2nzQ8w2M', '', '', '0', '', NULL, 0, '0710089002', '0', 0, 'Dosen FTD', 'LPKD', 'Kepala LPKD', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(75, '3221', 'Lilis Widyanti, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, ' jPm87dwP', '', '', '0', '', NULL, 0, '0712068904', '0', 0, 'Dosen FTD', 'LP2M', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(76, '3205', 'Lukman Hakim, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'bacduH8T', '', '', '0', '', NULL, 0, '0712068904', '0', 0, 'Dosen FTD', 'Kemahasiswaan', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(77, '3067', 'Lussia Mariesti Andryani, SE, MM', 'VWpJeFVrODJZMmgzWkUxYVkyVnZjREp2YVRWRmQyTklSVE51UlVJeGNXRkhjVlU0TDJoR2NVaHlPRDA9', '2021-01-27', NULL, 'HDTz0cJb', '-', '-', '0', '-', '2021-09-30', 0, '0711038801', '0', 0, 'Dosen FEB', 'Prodi', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(78, '4018', 'M. Zamroni', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vR0qPCSy', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(79, '3069', 'Machrus Arifianto, SS', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(80, '1049', 'Magdalena Retno Saraswati, S.TP', 'YnpkblkwcFBOM1J2VTJORVFrTkZSREpVWms5MloxSjFWbEZJZUN0RVEySjNWbkZtVFZGSlpFOHlNRDA9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', 1, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(81, '3407', 'Mahendra Eko Priyantono', 'UlhOU2NXWmpObFZXZUdObmVtdEdVaTgyS3psWFYyVkRURkZGT1dNeGJGa3paRWwyV0ZOSVFXbzBiejA9', '2021-01-27', NULL, '0vC2TyUX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(82, '3409', 'Mahindra Mandala Putra, SH', 'T1UwMVkyWkdiVGxtUjA1Q05IQTNNMU5FY1VOdFVYWjBUM05VT1dWRGRWSldWWFJrTVVSME9FUTBPRDA9', '2015-06-01', '1001-01-01', '52YvGtSH', 'Jl pringgodani I Klodran, Colomadu, Kab. Karanganyar, Jawa Tengah', 'Jl. Ikan Tombro Timur, Perum Istana cakalang Kav.42, Polowijwn, Blimbing , Kota Malang, Jawa Timur', '081326668815', 'Trenggalek', '1993-03-03', 0, '', '3313120303930001', 0, 'Karyawan', 'HRD & Sarpras', 'Kepala Sarpras/Kepala HRD', 0, 'null', 'null', '', 1, '1001-01-01', 1, '1001-01-01', 'Strata 1', '', 1),
+(83, '9015', 'Mariana Puspa Dewi, SE, M.I.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vsHA6arZ', '', '', '0', '', NULL, 0, '0709107502', '0', 0, 'Dosen FEB', 'LP2M', 'Jurnal', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(84, '3124', 'Mega Mirasaputri Cahyanti, SE., MM., M.Sc', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '4wZZwh4k', '', '', '0', '', NULL, 0, '0715069001', '0', 0, 'Dosen FEB', 'INBIS', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(85, '1070', 'Moh. Zainuddin, S.Si, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'u2eFzkw8', '', '', '0', '', NULL, 0, '0725077105', '0', 0, 'Dosen FTD', 'HAKI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(86, '3226', 'Mufidatul Islamiyah, S.Si, M.T', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'tZk8HMsS', '', '', '0', '', NULL, 0, '0710108604', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Sistem Komputer', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(87, '4019', 'Mulyaningtyas, SE, M.Ak', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'X1mpEb83', '', '', '0', '', NULL, 0, '0727077405', '0', 0, 'Dosen FEB', 'LPKD', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(88, '1028', 'Murtianingsih, SE, MM', 'U20xU1ZGbEJSV3BrWTFwUVJIbHRUVTFSY0ZWck0xZ3ZNRkIwVlRGRVkydFBla2x4WkRSS1pqSkVVVDA9', '2021-01-27', '1001-01-01', '3w9kQxn4', '-', '-', '0', '-', '2021-12-13', 0, '0712087803', '0', 0, 'Dosen FEB', 'Dekanat', 'Dekan Fakultas Ekonomi Bisnis', 1, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(89, '3402', 'Niken Saktya Wulandari, SH', 'TjJ0NFZraFVNamhuWVhjclZsZDJibk5WU25oT0t6UXpjVVYzVG1sWGFEVmhNbkF5TlVjdlpXVnBSVDA9', '2021-01-27', NULL, '0rpVXZk5', '', '', '08223383276', 'Malang', '1993-10-01', 1, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(90, '1058', 'Ninik Kustiari, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '3x87ZkbK', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAU', '', 1, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(91, '4004', 'Novan Styawan, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'JVfrk53C', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(92, '4021', 'Novi Tiyasari, SE', 'WmpSbFYySXJVRFl2ZFdrck5XUTRhbEZGVTBwSGIwMUJjVlJsY1ZwcVZYSmhkMlJhTlZOMlRHRXdNRDA9', '2017-09-14', '1001-01-01', '8dBfjE4l', 'Jl. Sukun Gempol No 27 RT 03 RW 09 Malang', 'Jl. Candi Badut No 24 RT 02 RW 02 Malang', '081333990114', 'Malang', '1990-11-04', 1, '', '3573054411900004', 0, 'Karyawan', 'Rektorat', 'Admin WR2', 0, 'null', 'null', '', 2, '1001-01-01', 0, '1001-01-01', 'Strata 1', '1618902112.jpg', 1),
+(93, '1113', 'Nur Elif, SE', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'o2qQmCaw', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(94, '1045', 'Nur Lailatul Aqromi, SS, MA', 'ZDJkU1VrNXJWazQwV0Vaa2JIaEhNMDk1VUZOdWFWcENUR2dyWVM5R2FGRkpSMUJwT0ZoVlpXTldZejA9', '2021-02-18', NULL, '9tr2QBEN', '', '', '0', '', NULL, 0, '0716068801', '0', 0, 'Dosen FTD', 'KUI', 'Kepala KUI', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(95, '4016', 'Patricia Restanancy, SP', 'YWtabFdYaEZTMkpoWVhCUk5EUkhTVE5aVFVGTk1HVmlSRGhRY21KblEwNWpTVXBuU1VObGRrSjVORDA9', '2021-02-27', NULL, 'nIsy9Uw8', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Admin Rektorat', 'Admin Rektorat', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 0),
+(96, '3084', 'Pipit Rosita Andarsari, SE., MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'ukLl1Of3', '', '', '0', '', NULL, 0, '0718017802', '0', 0, 'Dosen FEB', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(97, '3112', 'Puji Subekti, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'NP8SJRYX', '', '', '0', '', NULL, 0, '0708028801', '0', 0, 'Dosen FTD', 'INBIS', 'Kepala Inkubator', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(98, '3403', 'Rakhmawati Indriani, S.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Xz4do8VJ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(99, '3714', 'Retno Cindy Rofiqoh, S.IP', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'rUn6WzBE', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan ', 'Pustakawan', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(100, '3105', 'Retno Handayani, A.Md', 'VWpSaVEzWlljRWR1YzFONGFEWkhZWFpvWlRWSFJEZHhNbUpzY3paa05WTjBiMVpxYWxaVmNqQlJRVDA9', '2021-01-27', NULL, 'OgE6cipY', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(101, '1039', 'Rifki Hanif, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KT5Ff7IG', '-', '-', '0', '-', '2021-09-30', 0, '0718108301', '0', 0, 'Dosen FEB', 'Prodi', 'Kaprodi Profesional Bisnis Manajemen', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(102, '1030', 'Rina Dewi Indahasari S.Kom, M.Kom', 'UmpONlUyeGlibE51UVU5RlpGSXlZMlJCVGs4NVFWVjRiMHhaWlRGd2QweEhOM0ZFV1doMU1qaHFhejA9', '2021-01-27', '1001-01-01', 'lMhvmTcz', '-', '-', '0', '-', '2021-12-10', 0, '0730128201', '0', 0, 'Dosen FTD', 'Dekanat', 'Dekan Fakultas Teknologi & Desain', 1, 'Teknik Informatika', 'Full', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(103, '1100', 'Rudianto', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', 'vIYmsCON', '-', '-', '0', '-', '2021-12-12', 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(104, '4023', 'Sabrina Ayu Primasti, S.AP', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Qc1mCvlP', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Pustakawan', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(105, '1033', 'Samsul Arifin, S.ST, M.Kom', 'WWpZME16WXdiVEZtVkRaWWRHSkZjWHBDYlU5WFUzQlNXSEpqWW1OVVNXVTRZMnRwT1hOMmFsUmtZejA9', '2021-01-27', NULL, 'v9JTq00K', '', '', '0', '', NULL, 0, '0711108601', '0', 0, 'Dosen FTD', 'Prodi', 'Kaprodi Sistem Komputer', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(106, '1059', 'Satria Arik Cahyono, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '7RDT5gv4', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(107, '3090', 'Setyorini, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'j35GVDFS', '', '', '0', '', NULL, 0, '0723048704', '0', 0, 'Dosen FTD', 'Career Center', 'Kepala Pusat Karir', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(109, '1042', 'Siti Nurul Afiyah, S.Si, M.Si', 'VW10R2RDOHdWbkJIUldwdVVWSkdhMFJzVm5OVWJYbGhUbVZQYTBjNWRXdERlV050WWtnMU9URnVSVDA9', '2021-02-03', '2021-01-27', 'acXYr01V', '', '', '0', '', NULL, 0, '0710118801', '0', 0, 'Dosen FTD', 'KUI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(110, '9804', 'Slamet Efendi', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '8QkBzARQ', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Driver', 'Driver', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(111, '3120', 'Sri Anggraini Kusuma Dewi, SH, M.Hum', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '80A4fhDw', '', '', '0', '', NULL, 0, '0723097504', '0', 0, 'Dosen FTD', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(112, '9801', 'Sri Puji Rahayu', 'YW5OSFpIUkRkVmhhZUdNMlduaElPSGRuVG1sV2VHODVXV0V3TlhOMFlpdFVPR0owVGxWSVFYcE5UVDA9', '2018-01-08', '2021-01-27', 'e9QUrFyg', 'Ds. Ngasem RT 4 RW 1 Kel. Ngasem Kec. Ngasem Kab. Kediri', 'Jl. Bendungan Jatiluhur No 24 B Kec. Lowokwaru Kota Malang', '085881894947', 'Kediri', '1998-11-01', 1, '', '3506255101980002', 1, 'Karyawan', 'Lembaga', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(113, '1111', 'Suasdi, ST', 'ZFhkc1pXZHhaMlpYTVV0MlZVMU5Xa040TjNSSldIRkpiRTVOWVROQ1NsWjJVM0ZNTkZVeVpFWkRZejA9', '2021-02-11', '2021-01-27', 'E4wDhY7g', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Teknisi', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(114, '3111', 'Suastika Yulia Riska, S.Pd, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'FwpF6ewM', '', '', '0', '', NULL, 0, '0712079001', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Teknik Informatika', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(115, '1099', 'Sucipto', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'Eqbye8dk', '-', '-', '0', '-', '2021-12-12', 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(116, '3061', 'Sumaningdyahs Woro Pembayun, SE', 'WXpJd1JURTRNV1YyTTJaTk9FRkJXSGRpYW0xbGREZERaM2RZTkU0eVRtbE9iemRsYVhFcmVFUlhVVDA9', '2021-01-27', '2021-01-27', 'RGxKgA7K', '', '', '81805128389', 'Malang', '1989-11-20', 1, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(117, '1004', 'Sunu Jatmika, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'nA2jM3Qv', '', '', '0', '', NULL, 0, '0721127002', '0', 0, 'Dosen FTD', 'TIP', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(118, '3408', 'Sutrisno', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'j59zVy2Y', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Driver', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(119, '3110', 'Syaiful Bahri, SE., MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', '2MwKt1WX', '', '', '0', '', NULL, 0, '0718027801', '0', 0, 'Dosen FEB', 'Dekan', 'Wakil Dekan FEB', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(120, '3723', 'Taricha Alifya Januarni', 'UlVSNVlrSnRSbkZ3U0ZCMVRtMVBhREZRVlM5cWFrZERTM1ZKZEhadmQxQktNekpKTHpSME1XSnhZejA9', '2020-08-01', '1001-01-01', '97XhKn8X', 'Jl.Irian no 46A Kota Blitar', '', '089603502912', 'Blitar', '2001-01-02', 1, '', '3572014201010005', 1, 'Karyawan', 'UPT-SI', 'Programmer', 0, NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(121, '1124', 'Tissa Fajar Wienjaya, S.Kom', 'Wld0a1dVdHpUbXBuTkV4NVNDdEtOSGxCWmpkaWVIUmFXWFZuUzFaaE5HNURkVmdyYW5KeUwzTnJUVDA9', '2021-01-27', '2021-01-27', '2zeBDcV3', '-', '-', '0', '-', '2021-12-12', 0, '', '0', 0, 'Karyawan', 'Dekanat', 'Admin FEB', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(122, '1009', 'Titania Dwi Andini, S.Kom, M.Kom', 'ZFZsR01tRnBiRXhNYzNJMmVFaENReXR5YTNSNkwwdHNhWGN3YjBwNlExSndjblJCZFM4MFppdHBjejA9', '2021-01-27', '1001-01-01', '2QEPXJhd', '-', '-', '0', '-', '2021-08-04', 1, '0718047701', '0', 0, 'Dosen FTD', 'UPT-SI', 'KaBag.Produksi', 1, 'Teknik Informatika', 'Full', 'TIT01', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(123, '3081', 'Tri Wahyuni, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', '2021-01-27', 'RbQd4HxK', '', '', '0', '', NULL, 0, '0726018303', '0', 0, 'Dosen FTD', 'Konselor', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(124, '4020', 'Tri Nanda Sagita Rachma, SP', 'T0ZabFpsbGhjMHhLWWs1WGIyTXZiMVJ3YTBkdVZrZDRPRXBZV1ZVck5VWk1UREJHTjBnMFpHdzBkejA9', '2017-09-14', '2021-01-27', 'x6ffP7XN', 'Dsn Urung-urung RT 17 RW 2 Kel. Jatijejer Kec. Trawas Kab. Mojokerto', 'Dsn Urung-urung RT 17 RW 2 Kel. Jatijejer Kec. Trawas Kab. Mojokerto', '085755101074', 'Malang', '1993-12-16', 1, '', '3507185612930001', 0, 'Karyawan', 'Pasca Sarjana', 'Admin', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(125, '1079', 'Umar Sony, S.Sos', 'Y0dGemMzZHZjbVE9', '2006-09-01', '2021-01-27', 'yQZbQX56', 'Jl. Simpang Setaman I/24 RT 6 RW 15 Kel. Lowokwaru Kec. Lowokwaru Malang', 'Jl. Simpang Setaman I/24 RT 6 RW 15 Kel. Lowokwaru Kec. Lowokwaru Malang', '081904682718', 'Malang', '1975-05-08', 0, '', '3573050805750003', 0, 'Karyawan', 'Security', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(126, '1057', 'Viryal Afaf Vairuz Baha, S.Kom', 'Y0dGemMzZHZjbVE9', '2010-11-16', NULL, 'Vi012859au', 'Jl. Raya RT 9 RW 2 Kel. Sempalwadak Kec. Bululawang Malang', 'Jl. Raya RT 9 RW 2 Kel. Sempalwadak Kec. Bululawang Malang', '081939893966', 'Mojokerto', '1989-04-24', 0, '', '3516092404890001', 0, 'Karyawan', 'BAA', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(127, '1043', 'Vivi Aida Fitria, S.Si, M.Si', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'xXEAN88g', '', '', '0', '', NULL, 0, '0712068602', '0', 0, 'Dosen FTD', 'Dekan', 'Wakil Dekan FTD', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(128, '3215', 'Vivia Maya Rafica, SE, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'WcX5K8GK', '', '', '0', '', NULL, 0, '0730078701', '0', 0, 'Dosen FEB', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(130, '3401', 'Wahyudi Nurul Aziz', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'nFUPh1FS', 'Jl. Dusun Karangduren RT 4 RW 2 Kel. Karangduren Kec. Pakisaji Malang', 'Jl. Dusun Karangduren RT 4 RW 2 Kel. Karangduren Kec. Pakisaji Malang', '082233699192', 'Malang', '1982-07-19', 0, '', '3573021907820004', 0, 'Karyawan', 'MDS', 'Staf Design', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(131, '3126', 'Wahyudi Tri Susilo', 'Y0dGemMzZHZjbVE9', '2015-04-01', NULL, '3MrAcWaG', 'Jl. Sumberayu 42 RT 27 RW 4 Kel. Karangkates Kec. Sumberpucung Malang', 'Jl. Sumberayu 42 RT 27 RW 4 Kel. Karangkates Kec. Sumberpucung Malang', '089631666961', 'Malang', '1984-08-22', 0, '', '3573012208840003', 0, 'Karyawan', 'Security', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(132, '1015', 'Warna Agung Cahyono, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '8VFA5JjU', '', '', '0', '', NULL, 0, '0726108006', '0', 0, 'Dosen FTD', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(133, '3211', 'Widya Dewi Anjaningrum, S.Si, MM', 'Y0dGemMzZHZjbVE9', '2021-03-12', NULL, 'FRhtmQ5R', 'Tempat', '', '0', '', NULL, 0, '0710068206', '0', 0, 'Dosen FTD', 'ARC', 'Ketua ARC', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(134, '3114', 'Widya Adhariyanti Rahayu, S.Pd, M.Pd', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'Q5u8VHBS', '', '', '0', '', NULL, 0, '0724078801', '0', 0, 'Dosen FTD', 'LP2M', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(135, '3713', 'Winda Nur Maida, SE', 'Y0dGemMzZHZjbVE9', '2019-08-01', '1001-01-01', 'jgEWf8S1', 'Pondok Trosobo Indah B-15 RT 1 RW 8 Kel. Trosobo Kec. Taman Kab. Sidoarjo', 'Pondok Trosobo Indah B-15 RT 1 RW 8 Kel. Trosobo Kec. Taman Kab. Sidoarjo', '081235870670', 'Malang', '1990-04-09', 1, '', '3515134904900003', 1, 'Karyawan', 'BAA', 'Staf BAA', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(136, '3411', 'Yohanes Nugraha, S.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'AXhxF9HX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(137, '1062', 'Yosepthin Tri Puriyanti, A.Md', 'YlV0MlZrRnVXa1ZHVlM5a05scEJTVVV6YjBOUU5tMUpaVlZCTDFGRlZuRklkRkI2UVV0UmJFVjVZejA9', '2011-10-01', '1001-01-01', 'CQz9V1va', 'Jl. Ikan Nus II/17 Kav 12 RT 8 RW 2 Kel. Tunjungsekar Kec. Lowokwaru Malang', 'Perum Bumi Mondoroko Raya Blok AK 11', '087859898852', 'Malang', '1988-02-15', 1, '', '3573015502880001', 0, 'Karyawan', 'Dekanat', '', 0, 'null', 'null', '', 1, '1001-01-01', 1, '1001-01-01', 'Diploma 3', '', 1),
+(138, '1096', 'Yudianto', 'Y0dGemMzZHZjbVE9', '2008-08-01', NULL, 'nP3fwZra', 'Karangrejo Selatan RT 13 RW 9 Kel. Purworejo Kec. Donomulyo Malang', 'Jl. Borobudur No. 21 Malang', '081553475411', 'Blitar', '1987-02-07', 0, '', '3505180702870001', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
+(139, '3207', 'Yudistira Arya Sapoetra, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'TE1nvuYj', '', '', '0', '', NULL, 0, '0704088601', '0', 0, 'Dosen FTD', 'LPMI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(140, '4013', 'Abdul Aziz Muslim, S.Psi, M.Psi', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'DA0SJ4ct', '', '', '0', '', NULL, 0, '0709108904', '0', 0, 'Dosen FEB', 'Konselor', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(141, '9807', 'Abd Hadi, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-03-10', NULL, '2u4PwTsg', '', '', '0', '', NULL, 0, '0727078810', '0', 0, 'Dosen FTD', 'LP2M', 'Pengelola JITIKA', 0, '', '', '', NULL, NULL, NULL, NULL, '', '', 1),
+(142, '9806', 'Abdulloh Eizzi Irsyada, S.Kom, M.Ds', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '2qrXvgWH', '', '', '0', '', NULL, 0, '0703069102', '0', 0, 'Dosen FTD', 'INBIS', 'Pengelola JESKOV', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(143, '3098', 'Achmad Isman', 'Y0dGemMzZHZjbVE9', '2014-07-15', NULL, 'xcPvN2ZH', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', '082139889111', 'Malang', '1985-10-17', 0, '', '3507251710850003', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
+(144, '1016', 'Achmad Noercholis, ST, MT', 'V1U1bWVTdGFSbVZyV1hkQmMxWlNNV2h5V0ZZeVdVdFJZV3N5TkhScGMyTjVMMUVyVjFaUlNERmpTVDA9', '2021-01-27', NULL, '83PK58bU', '', '', '0', '', NULL, 0, '0707058303', '0', 0, 'Dosen FTD', 'UPT-SI', 'KaBag.Research and Development', 0, NULL, '', 'ACH01', NULL, NULL, NULL, NULL, NULL, '', 1),
+(145, '3728', 'Wa Ode Irma Sari, S.Ak., M.SA', '', '2021-01-27', NULL, '', '', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FEB', '', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(147, '3732', 'Dzikrullah Akbar', 'WnpseWFVRXZOMGwwVVVSTGVWVlRlV3hUUld4Q2VrcEZaMjAxU3psNE1uQllXVUZoTW5wR2NGRXJaejA9', '2020-08-01', '1001-01-01', '45Feb2145', 'Jl. Pangeran Diponegoro Gang 1 No 12 Tamanan', 'malang', '08974680033', 'Sidoarjo', '1999-11-27', 0, '', '0', 1, 'Karyawan', 'UPT-SI', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '1633661873.jpg', 1),
+(149, '3712', 'Syaldhy Yuka Novaldy', 'TkRoTllYSXlNVFE0', '2019-08-01', '2021-01-27', '48Mar2148', 'Jl. Trunojoyo GG III C RT 4 RW 2 Kel. Kolor Kec. Sumenep Kab. Sumenep', 'Jl. Trunojoyo GG III C RT 4 RW 2 Kel. Kolor Kec. Sumenep Kab. Sumenep', '082338483561', 'Sumenep', '1995-11-01', 0, '', '3529010111950001', 1, 'Karyawan', 'Digital Learning', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(150, '3725', 'R.B Hendy Try Pranegara', 'TVRGTllYSXlNVEV4', '2020-10-01', NULL, '11Mar2111', 'Perum Puri Jepun Permai I no. 6 RT04 RW05, Kel. Jepun, Kec. Tulungagung', 'Perumahan Graha Falisha No.1 Jl. Terusan Setia Budi Kel. Sumbersuko Kec. Tajinan Kab. Malang', '085258724910', 'Tulungagung', '1993-09-19', 0, '', '3504011909930000', 1, 'Karyawan', 'Digital Learning', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(152, '3727', 'Ditya Wardana, S.ST, M.S.A', 'TWpsTllYSXlNVEk1', '2021-03-12', NULL, '29Mar2129', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FTD', 'Career Center', '', 0, 'Sistem Komputer', '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(153, '3726', 'Layly Dwi Rohmatunnisa', 'TURWTllYSXlNVEEx', '2021-03-12', NULL, '05Mar2105', 'Tempat', '', '0', '', NULL, 0, '', '0', 0, 'Dosen FEB', 'Dosen Akuntansi', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(154, 'pkl', 'pkl', 'ZW10UkwzbHBaemRSVWpsSkwxSndjR2szYVdwSFNHaGxjWGsxVFZkalUxUkZkMUI2Um1wRU5WWXZWVDA9', '2021-03-16', NULL, '31Mar2131', 'Tempat', 'Tempat', '1234', 'Malang', '2021-04-15', 0, '', '1234', 1, 'Magang', '', '', 0, NULL, '', '', 2, '2021-04-15', 2, '2021-04-15', 'Strata 1', '1618372397.jpg', 1),
+(218, 'humas@asia.ac.id', 'mds', 'ZWtkeVdHRklURkpKTUVoQk5rTndObGhwU0U1TVZEUkxjbGd4ZHpoT01WUjRUR1p2UzJwbkt6ZENNRDA9', '2021-04-21', NULL, '29Apr2129', 'lantai 2', 'lantai 2', '0', 'malang', '2021-04-21', 0, '', '0', 1, 'Karyawan', NULL, '', 0, NULL, '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(219, '3729', 'Hironimus Hari Kurniawan, SE, MM', 'TkRKS2RXNHlNVFF5', '2021-03-01', NULL, '42Jun2142', 'Jl. Danau Matana I/F2 B-6 RT.009/RW.012 Kel. Sawojajar Kec. Kedungkandang Kota Malang', 'Jl. Danau Matana I/F2 B-6 RT.009/RW.012 Kel. Sawojajar Kec. Kedungkandang Kota Malang', '', 'Malang', '1987-09-30', 0, '0730098705', '3573013009870001', 0, 'Dosen FEB', '', '', 0, NULL, NULL, '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(235, '3731', 'Nicholaus Wayong Kabelen, S.Sn., M.Sn', 'TkRoQmRXY3lNVFE0', '2021-08-01', NULL, '48Aug2148', '1', '1', '1', '1', '2021-08-24', 0, '', '1', 0, 'Dosen FTD', '', 'Dosen DKV', 0, '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(236, '9809', 'Ratna Putri Nilasari,SE', 'WkRGNlMxSllUMlp0VDNoaFpYVjZWMUF6VFd0dFkyOXZPVVIwTW1FcmN6QldaUzh6UldOdVVHWXhiejA9', '2017-02-25', NULL, '27Aug2127', 'Jl. Kutisari Indah Utara II/86 RT 04 RW 06 Kel. Kutisari Kec. Tenggilis Mejoyo Surabaya', 'Jl. danau Bratan Timur VI C20', '081231557737', 'Madiun', '1988-04-05', 1, '', '3520114504880001', 0, 'Sam Design', '', 'Staff Rektorat', 0, '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(237, '3733', 'Sindy Nur Fitriyah', 'YVRBNFVVUmlaWEpZSzJOUFJrRnBjRTl3VEN0UGVtNWplalF5WkdncmNHVlpMMkpLZWpSdWRrMUNSVDA9', '2021-08-01', NULL, '23Sep2123', 'Ds. Kapuran Kec. Wonosari Kab. Bondowoso', 'Malang', '085729749003', 'Bondowoso', '1999-01-30', 1, '', '3511147001990002', 1, 'Karyawan', '', 'Admin Pascasarjana', 0, '', '', '', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1),
+(238, '3734', 'Reza Ramadhania, S.Sos', 'V0RRMFNWbDNSV2t5ZEVWd1ZHOHZNRkpaVWxaR1RtTkNWa3BsWTJwQk9IUkxXbVZGYTJZNVdFWTNSVDA9', '2021-08-01', NULL, '32Sep2132', '--', 'Perumahan Taman Indah Soekarno Hatta No 85 Malang', '085655807520', 'Sidoarjo', '1998-01-16', 1, '', '0', 1, 'Karyawan', 'Rektorat', 'Staff Rektorat', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
+(242, '3746', 'Ida Nuryana, S.E., M.M.', 'TURGUFkzUXlNVEF4', '2021-10-01', NULL, '01Oct2101', 'Jl. Urea No 4 Rt08 Rw 20 Kelurahan Purwantoro Kecamatan Blimbing Malang', 'Jl. Urea No 4 Rt08 Rw 20 Kelurahan Purwantoro Kecamatan Blimbing Malang', '0', 'Malang', '1963-05-30', 1, '0730056303', '0', 0, 'Dosen FEB', '', 'Dosen', 0, 'Manajemen', 'Semi', '0', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(243, '3745', 'YOGI WIDYA SAKA WARSAA, S.Sn, M.Sn', 'TURoUFkzUXlNVEE0', '2021-10-01', NULL, '08Oct2108', 'Jl. Sawojajar GAng Vb No 46 Malang', 'Jl. Sawojajar GAng Vb No 46 Malang', '081222505059', 'Pasuruan', '1993-03-30', 0, '00', '0', 1, 'Dosen FTD', '', 'Dosen', 0, 'DKV', 'Semi', '0', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
+(244, 'Tengky Bagoes', 'Tengky Bagoes', 'Y0ZoUU5XbENjWFJaYTJaVWQzZHNja3h3Y25sRkwxTXJRelZuVDJob01ERndWMGM0U0VvM1FtVTBaejA9', NULL, NULL, 'NTdOb3YyMTU3', 'j', 'j', '', 'Blitar', '2021-11-18', 0, '0', '0', 0, 'Dosen LB', '', '', 0, '', '', 'TNK01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
+(245, 'elfa', 'elfa', 'TkU0MFMzRkdRbVpsY1hWeWRsaEhWMkoyZHpsMVpFMVZWbGcwYUVKWGJXWlJTVmxZWjJ0aU5DdFVPRDA9', NULL, NULL, 'MjZOb3YyMTI2', 'a', 'a', '', 'Blitar', '2021-11-18', 1, '0', '0', 0, 'Dosen LB', '', '', 0, '', '', 'ELF01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
+(246, 'testStaff', 'tesStaff', 'U1haVFlrVk5hakZaVlhWWVJ6aGtVa296U210SVEybFFiWGRsWW1wemRWSmllRGhSYkdrdlMxWTRZejA9', '2021-11-25', '1001-01-01', '18Nov2118', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '', '123456789', 1, 'Karyawan', 'Office Boy', 'test', 1, 'null', 'null', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
+(247, 'tesDosen', 'tesDosen', 'YUc1eGMyaEdUbTlXUmtnMFJTczJVMmxMYWpka01HWmFUMGRTYjBOc1owTm9ibUptVGtWblJVNUxUVDA9', '2021-11-25', '1001-01-01', '06Nov2106', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '0727078810', '123456789', 1, 'Dosen FTD', '-', '', 0, 'Teknik Informatika', 'Full', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1);
 
 -- --------------------------------------------------------
 
@@ -1196,7 +1256,11 @@ INSERT INTO `user_grub` (`grub_id`, `nama_grup`, `level_id`, `id_hidden`) VALUES
 (27, 'HRD sipa', 25, 1),
 (28, 'Admin Akademik', 26, 1),
 (29, 'FO Admin', 23, 1),
-(30, 'Dosen', 28, 1);
+(30, 'Dosen', 28, 1),
+(31, 'HRD Karyawan & koordinator divisi', 19, 1),
+(32, 'HRD Dosen & koordinator divisi', 19, 1),
+(33, 'HRD WR', 19, 1),
+(34, 'HRD Rektor', 19, 1);
 
 -- --------------------------------------------------------
 
@@ -1272,6 +1336,12 @@ ALTER TABLE `divisi`
 --
 ALTER TABLE `hidden`
   ADD PRIMARY KEY (`id_hidden`);
+
+--
+-- Indexes for table `izin_hrd`
+--
+ALTER TABLE `izin_hrd`
+  ADD PRIMARY KEY (`id_izin`);
 
 --
 -- Indexes for table `jadwal_hrd`
@@ -1400,10 +1470,16 @@ ALTER TABLE `absensi_hrd`
   MODIFY `id_absensihrd` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `izin_hrd`
+--
+ALTER TABLE `izin_hrd`
+  MODIFY `id_izin` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT for table `jadwal_hrd`
 --
 ALTER TABLE `jadwal_hrd`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
 -- AUTO_INCREMENT for table `jenjang`
@@ -1415,13 +1491,13 @@ ALTER TABLE `jenjang`
 -- AUTO_INCREMENT for table `level_detail`
 --
 ALTER TABLE `level_detail`
-  MODIFY `id_urt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+  MODIFY `id_urt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT for table `loglogin_fo`
 --
 ALTER TABLE `loglogin_fo`
-  MODIFY `id_loglogin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `id_loglogin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `req_api`
@@ -1439,7 +1515,7 @@ ALTER TABLE `rule`
 -- AUTO_INCREMENT for table `rule2`
 --
 ALTER TABLE `rule2`
-  MODIFY `id_rule2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=598;
+  MODIFY `id_rule2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=615;
 
 --
 -- AUTO_INCREMENT for table `struktural`
