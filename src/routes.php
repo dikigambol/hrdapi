@@ -2183,16 +2183,25 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
-				$prepsCountIzin = $this->db->prepare($getCountIzin);
-				$prepsCountIzin->execute();
-				$numIzin = $prepsCountIzin->fetch();
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
 
 				$h['id'] = $id;
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
-				$h['jumlah_izin'] = $numIzin;
+				$h['jumlah_acc1'] = $countAcc1;
+				$h['jumlah_acc2'] = $countAcc2;
+
 
 				array_push($res, $h);
 			}
@@ -2210,16 +2219,25 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt'  AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
-				$prepsCountIzin = $this->db->prepare($getCountIzin);
-				$prepsCountIzin->execute();
-				$numIzin = $prepsCountIzin->fetch();
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
 
 				$h['id'] = $id;
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
-				$h['jumlah_izin'] = $numIzin;
+				$h['jumlah_acc1'] = $countAcc1;
+				$h['jumlah_acc2'] = $countAcc2;
+
 
 				array_push($res, $h);
 			}
@@ -2237,16 +2255,25 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
-				$prepsCountIzin = $this->db->prepare($getCountIzin);
-				$prepsCountIzin->execute();
-				$numIzin = $prepsCountIzin->fetch();
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
 
 				$h['id'] = $id;
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
-				$h['jumlah_izin'] = $numIzin;
+				$h['jumlah_acc1'] = $countAcc1;
+				$h['jumlah_acc2'] = $countAcc2;
+
 
 				array_push($res, $h);
 			}
@@ -2271,16 +2298,25 @@ return function (App $app) {
 					require 'fuction/encript.php';
 					$id = $ciphertext_base64;
 
-					$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
-					$prepsCountIzin = $this->db->prepare($getCountIzin);
-					$prepsCountIzin->execute();
-					$numIzin = $prepsCountIzin->fetch();
+					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+					$prepsAcc1 = $this->db->prepare($getAcc1);
+					$prepsAcc1->execute();
+					$numAcc1 = $prepsAcc1->fetch();
+					$countAcc1 = $numAcc1['acc1'];
+
+					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+					$prepsAcc2 = $this->db->prepare($getAcc2);
+					$prepsAcc2->execute();
+					$numAcc2 = $prepsAcc2->fetch();
+					$countAcc2 = $numAcc2['acc2'];
 
 					$h['id'] = $id;
 					$h['nopeg'] = $result['user_id'];
 					$h['nama'] = $result['user_name'];
 					$h['divisi'] = $result['posisi2'];
-					$h['jumlah_izin'] = $numIzin;
+					$h['jumlah_acc1'] = $countAcc1;
+					$h['jumlah_acc2'] = $countAcc2;
+
 
 					array_push($res, $h);
 				}
@@ -2298,16 +2334,24 @@ return function (App $app) {
 					require 'fuction/encript.php';
 					$id = $ciphertext_base64;
 
-					$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
-					$prepsCountIzin = $this->db->prepare($getCountIzin);
-					$prepsCountIzin->execute();
-					$numIzin = $prepsCountIzin->fetch();
+					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+					$prepsAcc1 = $this->db->prepare($getAcc1);
+					$prepsAcc1->execute();
+					$numAcc1 = $prepsAcc1->fetch();
+					$countAcc1 = $numAcc1['acc1'];
+
+					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+					$prepsAcc2 = $this->db->prepare($getAcc2);
+					$prepsAcc2->execute();
+					$numAcc2 = $prepsAcc2->fetch();
+					$countAcc2 = $numAcc2['acc2'];
 
 					$h['id'] = $id;
 					$h['nopeg'] = $result['user_id'];
 					$h['nama'] = $result['user_name'];
 					$h['divisi'] = $result['posisi2'];
-					$h['jumlah_izin'] = $numIzin;
+					$h['jumlah_acc1'] = $countAcc1;
+					$h['jumlah_acc2'] = $countAcc2;
 
 					array_push($res, $h);
 				}
@@ -2361,6 +2405,12 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
 				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
@@ -2371,6 +2421,7 @@ return function (App $app) {
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc1'] = $countAcc1;
 				$h['jumlah_acc2'] = $countAcc2;
 
 				array_push($res, $h);
@@ -2389,6 +2440,12 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
 				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
@@ -2399,6 +2456,7 @@ return function (App $app) {
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc1'] = $countAcc1;
 				$h['jumlah_acc2'] = $countAcc2;
 
 				array_push($res, $h);
@@ -2417,6 +2475,12 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
 				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
@@ -2427,6 +2491,7 @@ return function (App $app) {
 				$h['nopeg'] = $result['user_id'];
 				$h['nama'] = $result['user_name'];
 				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc1'] = $countAcc1;
 				$h['jumlah_acc2'] = $countAcc2;
 
 				array_push($res, $h);
@@ -2446,6 +2511,18 @@ return function (App $app) {
 		$idKoor = $_GET['id_koor'];
 		$idKoorDecrypt = decryptKoor($idKoor);
 
+		$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$idKoorDecrypt' LIMIT 1";
+		$prepsListRektorID = $this->db->prepare($getRektorID);
+		$prepsListRektorID->execute();
+		$listRektorID = $prepsListRektorID->fetch();
+		$idRektor = $listRektorID['rektor_id'] ?? "";
+
+		$getKoor = "SELECT * FROM `user_entity` WHERE `id` = '$idKoorDecrypt' ";
+		$prepsKoor = $this->db->prepare($getKoor);
+		$prepsKoor->execute();
+		$fetchKoor = $prepsKoor->fetch();
+		$stKoor = $fetchKoor['koordinator'] ?? 0;
+
 		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
@@ -2453,10 +2530,6 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND `acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt' ORDER BY tgl_dibuat DESC";
-			$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$id' LIMIT 1";
-			$prepsListRektorID = $this->db->prepare($getRektorID);
-			$prepsListRektorID->execute();
-			$listRektorID = $prepsListRektorID->fetch();
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -2465,10 +2538,10 @@ return function (App $app) {
 			$h['nama'] = $result['user_name'];
 			$h['divisi'] = $result['posisi2'];
 			$h['jabatan'] = $result['jabatan'];
-			$h['koordinator'] = $result['koordinator'];
-			$h['jabatan_khusus'] = (count($listRektorID) > 0) ? $listRektorID['rektor_id'] : '';
+			$h['koordinator'] = $stKoor;
+			$h['jabatan_khusus'] =  $idRektor;
 			$h['list_izin'] = $listIzin;
-			
+
 
 			array_push($res, $h);
 		}
@@ -2478,7 +2551,8 @@ return function (App $app) {
 	// end detail izin koordinator
 
 	//global function decrypt
-	function decryptKoor($param1) {
+	function decryptKoor($param1)
+	{
 		$ciphertext_base64 = $param1;
 		$key = "ExpertuptsiINSTITUT_ASIA";
 
@@ -2494,7 +2568,7 @@ return function (App $app) {
 		$ciphertext_dec = base64_decode(base64_decode($ciphertext_base64));
 
 
-		$dataDecrypt=openssl_decrypt($ciphertext_dec, $method, $key, $option, $iv2);
+		$dataDecrypt = openssl_decrypt($ciphertext_dec, $method, $key, $option, $iv2);
 
 		$iv_dec = substr($dataDecrypt, 0, $iv_size);
 		$ciphertext_decas = substr($dataDecrypt, $iv_size);
