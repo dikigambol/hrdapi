@@ -2466,11 +2466,7 @@ return function (App $app) {
 			$h['divisi'] = $result['posisi2'];
 			$h['jabatan'] = $result['jabatan'];
 			$h['koordinator'] = $result['koordinator'];
-			if(count($listRektorID) > 0){
-				$h['jabatan_khusus'] = $listRektorID['rektor_id'];
-			}else{
-				$h['jabatan_khusus'] = "";
-			}
+			$h['jabatan_khusus'] = (count($listRektorID) > 0) ? $listRektorID['rektor_id'] : '';
 			$h['list_izin'] = $listIzin;
 			
 
