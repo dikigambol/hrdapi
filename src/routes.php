@@ -2172,6 +2172,7 @@ return function (App $app) {
 	// view tabel acc koordinator
 	$app->get("/tabel/koordinator/izin", function (Request $request, Response $response, $args) {
 		$postencript = $_GET['id'];
+		$resFix = array();
 		include 'fuction/decript.php';
 		$idUser = trim($plaintext_dec);
 
@@ -2187,6 +2188,11 @@ return function (App $app) {
 		$result = $stmt->fetch();
 		$divisi = $result['posisi2'];
 
+		//tampil rektor id
+		$sqlRektorID = $this->db->prepare("SELECT rektor_id FROM struktural WHERE id = '$idUser'");
+		$sqlRektorID->execute();
+		$resultRektorID = $sqlRektorID->fetch();
+
 		if (
 			$divisi == "BAA"
 			|| $divisi == "Security"
@@ -2200,6 +2206,7 @@ return function (App $app) {
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
+			
 
 			while ($result = $stmt->fetch()) {
 				$dataready = $result['id'];
@@ -2230,7 +2237,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
+			
 		} else if ($divisi == "BAU" || $divisi == "Front Office") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2266,7 +2273,6 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
 		} else if ($divisi == "Marketing" || $divisi == "Driver") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2302,7 +2308,6 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
 		} else if ($divisi == "Dekanat") {
 			$queryDekan = "SELECT * FROM struktural WHERE id = '$idUser'";
 			$stmtDekan = $this->db->prepare($queryDekan);
@@ -2345,7 +2350,6 @@ return function (App $app) {
 					array_push($res, $h);
 				}
 
-				return $response->withJson($res, 200);
 			} else if ($jabsus == 'Dekan FEB') {
 				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
 				$stmt = $this->db->prepare($sql);
@@ -2380,7 +2384,6 @@ return function (App $app) {
 					array_push($res, $h);
 				}
 
-				return $response->withJson($res, 200);
 			}
 		} else if ($jabatanstruktural == "HRD") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
@@ -2416,7 +2419,6 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
 		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2451,7 +2453,6 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
 		} else if ($jabatanstruktural == "R.1") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'BAA' AND `posisi1` = 'Karyawan'";
 			$stmt = $this->db->prepare($sql);
@@ -2485,8 +2486,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
-			return $response->withJson($res, 200);
 		} else if ($jabatanstruktural == "R.4") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('MDS','Marketing', 'Driver') AND `posisi1` = 'Karyawan'";
 			$stmt = $this->db->prepare($sql);
@@ -2521,8 +2520,12 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 
-			return $response->withJson($res, 200);
 		}
+
+		$node['jabatan_khusus'] = $resultRektorID['rektor_id'] ?? "";
+		$node['list_izin'] = $res;
+		array_push($resFix,$node);
+		return $response->withJson($resFix, 200);
 	});
 	// end view tabel koordinator
 
