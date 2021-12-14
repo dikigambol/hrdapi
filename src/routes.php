@@ -2453,10 +2453,10 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND `acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt' ORDER BY tgl_dibuat DESC";
-			$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$id'";
+			$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$id' LIMIT 1";
 			$prepsListRektorID = $this->db->prepare($getRektorID);
 			$prepsListRektorID->execute();
-			$listRektorID = $prepsListRektorID->fetchAll();
+			$listRektorID = $prepsListRektorID->fetch();
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -2467,7 +2467,7 @@ return function (App $app) {
 			$h['jabatan'] = $result['jabatan'];
 			$h['koordinator'] = $result['koordinator'];
 			if(count($listRektorID) > 0){
-				$h['jabatan_khusus'] = $listRektorID;
+				$h['jabatan_khusus'] = $listRektorID['rektor_id'];
 			}else{
 				$h['jabatan_khusus'] = "";
 			}
