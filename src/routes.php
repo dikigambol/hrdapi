@@ -1988,6 +1988,8 @@ return function (App $app) {
 	});
 	//end setujui izin dekan
 
+
+
 	//tolak izin dosen
 	$app->put("/tolak/izin/{dosen}", function (Request $request, Response $response, $args) {
 		$id_izin = $_GET['id_izin'];
@@ -2059,6 +2061,28 @@ return function (App $app) {
 		return $response->withJson($res, 200);
 	});
 	// end detail izin karyawan
+
+	//setujui izin karyawan
+	$app->put("/setujui/izin/{karyawan}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		// $id_koor = decryptKoor($_GET['id_koor']);
+		$sqlTampilIzin = $this->db->prepare("SELECT status_izin FROM izin_hrd WHERE id_izin = '$id_izin'");
+		$sqlTampilIzin->execute();
+		$result = $sqlTampilIzin->fetch();
+		$sqlUpdateStatus = ($result['status_izin'] == 1) ? $this->db->prepare("UPDATE izin_hrd SET status_izin = 2 WHERE id_izin = '$id_izin'") : $this->db->prepare("UPDATE izin_hrd SET status_izin = 3 WHERE id_izin = '$id_izin'");
+		$sqlUpdateStatus->execute();
+		return $response->withStatus(200);
+	});
+	//end setujui izin karyawan
+
+	//tolak izin karyawan
+	$app->put("/tolak/karyawan/{izin}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		$sqlUpdateStatus = $this->db->prepare("UPDATE izin_hrd SET status_izin = 0 WHERE id_izin = '$id_izin'");
+		$sqlUpdateStatus->execute();
+		return $response->withStatus(200);
+	});
+	//end tolak izin karyawan
 
 	// list select pegawai 
 	$app->get("/select/pegawai/all", function (Request $request, Response $response, $args) {
@@ -2466,7 +2490,7 @@ return function (App $app) {
 			$h['divisi'] = $result['posisi2'];
 			$h['jabatan'] = $result['jabatan'];
 			$h['koordinator'] = $result['koordinator'];
-			$h['jabatan_khusus'] = (count($listRektorID) > 0) ? $listRektorID['rektor_id'] : '';
+			$h['jabatan_khusus'] = $listRektorID['rektor_id'] ?? "";
 			$h['list_izin'] = $listIzin;
 			
 
