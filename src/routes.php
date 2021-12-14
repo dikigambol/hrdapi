@@ -2068,7 +2068,7 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			
+
 			$idresult = $result['id'];
 
 			$id_rektor = "SELECT * FROM struktural WHERE id = '$idresult' AND id_hidden = 1";
@@ -2091,6 +2091,351 @@ return function (App $app) {
 		return $response->withJson($res, 200);
 	});
 	// end list select pegawai 
+
+	//tambah izin karyawan
+	$app->post("/buat/izin/{karyawan}", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$_POST = json_decode(file_get_contents("php://input"), true);
+
+		$id_user = $id;
+		$acc1 = $_POST['acc1'];
+		$acc2 = $_POST['acc2'];
+		$lama_izin = $_POST['lama_izin'];
+		$tgl_mulai = $_POST["tgl_mulai"];
+		$tgl_akhir = $_POST['tgl_akhir'];
+		$alasan = $_POST['alasan'];
+
+		$tambahIzin = "INSERT INTO izin_hrd VALUES(null,'$id_user','$tgl_mulai','$tgl_akhir','$lama_izin','$alasan','$acc1','$acc2', '1', null)";
+		$stmtTambah = $this->db->prepare($tambahIzin);
+		$stmtTambah->execute();
+		if ($stmtTambah) {
+			return $response->withStatus(200);
+		}
+	});
+	//end tambah izin karyawan
+
+	//edit izin karyawan
+	$app->post("/update/izin/{karyawan}", function (Request $request, Response $response, $args) {
+		$_POST = json_decode(file_get_contents("php://input"), true);
+		$id_izin = $_GET['id_izin'];
+		$tgl_mulai = $_POST["tgl_mulai"];
+		$tgl_akhir = $_POST['tgl_akhir'];
+		$alasan = $_POST['alasan'];
+		$lama_izin = $_POST['lama_izin'];
+		$editIzin = "UPDATE izin_hrd SET tgl_mulai = '$tgl_mulai', tgl_akhir = '$tgl_akhir', alasan = '$alasan', lama_izin = '$lama_izin' WHERE id_izin = '$id_izin'";
+		$stmtEdit = $this->db->prepare($editIzin);
+		$stmtEdit->execute();
+		if ($stmtEdit) {
+			return $response->withStatus(200);
+		}
+	});
+	//end edit izin karyawan
+
+	//hapus izin karyawan
+	$app->delete("/delete/izin/{karyawan}", function (Request $request, Response $response, $args) {
+		$id_izin = $_GET['id_izin'];
+		$stmtHapus = "DELETE FROM izin_hrd WHERE id_izin = '$id_izin'";
+		$stmt = $this->db->prepare($stmtHapus);
+		$stmt->execute();
+
+		return $response->withStatus(200);
+	});
+	//end hapus izin karyawan
+
+	// view tabel acc koordinator
+	$app->get("/tabel/koordinator/izin", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$idUser = trim($plaintext_dec);
+
+		$queryStruktural = "SELECT * FROM struktural WHERE id = '$idUser'";
+		$prepsStruktural = $this->db->prepare($queryStruktural);
+		$prepsStruktural->execute();
+		$resultStruktural = $prepsStruktural->fetch();
+		$jabatanstruktural = $resultStruktural['rektor_id'] ?? null;
+
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$idUser'";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->fetch();
+		$divisi = $result['posisi2'];
+
+		if (
+			$divisi == "BAA"
+			|| $divisi == "Security"
+			|| $divisi == "Office Boy"
+			|| $divisi == "UPT-SI"
+			|| $divisi == "MDS"
+			|| $divisi == "Security"
+			|| $divisi == "Kemahasiswaan"
+		) {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
+				$prepsCountIzin = $this->db->prepare($getCountIzin);
+				$prepsCountIzin->execute();
+				$numIzin = $prepsCountIzin->fetch();
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_izin'] = $numIzin;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($divisi == "BAU" || $divisi == "Front Office") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt'  AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
+				$prepsCountIzin = $this->db->prepare($getCountIzin);
+				$prepsCountIzin->execute();
+				$numIzin = $prepsCountIzin->fetch();
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_izin'] = $numIzin;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($divisi == "Marketing" || $divisi == "Driver") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
+				$prepsCountIzin = $this->db->prepare($getCountIzin);
+				$prepsCountIzin->execute();
+				$numIzin = $prepsCountIzin->fetch();
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_izin'] = $numIzin;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($divisi == "Dekanat") {
+			$queryDekan = "SELECT * FROM struktural WHERE id = '$idUser'";
+			$stmtDekan = $this->db->prepare($queryDekan);
+			$stmtDekan->execute();
+			$resultDekan = $stmtDekan->fetch();
+			$jabsus = $resultDekan['ketkode_rektor'];
+
+			if ($jabsus == "Dekan FTD") {
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('$divisi', 'Digital Learning') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$stmt = $this->db->prepare($sql);
+				$stmt->execute();
+				$res = array();
+
+				while ($result = $stmt->fetch()) {
+					$dataready = $result['id'];
+					$idDecrypt = $result['id'];
+					require 'fuction/encript.php';
+					$id = $ciphertext_base64;
+
+					$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
+					$prepsCountIzin = $this->db->prepare($getCountIzin);
+					$prepsCountIzin->execute();
+					$numIzin = $prepsCountIzin->fetch();
+
+					$h['id'] = $id;
+					$h['nopeg'] = $result['user_id'];
+					$h['nama'] = $result['user_name'];
+					$h['divisi'] = $result['posisi2'];
+					$h['jumlah_izin'] = $numIzin;
+
+					array_push($res, $h);
+				}
+
+				return $response->withJson($res, 200);
+			} else if ($jabsus == 'Dekan FEB') {
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$stmt = $this->db->prepare($sql);
+				$stmt->execute();
+				$res = array();
+
+				while ($result = $stmt->fetch()) {
+					$dataready = $result['id'];
+					$idDecrypt = $result['id'];
+					require 'fuction/encript.php';
+					$id = $ciphertext_base64;
+
+					$getCountIzin = "SELECT COUNT(*) as 'num' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' OR `acc2` = '$idUser'";
+					$prepsCountIzin = $this->db->prepare($getCountIzin);
+					$prepsCountIzin->execute();
+					$numIzin = $prepsCountIzin->fetch();
+
+					$h['id'] = $id;
+					$h['nopeg'] = $result['user_id'];
+					$h['nama'] = $result['user_name'];
+					$h['divisi'] = $result['posisi2'];
+					$h['jumlah_izin'] = $numIzin;
+
+					array_push($res, $h);
+				}
+
+				return $response->withJson($res, 200);
+			}
+		} else if ($jabatanstruktural == "HRD") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$prepsAcc1 = $this->db->prepare($getAcc1);
+				$prepsAcc1->execute();
+				$numAcc1 = $prepsAcc1->fetch();
+				$countAcc1 = $numAcc1['acc1'];
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc1'] = $countAcc1;
+				$h['jumlah_acc2'] = $countAcc2;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc2'] = $countAcc2;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($jabatanstruktural == "R.1") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'BAA' AND `posisi1` = 'Karyawan'";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc2'] = $countAcc2;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		} else if ($jabatanstruktural == "R.4") {
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('MDS','Marketing', 'Driver') AND `posisi1` = 'Karyawan'";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+			$res = array();
+
+			while ($result = $stmt->fetch()) {
+				$dataready = $result['id'];
+				$idDecrypt = $result['id'];
+				require 'fuction/encript.php';
+				$id = $ciphertext_base64;
+
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$prepsAcc2 = $this->db->prepare($getAcc2);
+				$prepsAcc2->execute();
+				$numAcc2 = $prepsAcc2->fetch();
+				$countAcc2 = $numAcc2['acc2'];
+
+				$h['id'] = $id;
+				$h['nopeg'] = $result['user_id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jumlah_acc2'] = $countAcc2;
+
+				array_push($res, $h);
+			}
+
+			return $response->withJson($res, 200);
+		}
+	});
+	// end view tabel koordinator
 
 	// login astor hrd 
 	$app->get("/hrd/sign/id/{cari}", function (Request $request, Response $response) {
