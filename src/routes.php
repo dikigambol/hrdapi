@@ -2437,6 +2437,39 @@ return function (App $app) {
 	});
 	// end view tabel koordinator
 
+	// detail izin koordinator
+	$app->get("/koordinator/detail/izin", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$idKoor = $_GET['id_koor'];
+
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$res = array();
+
+		while ($result = $stmt->fetch()) {
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND `acc1` = '' OR `acc2` = '' ORDER BY tgl_dibuat DESC";
+			$prepsListIzin = $this->db->prepare($getIzin);
+			$prepsListIzin->execute();
+			$listIzin = $prepsListIzin->fetchAll();
+
+			$h['id'] = $result['id'];
+			$h['nama'] = $result['user_name'];
+			$h['divisi'] = $result['posisi2'];
+			$h['jabatan'] = $result['jabatan'];
+			$h['koordinator'] = $result['koordinator'];
+			$h['list_izin'] = $listIzin;
+
+			array_push($res, $h);
+		}
+
+		return $response->withJson($res, 200);
+	});
+	// end detail izin koordinator
+
 	// login astor hrd 
 	$app->get("/hrd/sign/id/{cari}", function (Request $request, Response $response) {
 		include 'link/surat/link_surat.php';
