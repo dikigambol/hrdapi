@@ -2295,7 +2295,6 @@ return function (App $app) {
 				$h['jumlah_acc1'] = $countAcc1;
 				$h['jumlah_acc2'] = $countAcc2;
 
-
 				array_push($res, $h);
 			}
 		} else if ($divisi == "Marketing" || $divisi == "Driver") {
@@ -2441,7 +2440,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` IN ('Karyawan', 'Dosen FTD', 'Dosen FEB') EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
