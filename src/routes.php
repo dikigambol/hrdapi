@@ -2040,6 +2040,7 @@ return function (App $app) {
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
 			$h['divisi'] = $result['posisi2'];
+			$h['jabatan'] = $result['jabatan'];
 			$h['jumlah_disetujui'] = $disetujui;
 			$h['jumlah_ditolak'] = $ditolak;
 
