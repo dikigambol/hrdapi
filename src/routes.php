@@ -364,6 +364,7 @@ return function (App $app) {
 				$h['lolipop'] = $result['posisi2'];
 				$h['gulali'] = $result['posisi1'];
 				$h['permen'] = $result['jabatan'];
+				$h['koordinator'] = $result['koordinator'];
 				$h['pempek'] = $result['jurusan_dosen'];
 				$h['pilus'] = $result['status_dosen'];
 				$h['soto'] = $result['id_hidden'];
@@ -392,6 +393,7 @@ return function (App $app) {
 		$uspf = $_POST['user_pass_def'];
 		$nidn = $_POST['nidn'];
 		$dvs = $_POST['jabatan'];
+		$koor = $_POST['koordinator'];
 		$almt = $_POST["alamat"];
 		$almtnow = $_POST["alamat_sekarang"];
 		$hp = $_POST["no_hp"];
@@ -420,7 +422,7 @@ return function (App $app) {
 		$cstmt_user->execute();
 		$result = $cstmt_user->fetch();
 
-		$sql = "UPDATE `user_entity` SET `user_id` = '$usid', `user_name` = '$usnm', `tgl_masuk` = '$datemasuk', `tgl_keluar` = '$datekeluar', `alamat` = '$almt', `alamat_sekarang` = '$almtnow', `no_hp` = '$hp', `tempat` = '$tmpt', `tanggal_lahir` = '$tgllahir', `jenis_kelamin` = '$jnsklmn', `nidn` = '$nidn', `no_ktp` = '$ktp', `status_nikah` = '$nikah', `posisi1` = '$ps1', `posisi2` = '$ps2', `jabatan` = '$dvs', `jurusan_dosen` = '$jurdos', `status_dosen` = '$stados',`bpjs_kesehatan` = '$bpjs_kshtn', `masa_aktif_kesehatan` = '$ms_kshtn', `bpjs_ketenagakerjaan` = '$bpjs_ktngkrjn', `masa_aktif_ketenagakerjaan` = '$ms_ktngkrjn', `jenjang` = '$jenjang' WHERE `id` = '$id' ";
+		$sql = "UPDATE `user_entity` SET `user_id` = '$usid', `user_name` = '$usnm', `tgl_masuk` = '$datemasuk', `tgl_keluar` = '$datekeluar', `alamat` = '$almt', `alamat_sekarang` = '$almtnow', `no_hp` = '$hp', `tempat` = '$tmpt', `tanggal_lahir` = '$tgllahir', `jenis_kelamin` = '$jnsklmn', `nidn` = '$nidn', `no_ktp` = '$ktp', `status_nikah` = '$nikah', `posisi1` = '$ps1', `posisi2` = '$ps2', `jabatan` = '$dvs', `koordinator` = '$koor', `jurusan_dosen` = '$jurdos', `status_dosen` = '$stados',`bpjs_kesehatan` = '$bpjs_kshtn', `masa_aktif_kesehatan` = '$ms_kshtn', `bpjs_ketenagakerjaan` = '$bpjs_ktngkrjn', `masa_aktif_ketenagakerjaan` = '$ms_ktngkrjn', `jenjang` = '$jenjang' WHERE `id` = '$id' ";
 
 		$imsgs = $this->db->prepare($sql);
 		$imsgs->execute();
