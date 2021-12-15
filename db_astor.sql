@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2021 at 08:51 AM
+-- Generation Time: Dec 15, 2021 at 10:29 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -155,8 +155,7 @@ CREATE TABLE `izin_hrd` (
 --
 
 INSERT INTO `izin_hrd` (`id_izin`, `id_user`, `tgl_mulai`, `tgl_akhir`, `lama_izin`, `alasan`, `acc1`, `acc2`, `status_izin`, `tgl_dibuat`) VALUES
-(31, 246, '2021-12-13', '2021-12-15', '1', 'alasan tok', 1, 1, 1, '2021-12-13 01:40:29'),
-(32, 246, '2021-12-14', '2021-12-17', '2', 'alasan tok', 1, 1, 1, '2021-12-13 01:41:03');
+(62, 246, '2021-12-15', '0000-00-00', '1', 'tes izin', 80, 82, 1, '2021-12-15 07:12:56');
 
 -- --------------------------------------------------------
 
@@ -179,8 +178,9 @@ CREATE TABLE `jadwal_hrd` (
 --
 
 INSERT INTO `jadwal_hrd` (`id_jadwal`, `id_user`, `hari`, `jam`, `absen_tempat`, `status_jadwal`, `id_struktural`) VALUES
-(257, 102, 1, '08:00 - 16:00', 'Kampus 2', 3, 0),
-(260, 68, 1, '08:00 - 16:00', 'Kampus 1', 0, 0);
+(268, 246, 1, '08:00 - 16:00', 'Kampus 1', 3, 0),
+(269, 247, 1, '08:00 - 16:00', 'Kampus 1', 3, 0),
+(270, 247, 2, '08:00 - 16:00', 'Kampus 2', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -1103,7 +1103,7 @@ INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_m
 (50, '3031', 'Endri Wibowo', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'KHRwK3PY', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (51, '3113', 'RISTI', 'YVdoMk1razNOMlJUV25WdWVtWjZaak5FYjNSYU1tVkJZMWwyWVdacGJWcEpkSEpNYzJoRGNHaFNiejA9', '2021-01-27', NULL, '3528DfZf', '', '', '85755111905', 'Malang', '1991-12-25', 1, '', '0', 0, 'Karyawan', 'Front Office', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (52, '1068', 'Ervina Yuli Estutik, SE', 'TnpoMWFHdHBaRVpFTUdoWFRqTnVUVkZ6TldFeGJUSjFjVFZMVkVRMVlVdGtlV1JrUzBsbU9FZFZNRDA9', '2021-01-27', '1001-01-01', 'u0b8MNWR', '-', '-', '0', '-', '2021-12-13', 0, '', '0', 0, 'Karyawan', 'MDS', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
-(53, '3099', 'Fabianus Vesalius Lawalu, S.Pt', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'B37fKKvX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(53, '3099', 'Fabianus Vesalius Lawalu, S.Pt', 'Y0dGemMzZHZjbVE9', '2021-01-27', '1001-01-01', 'B37fKKvX', '-', '-', '0', '-', '2021-12-15', 0, '', '0', 0, 'Karyawan', 'Security', '', 1, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
 (54, '3080', 'Fadhli Almu Iini Ahda, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '0ej3M0ZZ', '', '', '0', '', NULL, 0, '0716088603', '0', 0, 'Dosen FTD', 'LPMI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (55, '4012', 'Fadilla Cahnyaningtyas, SE, MSA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'PKvj48QA', '', '', '0', '', NULL, 0, '0723108801', '0', 0, 'Dosen FEB', 'Prodi', 'Sekprodi Akuntansi', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (56, '3209', 'Faldi Hendrawam, S.Pd, MA', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '7qz6sNxX', '', '', '0', '', NULL, 0, '0726038704', '0', 0, 'Dosen FTD', 'Prodi', 'Sekprodi Desain Komunikasi Visual', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
@@ -1130,7 +1130,7 @@ INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_m
 (77, '3067', 'Lussia Mariesti Andryani, SE, MM', 'VWpJeFVrODJZMmgzWkUxYVkyVnZjREp2YVRWRmQyTklSVE51UlVJeGNXRkhjVlU0TDJoR2NVaHlPRDA9', '2021-01-27', NULL, 'HDTz0cJb', '-', '-', '0', '-', '2021-09-30', 0, '0711038801', '0', 0, 'Dosen FEB', 'Prodi', '', 0, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
 (78, '4018', 'M. Zamroni', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vR0qPCSy', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Office Boy', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (79, '3069', 'Machrus Arifianto, SS', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(80, '1049', 'Magdalena Retno Saraswati, S.TP', 'YnpkblkwcFBOM1J2VTJORVFrTkZSREpVWms5MloxSjFWbEZJZUN0RVEySjNWbkZtVFZGSlpFOHlNRDA9', '2021-01-27', NULL, 'fCj528Pb', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'BAA', '', 1, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
+(80, '1049', 'Magdalena Retno Saraswati, S.TP', 'YnpkblkwcFBOM1J2VTJORVFrTkZSREpVWms5MloxSjFWbEZJZUN0RVEySjNWbkZtVFZGSlpFOHlNRDA9', '2021-01-27', '1001-01-01', 'fCj528Pb', '-', '-', '0', '-', '2021-12-15', 0, '', '0', 0, 'Karyawan', 'BAA', '', 1, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 1', '', 1),
 (81, '3407', 'Mahendra Eko Priyantono', 'UlhOU2NXWmpObFZXZUdObmVtdEdVaTgyS3psWFYyVkRURkZGT1dNeGJGa3paRWwyV0ZOSVFXbzBiejA9', '2021-01-27', NULL, '0vC2TyUX', '', '', '0', '', NULL, 0, '', '0', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (82, '3409', 'Mahindra Mandala Putra, SH', 'T1UwMVkyWkdiVGxtUjA1Q05IQTNNMU5FY1VOdFVYWjBUM05VT1dWRGRWSldWWFJrTVVSME9FUTBPRDA9', '2015-06-01', '1001-01-01', '52YvGtSH', 'Jl pringgodani I Klodran, Colomadu, Kab. Karanganyar, Jawa Tengah', 'Jl. Ikan Tombro Timur, Perum Istana cakalang Kav.42, Polowijwn, Blimbing , Kota Malang, Jawa Timur', '081326668815', 'Trenggalek', '1993-03-03', 0, '', '3313120303930001', 0, 'Karyawan', 'HRD & Sarpras', 'Kepala Sarpras/Kepala HRD', 0, 'null', 'null', '', 1, '1001-01-01', 1, '1001-01-01', 'Strata 1', '', 1),
 (83, '9015', 'Mariana Puspa Dewi, SE, M.I.Kom', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'vsHA6arZ', '', '', '0', '', NULL, 0, '0709107502', '0', 0, 'Dosen FEB', 'LP2M', 'Jurnal', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
@@ -1189,7 +1189,7 @@ INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_m
 (138, '1096', 'Yudianto', 'Y0dGemMzZHZjbVE9', '2008-08-01', NULL, 'nP3fwZra', 'Karangrejo Selatan RT 13 RW 9 Kel. Purworejo Kec. Donomulyo Malang', 'Jl. Borobudur No. 21 Malang', '081553475411', 'Blitar', '1987-02-07', 0, '', '3505180702870001', 0, 'Karyawan', 'Marketing', '', 0, NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
 (139, '3207', 'Yudistira Arya Sapoetra, S.Kom, MM', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'TE1nvuYj', '', '', '0', '', NULL, 0, '0704088601', '0', 0, 'Dosen FTD', 'LPMI', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (140, '4013', 'Abdul Aziz Muslim, S.Psi, M.Psi', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, 'DA0SJ4ct', '', '', '0', '', NULL, 0, '0709108904', '0', 0, 'Dosen FEB', 'Konselor', '', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
-(141, '9807', 'Abd Hadi, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-03-10', NULL, '2u4PwTsg', '', '', '0', '', NULL, 0, '0727078810', '0', 0, 'Dosen FTD', 'LP2M', 'Pengelola JITIKA', 0, '', '', '', NULL, NULL, NULL, NULL, '', '', 1),
+(141, '9807', 'Abd Hadi, S.Kom, M.Kom', 'Y0dGemMzZHZjbVE9', '2021-03-10', '1001-01-01', '2u4PwTsg', '-', '-', '0', '-', '2021-12-13', 0, '0727078810', '0', 0, 'Dosen FTD', 'Kemahasiswaan', 'Pengelola JITIKA', 1, 'null', 'null', '', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
 (142, '9806', 'Abdulloh Eizzi Irsyada, S.Kom, M.Ds', 'Y0dGemMzZHZjbVE9', '2021-01-27', NULL, '2qrXvgWH', '', '', '0', '', NULL, 0, '0703069102', '0', 0, 'Dosen FTD', 'INBIS', 'Pengelola JESKOV', 0, NULL, '', '', NULL, NULL, NULL, NULL, NULL, '', 1),
 (143, '3098', 'Achmad Isman', 'Y0dGemMzZHZjbVE9', '2014-07-15', NULL, 'xcPvN2ZH', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', 'Jl. Gajayana No. 599 RT 1 RW 2 Kel. Dinoyo Kec. Lowokwaru Malang', '082139889111', 'Malang', '1985-10-17', 0, '', '3507251710850003', 0, 'Karyawan', 'Security', '', 0, NULL, '', '', 1, '1001-01-01', 1, '1001-01-01', 'SMA', '', 1),
 (144, '1016', 'Achmad Noercholis, ST, MT', 'V1U1bWVTdGFSbVZyV1hkQmMxWlNNV2h5V0ZZeVdVdFJZV3N5TkhScGMyTjVMMUVyVjFaUlNERmpTVDA9', '2021-01-27', NULL, '83PK58bU', '', '', '0', '', NULL, 0, '0707058303', '0', 0, 'Dosen FTD', 'UPT-SI', 'KaBag.Research and Development', 0, NULL, '', 'ACH01', NULL, NULL, NULL, NULL, NULL, '', 1),
@@ -1210,8 +1210,9 @@ INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_m
 (243, '3745', 'YOGI WIDYA SAKA WARSAA, S.Sn, M.Sn', 'TURoUFkzUXlNVEE0', '2021-10-01', NULL, '08Oct2108', 'Jl. Sawojajar GAng Vb No 46 Malang', 'Jl. Sawojajar GAng Vb No 46 Malang', '081222505059', 'Pasuruan', '1993-03-30', 0, '00', '0', 1, 'Dosen FTD', '', 'Dosen', 0, 'DKV', 'Semi', '0', 0, '1001-01-01', 0, '1001-01-01', 'Strata 2', '', 1),
 (244, 'Tengky Bagoes', 'Tengky Bagoes', 'Y0ZoUU5XbENjWFJaYTJaVWQzZHNja3h3Y25sRkwxTXJRelZuVDJob01ERndWMGM0U0VvM1FtVTBaejA9', NULL, NULL, 'NTdOb3YyMTU3', 'j', 'j', '', 'Blitar', '2021-11-18', 0, '0', '0', 0, 'Dosen LB', '', '', 0, '', '', 'TNK01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
 (245, 'elfa', 'elfa', 'TkU0MFMzRkdRbVpsY1hWeWRsaEhWMkoyZHpsMVpFMVZWbGcwYUVKWGJXWlJTVmxZWjJ0aU5DdFVPRDA9', NULL, NULL, 'MjZOb3YyMTI2', 'a', 'a', '', 'Blitar', '2021-11-18', 1, '0', '0', 0, 'Dosen LB', '', '', 0, '', '', 'ELF01', NULL, NULL, NULL, NULL, 'Strata 2', NULL, 1),
-(246, 'testStaff', 'tesStaff', 'U1haVFlrVk5hakZaVlhWWVJ6aGtVa296U210SVEybFFiWGRsWW1wemRWSmllRGhSYkdrdlMxWTRZejA9', '2021-11-25', '1001-01-01', '18Nov2118', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '', '123456789', 1, 'Karyawan', 'Office Boy', 'test', 1, 'null', 'null', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
-(247, 'tesDosen', 'tesDosen', 'YUc1eGMyaEdUbTlXUmtnMFJTczJVMmxMYWpka01HWmFUMGRTYjBOc1owTm9ibUptVGtWblJVNUxUVDA9', '2021-11-25', '1001-01-01', '06Nov2106', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '0727078810', '123456789', 1, 'Dosen FTD', '-', '', 0, 'Teknik Informatika', 'Full', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1);
+(246, 'testStaff', 'tesStaff', 'U1haVFlrVk5hakZaVlhWWVJ6aGtVa296U210SVEybFFiWGRsWW1wemRWSmllRGhSYkdrdlMxWTRZejA9', '2021-11-25', '1001-01-01', '18Nov2118', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '', '123456789', 1, 'Karyawan', 'BAA', 'test', 0, 'null', 'null', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
+(247, 'tesDosen', 'tesDosen', 'YUc1eGMyaEdUbTlXUmtnMFJTczJVMmxMYWpka01HWmFUMGRTYjBOc1owTm9ibUptVGtWblJVNUxUVDA9', '2021-11-25', '1001-01-01', '06Nov2106', 'alamat', 'alamat', '08974680033', 'Malang', '2021-11-25', 0, '0727078810', '123456789', 1, 'Dosen FTD', '-', '', 0, 'Teknik Informatika', 'Full', '0', 0, '1001-01-01', 0, '1001-01-01', 'SD', '', 1),
+(250, '666', 'tesjalan', 'TXpaRVpXTXlNVE0y', '2021-12-15', NULL, '36Dec2136', 'test', 'test', '08974680033', 'test', '2021-12-15', 0, '0727078810', '1234', 0, 'Dosen FTD', '', '', 0, 'Teknik Informatika', 'Full', '0', 0, '1001-01-01', 0, '1001-01-01', 'SMA', '', 1);
 
 -- --------------------------------------------------------
 
@@ -1473,13 +1474,13 @@ ALTER TABLE `absensi_hrd`
 -- AUTO_INCREMENT for table `izin_hrd`
 --
 ALTER TABLE `izin_hrd`
-  MODIFY `id_izin` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_izin` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `jadwal_hrd`
 --
 ALTER TABLE `jadwal_hrd`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=271;
 
 --
 -- AUTO_INCREMENT for table `jenjang`
@@ -1527,7 +1528,7 @@ ALTER TABLE `struktural`
 -- AUTO_INCREMENT for table `user_entity`
 --
 ALTER TABLE `user_entity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- AUTO_INCREMENT for table `versi`
