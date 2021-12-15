@@ -1560,16 +1560,24 @@ return function (App $app) {
 			require 'fuction/encript.php';
 			$id = $ciphertext_base64;
 
-			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
-			$prepsCountIzin = $this->db->prepare($getCountIzin);
-			$prepsCountIzin->execute();
-			$numIzin = $prepsCountIzin->fetch();
+			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
+			$preps3 = $this->db->prepare($get3);
+			$preps3->execute();
+			$fetch3 = $preps3->fetch();
+			$disetujui = $fetch3['3'];
+
+			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0";
+			$preps0 = $this->db->prepare($get0);
+			$preps0->execute();
+			$fetch0 = $preps0->fetch();
+			$ditolak = $fetch0['0'];
 
 			$h['id'] = $id;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
 			$h['divisi'] = $result['posisi1'];
-			$h['jumlah_izin'] = $numIzin;
+			$h['jumlah_disetujui'] = $disetujui;
+			$h['jumlah_ditolak'] = $ditolak;
 
 			array_push($res, $h);
 		}
@@ -1590,7 +1598,7 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_dibuat DESC";
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -1908,7 +1916,7 @@ return function (App $app) {
 		$dataIdRektor = $stmtIdRektor->fetch();
 		$idrektor = $dataIdRektor['id_rektor'];
 
-		$sql = "SELECT * FROM `izin_hrd` WHERE `acc1` = '$idrektor' AND `id_user` = '$idUser'";
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc1` = '$idrektor' AND `id_user` = '$idUser' ORDER BY tgl_mulai DESC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1944,7 +1952,7 @@ return function (App $app) {
 		$dataIdRektor = $stmtIdRektor->fetch();
 		$idrektor = $dataIdRektor['id_rektor'];
 
-		$sql = "SELECT * FROM `izin_hrd` WHERE `acc2` = '$idrektor' AND `id_user` = '$idUser'";
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc2` = '$idrektor' AND `id_user` = '$idUser' ORDER BY tgl_mulai DESC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2013,16 +2021,24 @@ return function (App $app) {
 			require 'fuction/encript.php';
 			$id = $ciphertext_base64;
 
-			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
-			$prepsCountIzin = $this->db->prepare($getCountIzin);
-			$prepsCountIzin->execute();
-			$numIzin = $prepsCountIzin->fetch();
+			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
+			$preps3 = $this->db->prepare($get3);
+			$preps3->execute();
+			$fetch3 = $preps3->fetch();
+			$disetujui = $fetch3['3'];
+
+			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0";
+			$preps0 = $this->db->prepare($get0);
+			$preps0->execute();
+			$fetch0 = $preps0->fetch();
+			$ditolak = $fetch0['0'];
 
 			$h['id'] = $id;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
 			$h['divisi'] = $result['posisi2'];
-			$h['jumlah_izin'] = $numIzin;
+			$h['jumlah_disetujui'] = $disetujui;
+			$h['jumlah_ditolak'] = $ditolak;
 
 			array_push($res, $h);
 		}
@@ -2043,7 +2059,7 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_dibuat DESC";
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -2122,6 +2138,18 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
+		$getJabsus = "SELECT * FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$prepsJabsus = $this->db->prepare($getJabsus);
+		$prepsJabsus->execute();
+		$fetchJabsus = $prepsJabsus->fetch();
+		$jabsus = $fetchJabsus['rektor_id'];
+
+		if ($jabsus == "HRD") {
+			$stIzin = 2;
+		} else {
+			$stIzin = 1;
+		}
+
 		$_POST = json_decode(file_get_contents("php://input"), true);
 
 		$id_user = $id;
@@ -2132,7 +2160,7 @@ return function (App $app) {
 		$tgl_akhir = $_POST['tgl_akhir'];
 		$alasan = $_POST['alasan'];
 
-		$tambahIzin = "INSERT INTO izin_hrd VALUES(null,'$id_user','$tgl_mulai','$tgl_akhir','$lama_izin','$alasan','$acc1','$acc2', '1', null)";
+		$tambahIzin = "INSERT INTO izin_hrd VALUES(null,'$id_user','$tgl_mulai','$tgl_akhir','$lama_izin','$alasan','$acc1','$acc2', '$stIzin', null)";
 		$stmtTambah = $this->db->prepare($tambahIzin);
 		$stmtTambah->execute();
 		if ($stmtTambah) {
@@ -2206,7 +2234,7 @@ return function (App $app) {
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
-			
+
 
 			while ($result = $stmt->fetch()) {
 				$dataready = $result['id'];
@@ -2236,8 +2264,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
-			
 		} else if ($divisi == "BAU" || $divisi == "Front Office") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2272,7 +2298,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
 		} else if ($divisi == "Marketing" || $divisi == "Driver") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2307,7 +2332,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
 		} else if ($divisi == "Dekanat") {
 			$queryDekan = "SELECT * FROM struktural WHERE id = '$idUser'";
 			$stmtDekan = $this->db->prepare($queryDekan);
@@ -2349,7 +2373,6 @@ return function (App $app) {
 
 					array_push($res, $h);
 				}
-
 			} else if ($jabsus == 'Dekan FEB') {
 				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
 				$stmt = $this->db->prepare($sql);
@@ -2383,7 +2406,6 @@ return function (App $app) {
 
 					array_push($res, $h);
 				}
-
 			}
 		} else if ($jabatanstruktural == "HRD") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
@@ -2418,7 +2440,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
 		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2452,7 +2473,6 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
 		} else if ($jabatanstruktural == "R.1") {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'BAA' AND `posisi1` = 'Karyawan'";
 			$stmt = $this->db->prepare($sql);
@@ -2519,12 +2539,11 @@ return function (App $app) {
 
 				array_push($res, $h);
 			}
-
 		}
 
 		$node['jabatan_khusus'] = $resultRektorID['rektor_id'] ?? "";
-		$node['list_izin'] = $res;
-		array_push($resFix,$node);
+		$node['list_izin'] = $res ?? [];
+		array_push($resFix, $node);
 		return $response->withJson($resFix, 200);
 	});
 	// end view tabel koordinator
@@ -2536,7 +2555,7 @@ return function (App $app) {
 		$id = trim($plaintext_dec);
 
 		$idKoor = $_GET['id_koor'];
-		$idKoorDecrypt = decryptKoor($idKoor);
+		$idKoorDecrypt = intval(decryptKoor($idKoor));
 
 		$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$idKoorDecrypt' LIMIT 1";
 		$prepsListRektorID = $this->db->prepare($getRektorID);
@@ -2554,27 +2573,122 @@ return function (App $app) {
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
+		// $resultHrd = array();
+
+		$getIzinHrd = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') ORDER BY tgl_mulai DESC";
+		$prepsListIzinHrd = $this->db->prepare($getIzinHrd);
+		$prepsListIzinHrd->execute();
+		while ($listIzinHrd = $prepsListIzinHrd->fetch()) {
+			if (intval($listIzinHrd['acc1']) == intval($idKoorDecrypt) && $listIzinHrd['status_izin'] == 1) {
+				$remakeIdKoor = intval($idKoorDecrypt);
+				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc1 = '$remakeIdKoor' AND status_izin = 1");
+				$getIzin1->execute();
+				$resultHrd = $getIzin1->fetchAll();
+			} else if (intval($listIzinHrd['acc2']) == intval($idKoorDecrypt) && $listIzinHrd['status_izin'] == 2) {
+				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc2 = '$idKoorDecrypt' AND status_izin = 2");
+				$getIzin1->execute();
+				$resultHrd = $getIzin1->fetchAll();
+			}
+		};
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND `acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt' ORDER BY tgl_dibuat DESC";
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') ORDER BY tgl_mulai DESC";
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
 
-			$h['id'] = $result['id'];
-			$h['nama'] = $result['user_name'];
-			$h['divisi'] = $result['posisi2'];
-			$h['jabatan'] = $result['jabatan'];
-			$h['koordinator'] = $stKoor;
-			$h['jabatan_khusus'] =  $idRektor;
-			$h['list_izin'] = $listIzin;
 
-			array_push($res, $h);
+			// $listIzinFt = $prepsListIzin->fetch();
+
+			if ($idRektor == "HRD") {
+				$h['id'] = $result['id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jabatan'] = $result['jabatan'];
+				$h['koordinator'] = $stKoor;
+				$h['jabatan_khusus'] =  $idRektor;
+				$h['list_izin'] = $resultHrd ?? [];
+
+				array_push($res, $h);
+			} else {
+				$h['id'] = $result['id'];
+				$h['nama'] = $result['user_name'];
+				$h['divisi'] = $result['posisi2'];
+				$h['jabatan'] = $result['jabatan'];
+				$h['koordinator'] = $stKoor;
+				$h['jabatan_khusus'] =  $idRektor;
+				$h['list_izin'] = $listIzin;
+
+				array_push($res, $h);
+			}
 		}
 
 		return $response->withJson($res, 200);
 	});
 	// end detail izin koordinator
+
+	// notif izin 
+	$app->get("/notif/izin", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$id' AND status_izin = 1";
+		$preps1 = $this->db->prepare($get1);
+		$preps1->execute();
+		$fetch1 = $preps1->fetch();
+		$countNotif = $fetch1['1'];
+
+		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$id' AND status_izin = 2";
+		$preps2 = $this->db->prepare($get2);
+		$preps2->execute();
+		$fetch2 = $preps2->fetch();
+		$countNotif2 = $fetch2['2'];
+
+		$res["notif_izin1"] = $countNotif;
+		$res["notif_izin2"] = $countNotif2;
+
+		return $response->withJson($res, 200);
+	});
+	// end notif izin 
+
+	// notif dosen
+	$app->get("/notif/dosen", function (Request $request, Response $response, $args) {
+		$postencript = $_GET['id'];
+		include 'fuction/decript.php';
+		$id = trim($plaintext_dec);
+
+		$queryStruktural = "SELECT * FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$prepsStruktural = $this->db->prepare($queryStruktural);
+		$prepsStruktural->execute();
+		$resultStruktural = $prepsStruktural->fetch();
+		$idrektor = $resultStruktural['id_rektor'] ?? null;
+
+		$getjdw1 = "SELECT COUNT(*) as 'jdw1' FROM jadwal_hrd WHERE `id_struktural` = '$idrektor' AND (status_jadwal = 1 OR status_jadwal = 2)";
+		$prepsjdw1 = $this->db->prepare($getjdw1);
+		$prepsjdw1->execute();
+		$fetchjdw1 = $prepsjdw1->fetch();
+		$countJadwal = $fetchjdw1['jdw1'];
+
+		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$idrektor' AND status_izin = 1";
+		$preps1 = $this->db->prepare($get1);
+		$preps1->execute();
+		$fetch1 = $preps1->fetch();
+		$countNotif = $fetch1['1'];
+
+		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$idrektor' AND status_izin = 2";
+		$preps2 = $this->db->prepare($get2);
+		$preps2->execute();
+		$fetch2 = $preps2->fetch();
+		$countNotif2 = $fetch2['2'];
+
+		$res['notif_jadwal'] = $countJadwal;
+		$res["notif_izin1"] = $countNotif;
+		$res["notif_izin2"] = $countNotif2;
+
+		return $response->withJson($res, 200);
+	});
+	// end notif dosen 
 
 	//global function decrypt
 	function decryptKoor($param1)
