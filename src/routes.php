@@ -776,6 +776,7 @@ return function (App $app) {
 			$h['merah'] = $result['user_name'];
 			$h['jingga'] = $result['posisi1'];
 			$h['hitam'] = $result['posisi2'];
+			$h['jabatan'] = $result['jabatan'];
 			$h['kuning'] = $result['status_dosen'];
 			$h['ungu'] = $result['jurusan_dosen'];
 			$h['putih'] = $result['nidn'];
