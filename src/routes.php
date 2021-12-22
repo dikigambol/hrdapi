@@ -711,20 +711,21 @@ return function (App $app) {
 
 	// view jadwal user 
 	$app->get("/tampil/orang/jadwal/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan'  ORDER BY `id` DESC ";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan'  ORDER BY `posisi2` ASC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
 		$nn = 1;
 
 		while ($result = $stmt->fetch()) {
-			$h['aban'] = $nn++;
 			$dataready = $result['id'];
 			require 'fuction/encript.php';
 			$hasil = $ciphertext_base64;
+
 			$h['abun'] = $hasil;
 			$h['abon'] = $result['user_id'];
 			$h['acas'] = $result['user_name'];
+			$h['divisi'] = $result['posisi2'];
 
 			$a = array_push($res, $h);
 		}
@@ -735,20 +736,21 @@ return function (App $app) {
 
 	// view jadwal dosen
 	$app->get("/tampil/nama/dosen/jadwal/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB'  ORDER BY `id` DESC ";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB'  ORDER BY `posisi1` DESC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
 		$nn = 1;
 
 		while ($result = $stmt->fetch()) {
-			$h['aban'] = $nn++;
 			$dataready = $result['id'];
 			require 'fuction/encript.php';
 			$hasil = $ciphertext_base64;
+
 			$h['abun'] = $hasil;
 			$h['abon'] = $result['user_id'];
 			$h['acas'] = $result['user_name'];
+			$h['posisi'] = $result['posisi1'];
 
 			$a = array_push($res, $h);
 		}
@@ -1552,7 +1554,10 @@ return function (App $app) {
 
 	// view izin dosen
 	$app->get("/tabel/dosen/izin", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB'  ORDER BY `id` DESC ";
+		$bulan = $_GET['bulan'];
+		$tahun = $_GET['tahun'];
+
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB' ORDER BY `posisi1` DESC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1563,13 +1568,13 @@ return function (App $app) {
 			require 'fuction/encript.php';
 			$id = $ciphertext_base64;
 
-			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
+			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$preps3 = $this->db->prepare($get3);
 			$preps3->execute();
 			$fetch3 = $preps3->fetch();
 			$disetujui = $fetch3['3'];
 
-			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0";
+			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$preps0 = $this->db->prepare($get0);
 			$preps0->execute();
 			$fetch0 = $preps0->fetch();
@@ -1592,6 +1597,9 @@ return function (App $app) {
 
 	// detail izin dosen 
 	$app->get("/detail/izin/dosen", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -1602,7 +1610,12 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
+			if ($bulan == "" || $tahun == "") {
+				$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
+			} else {
+				$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
+			}
+
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -1816,6 +1829,9 @@ return function (App $app) {
 
 	// view tabel acc kaprodi
 	$app->get("/tabel/kaprodi/izin", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -1831,11 +1847,18 @@ return function (App $app) {
 		} else {
 			$koderektor = 'Dekan FEB';
 		}
+
 		$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = '$koderektor'";
 		$stmtDekan = $this->db->prepare($queryDekan);
 		$stmtDekan->execute();
 		$resultDekan = $stmtDekan->fetch();
 		$idDekan = $resultDekan['id'];
+
+		$queryStruk = "SELECT * FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$stmtStruk = $this->db->prepare($queryStruk);
+		$stmtStruk->execute();
+		$resultStruk = $stmtStruk->fetch();
+		$idStruk = $resultStruk['id_rektor'];
 
 		$sql = "SELECT * FROM `user_entity` WHERE `jurusan_dosen` = '$jurusanKaprodi' EXCEPT SELECT * FROM `user_entity` WHERE id IN ($id, $idDekan)";
 		$stmt = $this->db->prepare($sql);
@@ -1846,14 +1869,14 @@ return function (App $app) {
 			$dataready = $result['id'];
 			$idDecrypt = $result['id'];
 			require 'fuction/encript.php';
-			$id = $ciphertext_base64;
+			$idUser = $ciphertext_base64;
 
-			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 1";
+			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND acc1 = '$idStruk' AND status_izin = 1 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$prepsCountIzin = $this->db->prepare($getCountIzin);
 			$prepsCountIzin->execute();
 			$numIzin = $prepsCountIzin->fetch();
 
-			$h['id'] = $id;
+			$h['id'] = $idUser;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
 			$h['prodi'] = $result['jurusan_dosen'];
@@ -1868,6 +1891,9 @@ return function (App $app) {
 
 	// view tabel acc dekan
 	$app->get("/tabel/dekan/izin", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -1877,6 +1903,12 @@ return function (App $app) {
 		$stmt->execute();
 		$result = $stmt->fetch();
 		$jenisDosen = $result['posisi1'];
+
+		$queryStruk = "SELECT * FROM struktural WHERE id = '$id' AND id_hidden = 1";
+		$stmtStruk = $this->db->prepare($queryStruk);
+		$stmtStruk->execute();
+		$resultStruk = $stmtStruk->fetch();
+		$idStruk = $resultStruk['id_rektor'];
 
 		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = '$jenisDosen' EXCEPT SELECT * FROM `user_entity` WHERE id='$id'";
 		$stmt = $this->db->prepare($sql);
@@ -1889,11 +1921,11 @@ return function (App $app) {
 			require 'fuction/encript.php';
 			$id = $ciphertext_base64;
 
-			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 2";
+			$getCountIzin = "SELECT COUNT(*) as 'num' FROM izin_hrd WHERE id_user = '$idDecrypt' AND acc2 = '$idStruk' AND status_izin = 2 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$prepsCountIzin = $this->db->prepare($getCountIzin);
 			$prepsCountIzin->execute();
 			$numIzin = $prepsCountIzin->fetch();
-
+ 
 			$h['id'] = $id;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
@@ -1905,10 +1937,13 @@ return function (App $app) {
 
 		return $response->withJson($res, 200);
 	});
-	// end view tabel acc kaprodi
+	// end view tabel acc dekan
 
 	//view acc1 dosen
 	$app->get("/detail/izin/{kaprodi}", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -1920,7 +1955,7 @@ return function (App $app) {
 		$dataIdRektor = $stmtIdRektor->fetch();
 		$idrektor = $dataIdRektor['id_rektor'];
 
-		$sql = "SELECT * FROM `izin_hrd` WHERE `acc1` = '$idrektor' AND `id_user` = '$idUser' ORDER BY tgl_mulai DESC";
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc1` = '$idrektor' AND `id_user` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1945,6 +1980,9 @@ return function (App $app) {
 
 	//view acc2 dosen
 	$app->get("/detail/izin/dosen/{dekan}", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -1956,7 +1994,7 @@ return function (App $app) {
 		$dataIdRektor = $stmtIdRektor->fetch();
 		$idrektor = $dataIdRektor['id_rektor'];
 
-		$sql = "SELECT * FROM `izin_hrd` WHERE `acc2` = '$idrektor' AND `id_user` = '$idUser' ORDER BY tgl_mulai DESC";
+		$sql = "SELECT * FROM `izin_hrd` WHERE `acc2` = '$idrektor' AND `id_user` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2000,8 +2038,6 @@ return function (App $app) {
 	});
 	//end setujui izin dekan
 
-
-
 	//tolak izin dosen
 	$app->put("/tolak/izin/{dosen}", function (Request $request, Response $response, $args) {
 		$id_izin = $_GET['id_izin'];
@@ -2014,7 +2050,10 @@ return function (App $app) {
 
 	// view izin karyawan
 	$app->get("/tabel/karyawan/izin", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' ORDER BY `id` DESC ";
+		$bulan = $_GET['bulan'];
+		$tahun = $_GET['tahun'];
+
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' ORDER BY `posisi2` ASC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2025,13 +2064,13 @@ return function (App $app) {
 			require 'fuction/encript.php';
 			$id = $ciphertext_base64;
 
-			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3";
+			$get3 = "SELECT COUNT(*) as '3' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 3 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$preps3 = $this->db->prepare($get3);
 			$preps3->execute();
 			$fetch3 = $preps3->fetch();
 			$disetujui = $fetch3['3'];
 
-			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0";
+			$get0 = "SELECT COUNT(*) as '0' FROM izin_hrd WHERE id_user = '$idDecrypt' AND status_izin = 0 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 			$preps0 = $this->db->prepare($get0);
 			$preps0->execute();
 			$fetch0 = $preps0->fetch();
@@ -2054,6 +2093,10 @@ return function (App $app) {
 
 	// detail izin karyawan
 	$app->get("/karyawan/detail/izin", function (Request $request, Response $response, $args) {
+
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -2064,7 +2107,11 @@ return function (App $app) {
 		$res = array();
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
+			if ($bulan == "" || $tahun == "") {
+				$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' ORDER BY tgl_mulai DESC";
+			} else {
+				$getIzin = "SELECT * FROM `izin_hrd` WHERE `id_user` = '$id' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
+			}
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
@@ -2204,6 +2251,9 @@ return function (App $app) {
 
 	// view tabel acc koordinator
 	$app->get("/tabel/koordinator/izin", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		$resFix = array();
 		include 'fuction/decript.php';
@@ -2232,8 +2282,10 @@ return function (App $app) {
 			|| $divisi == "Office Boy"
 			|| $divisi == "UPT-SI"
 			|| $divisi == "MDS"
-			|| $divisi == "Security"
+			|| $divisi == "Pustakawan"
+			|| $divisi == "Digital Learning"
 			|| $divisi == "Kemahasiswaan"
+			|| $divisi == "Teknisi"
 		) {
 			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
 			$stmt = $this->db->prepare($sql);
@@ -2247,13 +2299,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2281,13 +2333,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2314,13 +2366,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2344,7 +2396,7 @@ return function (App $app) {
 			$jabsus = $resultDekan['ketkode_rektor'];
 
 			if ($jabsus == "Dekan FTD") {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('$divisi', 'Digital Learning') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Admin FTD', 'Digital Learning') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2355,13 +2407,13 @@ return function (App $app) {
 					require 'fuction/encript.php';
 					$id = $ciphertext_base64;
 
-					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 					$prepsAcc1 = $this->db->prepare($getAcc1);
 					$prepsAcc1->execute();
 					$numAcc1 = $prepsAcc1->fetch();
 					$countAcc1 = $numAcc1['acc1'];
 
-					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 					$prepsAcc2 = $this->db->prepare($getAcc2);
 					$prepsAcc2->execute();
 					$numAcc2 = $prepsAcc2->fetch();
@@ -2378,7 +2430,7 @@ return function (App $app) {
 					array_push($res, $h);
 				}
 			} else if ($jabsus == 'Dekan FEB') {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'Admin FEB' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2389,13 +2441,13 @@ return function (App $app) {
 					require 'fuction/encript.php';
 					$id = $ciphertext_base64;
 
-					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+					$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 					$prepsAcc1 = $this->db->prepare($getAcc1);
 					$prepsAcc1->execute();
 					$numAcc1 = $prepsAcc1->fetch();
 					$countAcc1 = $numAcc1['acc1'];
 
-					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+					$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 					$prepsAcc2 = $this->db->prepare($getAcc2);
 					$prepsAcc2->execute();
 					$numAcc2 = $prepsAcc2->fetch();
@@ -2423,13 +2475,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2456,13 +2508,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2489,13 +2541,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2522,13 +2574,13 @@ return function (App $app) {
 				require 'fuction/encript.php';
 				$id = $ciphertext_base64;
 
-				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser'";
+				$getAcc1 = "SELECT COUNT(*) as 'acc1' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 1 AND `acc1` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc1 = $this->db->prepare($getAcc1);
 				$prepsAcc1->execute();
 				$numAcc1 = $prepsAcc1->fetch();
 				$countAcc1 = $numAcc1['acc1'];
 
-				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser'";
+				$getAcc2 = "SELECT COUNT(*) as 'acc2' FROM `izin_hrd` WHERE `id_user` = '$idDecrypt' AND `status_izin` = 2 AND `acc2` = '$idUser' AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 				$prepsAcc2 = $this->db->prepare($getAcc2);
 				$prepsAcc2->execute();
 				$numAcc2 = $prepsAcc2->fetch();
@@ -2544,16 +2596,19 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		}
-
 		$node['jabatan_khusus'] = $resultRektorID['rektor_id'] ?? "";
 		$node['list_izin'] = $res ?? [];
 		array_push($resFix, $node);
+
 		return $response->withJson($resFix, 200);
 	});
 	// end view tabel koordinator
 
 	// detail izin koordinator
 	$app->get("/koordinator/detail/izin", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -2577,33 +2632,28 @@ return function (App $app) {
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
-		// $resultHrd = array();
 
-		$getIzinHrd = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') ORDER BY tgl_mulai DESC";
+		$getIzinHrd = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
 		$prepsListIzinHrd = $this->db->prepare($getIzinHrd);
 		$prepsListIzinHrd->execute();
 		while ($listIzinHrd = $prepsListIzinHrd->fetch()) {
 			if (intval($listIzinHrd['acc1']) == intval($idKoorDecrypt) && $listIzinHrd['status_izin'] == 1) {
 				$remakeIdKoor = intval($idKoorDecrypt);
-				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc1 = '$remakeIdKoor' AND status_izin = 1");
+				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc1 = '$remakeIdKoor' AND status_izin = 1 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'");
 				$getIzin1->execute();
 				$resultHrd = $getIzin1->fetchAll();
 			} else if (intval($listIzinHrd['acc2']) == intval($idKoorDecrypt) && $listIzinHrd['status_izin'] == 2) {
-				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc2 = '$idKoorDecrypt' AND status_izin = 2");
+				$getIzin1 = $this->db->prepare("SELECT * FROM izin_hrd WHERE id_user = '$id' AND acc2 = '$idKoorDecrypt' AND status_izin = 2 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'");
 				$getIzin1->execute();
 				$resultHrd = $getIzin1->fetchAll();
 			}
 		};
 
 		while ($result = $stmt->fetch()) {
-			$getIzin = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') ORDER BY tgl_mulai DESC";
+			$getIzin = "SELECT * FROM `izin_hrd` WHERE (`id_user` = '$id') AND (`acc1` = '$idKoorDecrypt' OR `acc2` = '$idKoorDecrypt') AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan' ORDER BY tgl_mulai DESC";
 			$prepsListIzin = $this->db->prepare($getIzin);
 			$prepsListIzin->execute();
 			$listIzin = $prepsListIzin->fetchAll();
-
-
-			// $listIzinFt = $prepsListIzin->fetch();
-
 			if ($idRektor == "HRD") {
 				$h['id'] = $result['id'];
 				$h['nama'] = $result['user_name'];
@@ -2633,17 +2683,20 @@ return function (App $app) {
 
 	// notif izin 
 	$app->get("/notif/izin", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$id' AND status_izin = 1";
+		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$id' AND status_izin = 1 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 		$preps1 = $this->db->prepare($get1);
 		$preps1->execute();
 		$fetch1 = $preps1->fetch();
 		$countNotif = $fetch1['1'];
 
-		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$id' AND status_izin = 2";
+		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$id' AND status_izin = 2 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 		$preps2 = $this->db->prepare($get2);
 		$preps2->execute();
 		$fetch2 = $preps2->fetch();
@@ -2658,6 +2711,9 @@ return function (App $app) {
 
 	// notif dosen
 	$app->get("/notif/dosen", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
 		$postencript = $_GET['id'];
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
@@ -2674,13 +2730,13 @@ return function (App $app) {
 		$fetchjdw1 = $prepsjdw1->fetch();
 		$countJadwal = $fetchjdw1['jdw1'];
 
-		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$idrektor' AND status_izin = 1";
+		$get1 = "SELECT COUNT(*) as '1' FROM izin_hrd WHERE `acc1` = '$idrektor' AND status_izin = 1 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 		$preps1 = $this->db->prepare($get1);
 		$preps1->execute();
 		$fetch1 = $preps1->fetch();
 		$countNotif = $fetch1['1'];
 
-		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$idrektor' AND status_izin = 2";
+		$get2 = "SELECT COUNT(*) as '2' FROM izin_hrd WHERE `acc2` = '$idrektor' AND status_izin = 2 AND year(tgl_mulai) = '$tahun' and month(tgl_mulai)='$bulan'";
 		$preps2 = $this->db->prepare($get2);
 		$preps2->execute();
 		$fetch2 = $preps2->fetch();
@@ -2693,6 +2749,44 @@ return function (App $app) {
 		return $response->withJson($res, 200);
 	});
 	// end notif dosen 
+
+	// list izin all
+	$app->get("/izin/list/all", function (Request $request, Response $response, $args) {
+		$bulan = $_GET['bulan'] ?? "";
+		$tahun = $_GET['tahun'] ?? "";
+
+		$get2 = "SELECT * FROM izin_hrd WHERE year(tgl_mulai) = '$tahun' AND month(tgl_mulai)='$bulan' ORDER BY tgl_mulai Desc";
+		$preps2 = $this->db->prepare($get2);
+		$preps2->execute();
+		$res = array();
+		
+		while ($result = $preps2->fetch()) {
+			$idUser = $result['id_user'];
+
+			$getUser = "SELECT * FROM `user_entity` WHERE `id` = '$idUser'";
+			$prepsUser = $this->db->prepare($getUser);
+			$prepsUser->execute();
+			$fetchUser = $prepsUser->fetch();
+			$nama = $fetchUser['user_name'] ?? "";
+			$posisi = $fetchUser['posisi1'] ?? "";
+			$divisi = $fetchUser['posisi2'] ?? "";
+			$jabatan = $fetchUser['jabatan'] ?? "";
+
+			$h['nama'] = $nama;
+			$h['posisi'] = $posisi;
+			$h['divisi'] = $divisi;
+			$h['jabatan'] = $jabatan;
+			$h['tgl_mulai'] = $result['tgl_mulai'];
+			$h['tgl_akhir'] = $result['tgl_akhir'];
+			$h['lama_izin'] = $result['lama_izin'];
+			$h['alasan'] = $result['alasan'];
+			$h['status_izin'] = $result['status_izin'];
+
+			array_push($res, $h);
+		}
+		return $response->withJson($res, 200);
+	});
+	// end list izin all
 
 	//global function decrypt
 	function decryptKoor($param1)
