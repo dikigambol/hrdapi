@@ -299,8 +299,8 @@ return function (App $app) {
 
 		if ($cstmt_user->rowCount() == 0) {
 
-			$sql = "INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_masuk`, `tgl_keluar`, `user_pass_def`, `alamat`, `alamat_sekarang`, `no_hp`, `tempat`, `tanggal_lahir`, `jenis_kelamin`, `nidn`, `no_ktp`, `status_nikah`, `posisi1`, `posisi2`, `jabatan`, `jurusan_dosen`,`status_dosen`,`kode_dosen`, `bpjs_kesehatan`, `masa_aktif_kesehatan`, `bpjs_ketenagakerjaan`, `masa_aktif_ketenagakerjaan`, `jenjang`,`foto`, `id_hidden`) 
-			VALUES (NULL, '$uid', '$un', '$dup', '$datemasuk', NULL, '$upd', '$almt', '$almtnow', '$hp', '$tmpt', '$tgllahir', '$jnsklmn', '$nidn', '$ktp', '$nikah', '$ps1', '$ps2', '$dvs', '$jurdos', '$stados','0', '$bpjs_kshtn', '$ms_kshtn', '$bpjs_ktngkrjn', '$ms_ktngkrjn', '$jenjang','',1)";
+			$sql = "INSERT INTO `user_entity` (`id`, `user_id`, `user_name`, `user_password`, `tgl_masuk`, `user_pass_def`, `alamat`, `alamat_sekarang`, `no_hp`, `tempat`, `tanggal_lahir`, `jenis_kelamin`, `nidn`, `no_ktp`, `status_nikah`, `posisi1`, `posisi2`, `jabatan`, `jurusan_dosen`,`status_dosen`,`kode_dosen`, `bpjs_kesehatan`, `masa_aktif_kesehatan`, `bpjs_ketenagakerjaan`, `masa_aktif_ketenagakerjaan`, `jenjang`,`foto`, `id_hidden`) 
+			VALUES (NULL, '$uid', '$un', '$dup', '$datemasuk', '$upd', '$almt', '$almtnow', '$hp', '$tmpt', '$tgllahir', '$jnsklmn', '$nidn', '$ktp', '$nikah', '$ps1', '$ps2', '$dvs', '$jurdos', '$stados','0', '$bpjs_kshtn', '$ms_kshtn', '$bpjs_ktngkrjn', '$ms_ktngkrjn', '$jenjang','',1)";
 
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
