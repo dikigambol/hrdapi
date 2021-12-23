@@ -75,7 +75,7 @@ return function (App $app) {
 		require 'fuction/encript.php';
 		$acc = $ciphertext_base64;
 
-		$sql2 = "SELECT * FROM `user_entity` where id='$idus'";
+		$sql2 = "SELECT * FROM `user_entity` where id='$idus' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -155,7 +155,7 @@ return function (App $app) {
 			$a = array_push($os, $h);
 		}
 
-		$sql2 = "SELECT * FROM `user_entity` where id='$idus'";
+		$sql2 = "SELECT * FROM `user_entity` where id='$idus' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -338,7 +338,7 @@ return function (App $app) {
 		if ($id == 0) {
 		} else {
 
-			$sql2 = "SELECT * FROM `user_entity` WHERE `id`='$id'";
+			$sql2 = "SELECT * FROM `user_entity` WHERE `id`='$id' AND id_hidden=1";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$res = array();
@@ -417,7 +417,7 @@ return function (App $app) {
 		$datemasuk = $date_now;
 		$datekeluar = $tglkr;
 
-		$csql_user = "SELECT * FROM `user_entity` WHERE `user_id`='$usid' ";
+		$csql_user = "SELECT * FROM `user_entity` WHERE `user_id`='$usid' AND id_hidden=1";
 		$cstmt_user = $this->db->prepare($csql_user);
 		$cstmt_user->execute();
 		$result = $cstmt_user->fetch();
@@ -492,7 +492,7 @@ return function (App $app) {
 		$pictNama = $_FILES['foto']['name'];
 		if (!empty($_FILES['foto']['tmp_name'])) {
 
-			$sqlGbr = "SELECT `foto` FROM `user_entity` WHERE `id`='$id'";
+			$sqlGbr = "SELECT `foto` FROM `user_entity` WHERE `id`='$id' AND id_hidden=1";
 			$exec = $this->db->prepare($sqlGbr);
 			$exec->execute();
 			$gbrLama = $exec->fetch();
@@ -711,7 +711,7 @@ return function (App $app) {
 
 	// view jadwal user 
 	$app->get("/tampil/orang/jadwal/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan'  ORDER BY `posisi2` ASC ";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' AND id_hidden=1 ORDER BY `posisi2` ASC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -736,7 +736,7 @@ return function (App $app) {
 
 	// view jadwal dosen
 	$app->get("/tampil/nama/dosen/jadwal/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB'  ORDER BY `posisi1` DESC ";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB' AND id_hidden=1  ORDER BY `posisi1` DESC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -765,7 +765,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -859,7 +859,7 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 			$ids = $result['id_user'];
-			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' ";
+			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' AND id_hidden=1";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
@@ -946,7 +946,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' ";
+		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1036,7 +1036,7 @@ return function (App $app) {
 		$jam = $_POST["jam"];
 		$absn = $_POST["absen_tempat"];
 
-		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' ";
+		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1101,7 +1101,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id_user = trim($plaintext_dec);
 
-		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id_user' ";
+		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id_user' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1159,7 +1159,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql2 = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql2 = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1333,7 +1333,7 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 			$ids = $result['id_user'];
-			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' ";
+			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' AND id_hidden=1";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
@@ -1373,7 +1373,7 @@ return function (App $app) {
 		while ($result = $stmt->fetch()) {
 			$ids = $result['id_user'];
 
-			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' ";
+			$sql2 = "SELECT * FROM `user_entity` WHERE`id` = '$ids' AND id_hidden=1";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
@@ -1407,7 +1407,7 @@ return function (App $app) {
 
 		while ($result = $stmt->fetch()) {
 
-			$sql2 = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+			$sql2 = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 			$stmt2 = $this->db->prepare($sql2);
 			$stmt2->execute();
 			$result2 = $stmt2->fetch();
@@ -1452,7 +1452,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' ";
+		$sql2 = "SELECT * FROM `user_entity`  WHERE `id` = '$id' AND id_hidden=1";
 		$stmt2 = $this->db->prepare($sql2);
 		$stmt2->execute();
 		$result2 = $stmt2->fetch();
@@ -1557,7 +1557,7 @@ return function (App $app) {
 		$bulan = $_GET['bulan'];
 		$tahun = $_GET['tahun'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB' ORDER BY `posisi1` DESC ";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Dosen FTD' OR `posisi1`='Dosen FEB' AND id_hidden=1 ORDER BY `posisi1` DESC ";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1604,7 +1604,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1640,7 +1640,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 
@@ -1656,14 +1656,14 @@ return function (App $app) {
 
 			$ambilJurusan = $result['jurusan_dosen'];
 			if ($ambilJurusan == "Teknik Informatika") {
-				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-INF'";
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-INF' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1678,14 +1678,14 @@ return function (App $app) {
 					$stIzin = 1;
 				}
 			} else if ($ambilJurusan == "Sistem Komputer") {
-				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-SK'";
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-SK' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1700,14 +1700,14 @@ return function (App $app) {
 					$stIzin = 1;
 				}
 			} else if ($ambilJurusan == "DKV") {
-				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-DKV'";
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-DKV' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FTD' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1722,14 +1722,14 @@ return function (App $app) {
 					$stIzin = 1;
 				}
 			} else if ($ambilJurusan == "Manajemen") {
-				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-PMB'";
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-PMB' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1744,14 +1744,14 @@ return function (App $app) {
 					$stIzin = 1;
 				}
 			} else if ($ambilJurusan == "Akuntansi") {
-				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-AK'";
+				$queryDosen = "SELECT * FROM struktural WHERE rektor_id = 'KP-AK' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Dekan FEB' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1766,14 +1766,14 @@ return function (App $app) {
 					$stIzin = 1;
 				}
 			} else {
-				$queryDosen = "SELECT * FROM struktural WHERE ketkode_rektor = 'Kaprodi Pascasarjana'";
+				$queryDosen = "SELECT * FROM struktural WHERE ketkode_rektor = 'Kaprodi Pascasarjana' AND id_hidden = 1";
 				$stmtDosen = $this->db->prepare($queryDosen);
 				$stmtDosen->execute();
 				$resultDosen = $stmtDosen->fetch();
 				$acc1 = $resultDosen['id_rektor'];
 				$idKP = $resultDosen['id'];
 
-				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Direktur Pascasarjana'";
+				$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = 'Direktur Pascasarjana' AND id_hidden = 1";
 				$stmtDekan = $this->db->prepare($queryDekan);
 				$stmtDekan->execute();
 				$resultDekan = $stmtDekan->fetch();
@@ -1836,7 +1836,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id'";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$result = $stmt->fetch();
@@ -1848,7 +1848,7 @@ return function (App $app) {
 			$koderektor = 'Dekan FEB';
 		}
 
-		$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = '$koderektor'";
+		$queryDekan = "SELECT * FROM struktural WHERE ketkode_rektor = '$koderektor' AND id_hidden = 1";
 		$stmtDekan = $this->db->prepare($queryDekan);
 		$stmtDekan->execute();
 		$resultDekan = $stmtDekan->fetch();
@@ -1860,7 +1860,7 @@ return function (App $app) {
 		$resultStruk = $stmtStruk->fetch();
 		$idStruk = $resultStruk['id_rektor'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `jurusan_dosen` = '$jurusanKaprodi' AND id NOT IN (SELECT id FROM `user_entity` WHERE id IN ($id, $idDekan))";
+		$sql = "SELECT * FROM `user_entity` WHERE `jurusan_dosen` = '$jurusanKaprodi' AND id NOT IN (SELECT id FROM `user_entity` WHERE id IN ($id, $idDekan)) AND id_hidden = 1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1898,7 +1898,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id'";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden = 1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$result = $stmt->fetch();
@@ -1910,7 +1910,7 @@ return function (App $app) {
 		$resultStruk = $stmtStruk->fetch();
 		$idStruk = $resultStruk['id_rektor'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = '$jenisDosen' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$id')";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = '$jenisDosen' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$id') AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1925,7 +1925,7 @@ return function (App $app) {
 			$prepsCountIzin = $this->db->prepare($getCountIzin);
 			$prepsCountIzin->execute();
 			$numIzin = $prepsCountIzin->fetch();
- 
+
 			$h['id'] = $id;
 			$h['nopeg'] = $result['user_id'];
 			$h['nama'] = $result['user_name'];
@@ -2053,7 +2053,7 @@ return function (App $app) {
 		$bulan = $_GET['bulan'];
 		$tahun = $_GET['tahun'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' ORDER BY `posisi2` ASC";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' AND id_hidden=1 ORDER BY `posisi2` ASC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2101,7 +2101,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2154,7 +2154,7 @@ return function (App $app) {
 
 	// list select pegawai 
 	$app->get("/select/pegawai/all", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity`";
+		$sql = "SELECT * FROM `user_entity` WHERE id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2259,20 +2259,20 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$idUser = trim($plaintext_dec);
 
-		$queryStruktural = "SELECT * FROM struktural WHERE id = '$idUser'";
+		$queryStruktural = "SELECT * FROM struktural WHERE id = '$idUser' AND id_hidden = 1";
 		$prepsStruktural = $this->db->prepare($queryStruktural);
 		$prepsStruktural->execute();
 		$resultStruktural = $prepsStruktural->fetch();
 		$jabatanstruktural = $resultStruktural['rektor_id'] ?? null;
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$idUser'";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$idUser' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$result = $stmt->fetch();
 		$divisi = $result['posisi2'];
 
 		//tampil rektor id
-		$sqlRektorID = $this->db->prepare("SELECT rektor_id FROM struktural WHERE id = '$idUser'");
+		$sqlRektorID = $this->db->prepare("SELECT rektor_id FROM struktural WHERE id = '$idUser' AND id_hidden = 1");
 		$sqlRektorID->execute();
 		$resultRektorID = $sqlRektorID->fetch();
 
@@ -2287,7 +2287,7 @@ return function (App $app) {
 			|| $divisi == "Kemahasiswaan"
 			|| $divisi == "Teknisi"
 		) {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser) AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2322,7 +2322,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($divisi == "BAU" || $divisi == "Front Office") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser) AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2355,7 +2355,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($divisi == "Marketing" || $divisi == "Driver") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser) AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2389,14 +2389,14 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($divisi == "Dekanat") {
-			$queryDekan = "SELECT * FROM struktural WHERE id = '$idUser'";
+			$queryDekan = "SELECT * FROM struktural WHERE id = '$idUser' AND id_hidden = 1";
 			$stmtDekan = $this->db->prepare($queryDekan);
 			$stmtDekan->execute();
 			$resultDekan = $stmtDekan->fetch();
 			$jabsus = $resultDekan['ketkode_rektor'];
 
 			if ($jabsus == "Dekan FTD") {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Admin FTD', 'Digital Learning') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser')";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Admin FTD', 'Digital Learning') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser') AND id_hidden=1";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2430,7 +2430,7 @@ return function (App $app) {
 					array_push($res, $h);
 				}
 			} else if ($jabsus == 'Dekan FEB') {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'Admin FEB' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser')";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'Admin FEB' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser') AND id_hidden=1";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2464,7 +2464,7 @@ return function (App $app) {
 				}
 			}
 		} else if ($jabatanstruktural == "HRD") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser) AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2497,7 +2497,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` IN ('Karyawan', 'Dosen FTD', 'Dosen FEB') AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` IN ('Karyawan', 'Dosen FTD', 'Dosen FEB') AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser) AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2530,7 +2530,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($jabatanstruktural == "R.1") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'BAA' AND `posisi1` = 'Karyawan'";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'BAA' AND `posisi1` = 'Karyawan' AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2563,7 +2563,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($jabatanstruktural == "R.4") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('MDS','Marketing', 'Driver') AND `posisi1` = 'Karyawan'";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('MDS','Marketing', 'Driver') AND `posisi1` = 'Karyawan' AND id_hidden=1";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2616,19 +2616,19 @@ return function (App $app) {
 		$idKoor = $_GET['id_koor'];
 		$idKoorDecrypt = intval(decryptKoor($idKoor));
 
-		$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$idKoorDecrypt' LIMIT 1";
+		$getRektorID = "SELECT rektor_id FROM struktural WHERE id = '$idKoorDecrypt' AND id_hidden = 1 LIMIT 1";
 		$prepsListRektorID = $this->db->prepare($getRektorID);
 		$prepsListRektorID->execute();
 		$listRektorID = $prepsListRektorID->fetch();
 		$idRektor = $listRektorID['rektor_id'] ?? "";
 
-		$getKoor = "SELECT * FROM `user_entity` WHERE `id` = '$idKoorDecrypt' ";
+		$getKoor = "SELECT * FROM `user_entity` WHERE `id` = '$idKoorDecrypt' AND id_hidden=1";
 		$prepsKoor = $this->db->prepare($getKoor);
 		$prepsKoor->execute();
 		$fetchKoor = $prepsKoor->fetch();
 		$stKoor = $fetchKoor['koordinator'] ?? 0;
 
-		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' ";
+		$sql = "SELECT * FROM `user_entity` WHERE `id` = '$id' AND id_hidden=1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2759,11 +2759,11 @@ return function (App $app) {
 		$preps2 = $this->db->prepare($get2);
 		$preps2->execute();
 		$res = array();
-		
+
 		while ($result = $preps2->fetch()) {
 			$idUser = $result['id_user'];
 
-			$getUser = "SELECT * FROM `user_entity` WHERE `id` = '$idUser'";
+			$getUser = "SELECT * FROM `user_entity` WHERE `id` = '$idUser' AND id_hidden=1";
 			$prepsUser = $this->db->prepare($getUser);
 			$prepsUser->execute();
 			$fetchUser = $prepsUser->fetch();
@@ -2823,7 +2823,7 @@ return function (App $app) {
 		include 'fuction/decript.php';
 		$id = trim($plaintext_dec);
 
-		$sql = "SELECT id AS hd, user_id AS ud FROM `user_entity` WHERE id='$id' ORDER BY `id` DESC LIMIT 1";
+		$sql = "SELECT id AS hd, user_id AS ud FROM `user_entity` WHERE id='$id' AND id_hidden=1 ORDER BY `id` DESC LIMIT 1";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = $stmt->fetchAll();
