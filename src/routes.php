@@ -213,7 +213,7 @@ return function (App $app) {
 
 	// view pegawai 
 	$app->get("/tampil/hrd/{view}", function (Request $request, Response $response, $args) {
-		$sql = "SELECT * FROM `user_entity` EXCEPT SELECT * FROM `user_entity` WHERE posisi1 = 'Dosen LB' ORDER BY `id` DESC ";
+		$sql = "SELECT * FROM `user_entity` WHERE posisi1 NOT IN (SELECT posisi1 FROM `user_entity` WHERE posisi1 = 'Dosen LB') ORDER BY `id` DESC";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1860,7 +1860,7 @@ return function (App $app) {
 		$resultStruk = $stmtStruk->fetch();
 		$idStruk = $resultStruk['id_rektor'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `jurusan_dosen` = '$jurusanKaprodi' EXCEPT SELECT * FROM `user_entity` WHERE id IN ($id, $idDekan)";
+		$sql = "SELECT * FROM `user_entity` WHERE `jurusan_dosen` = '$jurusanKaprodi' AND id NOT IN (SELECT id FROM `user_entity` WHERE id IN ($id, $idDekan))";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -1910,7 +1910,7 @@ return function (App $app) {
 		$resultStruk = $stmtStruk->fetch();
 		$idStruk = $resultStruk['id_rektor'];
 
-		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = '$jenisDosen' EXCEPT SELECT * FROM `user_entity` WHERE id='$id'";
+		$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = '$jenisDosen' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$id')";
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
 		$res = array();
@@ -2287,7 +2287,7 @@ return function (App $app) {
 			|| $divisi == "Kemahasiswaan"
 			|| $divisi == "Teknisi"
 		) {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = '$divisi' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2322,7 +2322,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($divisi == "BAU" || $divisi == "Front Office") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('BAU', 'Front Office') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2355,7 +2355,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($divisi == "Marketing" || $divisi == "Driver") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Marketing', 'Driver') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2396,7 +2396,7 @@ return function (App $app) {
 			$jabsus = $resultDekan['ketkode_rektor'];
 
 			if ($jabsus == "Dekan FTD") {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Admin FTD', 'Digital Learning') AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` IN ('Admin FTD', 'Digital Learning') AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser')";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2430,7 +2430,7 @@ return function (App $app) {
 					array_push($res, $h);
 				}
 			} else if ($jabsus == 'Dekan FEB') {
-				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'Admin FEB' AND `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id='$idUser'";
+				$sql = "SELECT * FROM `user_entity` WHERE `posisi2` = 'Admin FEB' AND `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id='$idUser')";
 				$stmt = $this->db->prepare($sql);
 				$stmt->execute();
 				$res = array();
@@ -2464,7 +2464,7 @@ return function (App $app) {
 				}
 			}
 		} else if ($jabatanstruktural == "HRD") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` = 'Karyawan' AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
@@ -2497,7 +2497,7 @@ return function (App $app) {
 				array_push($res, $h);
 			}
 		} else if ($jabatanstruktural == "R.0" || $jabatanstruktural == "R.2") {
-			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` IN ('Karyawan', 'Dosen FTD', 'Dosen FEB') EXCEPT SELECT * FROM `user_entity` WHERE id=$idUser";
+			$sql = "SELECT * FROM `user_entity` WHERE `posisi1` IN ('Karyawan', 'Dosen FTD', 'Dosen FEB') AND id NOT IN (SELECT id FROM `user_entity` WHERE id=$idUser)";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
 			$res = array();
